@@ -1,0 +1,8 @@
+<view class="skeleton-card">
+  <view wx:if="{{showImage}}" class="skeleton-image skeleton-bg"></view>
+  <view class="skeleton-body">
+    <view class="skeleton-title skeleton-bg"></view>
+    <view class="skeleton-desc skeleton-bg"></view>
+    <view class="skeleton-desc skeleton-bg" style="width: 60%;"></view>
+  </view>
+</view>

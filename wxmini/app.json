@@ -1,0 +1,103 @@
+{
+  "pages": [
+    "pages/start/start",
+    "pages/login/login",
+    "pages/register/register",
+    "pages/forgot-password/forgot-password",
+    "pages/protocol/protocol",
+    "pages/home/home",
+    "pages/home-bank/home-bank",
+    "pages/bank-staff-list/bank-staff-list",
+    "pages/bank-staff-detail/bank-staff-detail",
+    "pages/chat/chat",
+    "pages/branch-query/branch-query",
+    "pages/branch-detail/branch-detail",
+    "pages/company-list/company-list",
+    "pages/company-detail/company-detail",
+    "pages/profile/profile",
+    "pages/change-password/change-password",
+    "pages/message-list/message-list"
+  ],
+  "tabBar": {
+    "custom": true,
+    "list": [
+      {
+        "pagePath": "pages/home/home",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/home-bank/home-bank",
+        "text": "工作台"
+      },
+      {
+        "pagePath": "pages/branch-query/branch-query",
+        "text": "网点"
+      },
+      {
+        "pagePath": "pages/company-list/company-list",
+        "text": "企业"
+      },
+      {
+        "pagePath": "pages/message-list/message-list",
+        "text": "消息"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "我的"
+      }
+    ]
+  },
+  "window": {
+    "backgroundTextStyle": "dark",
+    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarTitleText": "银企来",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#F3F4F6"
+  },
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents",
+  "permission": {
+    "scope.userLocation": {
+      "desc": "您的位置信息将用于查询周边银行网点"
+    }
+  },
+  "requiredBackgroundModes": [],
+  "requiredPrivateInfos": [
+    "getLocation"
+  ],
+  "usingComponents": {
+    "van-button": "@vant/weapp/button/index",
+    "van-cell": "@vant/weapp/cell/index",
+    "van-cell-group": "@vant/weapp/cell-group/index",
+    "van-field": "@vant/weapp/field/index",
+    "van-icon": "@vant/weapp/icon/index",
+    "van-loading": "@vant/weapp/loading/index",
+    "van-nav-bar": "@vant/weapp/nav-bar/index",
+    "van-tab": "@vant/weapp/tab/index",
+    "van-tabs": "@vant/weapp/tabs/index",
+    "van-tag": "@vant/weapp/tag/index",
+    "van-toast": "@vant/weapp/toast/index",
+    "van-dialog": "@vant/weapp/dialog/index",
+    "van-empty": "@vant/weapp/empty/index",
+    "van-image": "@vant/weapp/image/index",
+    "van-search": "@vant/weapp/search/index",
+    "van-row": "@vant/weapp/row/index",
+    "van-col": "@vant/weapp/col/index",
+    "van-popup": "@vant/weapp/popup/index",
+    "van-action-sheet": "@vant/weapp/action-sheet/index",
+    "van-uploader": "@vant/weapp/uploader/index",
+    "van-divider": "@vant/weapp/divider/index",
+    "van-grid": "@vant/weapp/grid/index",
+    "van-grid-item": "@vant/weapp/grid-item/index",
+    "van-notice-bar": "@vant/weapp/notice-bar/index",
+    "van-skeleton": "@vant/weapp/skeleton/index",
+    "van-panel": "@vant/weapp/panel/index",
+    "van-radio": "@vant/weapp/radio/index",
+    "van-radio-group": "@vant/weapp/radio-group/index",
+    "van-checkbox": "@vant/weapp/checkbox/index",
+    "van-checkbox-group": "@vant/weapp/checkbox-group/index",
+    "van-picker": "@vant/weapp/picker/index",
+    "van-stepper": "@vant/weapp/stepper/index",
+    "van-switch": "@vant/weapp/switch/index"
+  }
+}

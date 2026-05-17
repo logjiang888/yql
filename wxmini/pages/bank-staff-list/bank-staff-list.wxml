@@ -1,0 +1,83 @@
+<view class="page-container">
+  <!-- 页面标题 -->
+  <view class="page-title-bar">
+    <text class="page-title">银行人员列表</text>
+    <text class="page-subtitle">为您推荐合适的银行工作人员</text>
+  </view>
+
+  <!-- 搜索栏-->
+  <view class="search-filter-bar">
+    <van-search
+      value="{{ keyword }}"
+      placeholder="搜索姓名、银行名称"
+      bind:change="onSearchInput"
+      background="#fff"
+    />
+    <scroll-view class="filter-scroll" scroll-x enhanced showScrollbar="{{false}}">
+      <van-tag
+        wx:for="{{filterTags}}"
+        wx:key="*this"
+        size="medium"
+        round
+        custom-class="filter-tag {{activeTag === item ? 'filter-active' : ''}}"
+        data-tag="{{item}}"
+        bindtap="onTagTap"
+      >{{item}}</van-tag>
+    </scroll-view>
+  </view>
+
+  <!-- 卡片列表 -->
+  <view class="card-list">
+    <skeleton-list count="5" wx:if="{{loading && list.length === 0}}"></skeleton-list>
+
+    <block wx:elif="{{list.length > 0}}">
+      <view
+        class="staff-card"
+        wx:for="{{list}}"
+        wx:key="id"
+        data-id="{{item.id}}"
+        bindtap="onItemTap"
+      >
+        <view class="card-main">
+          <view class="avatar avatar-sm">{{(item.nickname && item.nickname[0]) || '银'}}</view>
+          <view class="card-info">
+            <view class="info-row">
+              <text class="staff-name">{{item.nickname || item.username}}</text>
+              <status-tag status="1" type="audit"></status-tag>
+            </view>
+            <view class="info-sub">{{item.bank_name || '中国银行'}} · {{item.position || '客户经理'}}</view>
+            <view class="scope-tags" wx:if="{{item.business_scope}}">
+              <van-tag
+                wx:for="{{item.business_scope.split(',')}}"
+                wx:for-item="scope"
+                wx:key="*this"
+                color="#DBEAFE"
+                text-color="#2563EB"
+                size="small"
+
+              >{{scope}}</van-tag>
+            </view>
+          </view>
+        </view>
+        
+        <view class="card-actions">
+          <view class="action-btn btn-phone" catchtap="onCallPhone" data-phone="{{item.phone}}">
+            <van-icon name="phone-o" size="20px" color="#fff" />
+          </view>
+          <view class="action-btn btn-chat" catchtap="onChat" data-id="{{item.id}}" data-name="{{item.nickname || item.username}}">
+            <van-icon name="chat-o" size="20px" color="#fff" />
+          </view>
+        </view>
+      </view>
+
+      <load-more status="{{loadStatus}}"></load-more>
+    </block>
+
+    <empty-state
+      wx:else
+      title="暂无银行人员"
+      desc="试试其他搜索条件"
+      bindretry="loadList"
+    ></empty-state>
+  </view>
+</view>

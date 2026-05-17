@@ -1,0 +1,7 @@
+{
+  "component": true,
+  "usingComponents": {
+    "skeleton-list": "../skeleton-list/skeleton-list",
+    "skeleton-card": "../skeleton-card/skeleton-card"
+  }
+}

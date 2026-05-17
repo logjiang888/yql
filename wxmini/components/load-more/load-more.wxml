@@ -1,0 +1,9 @@
+<view class="load-more">
+  <block wx:if="{{status === 'loading'}}">
+    <view class="load-spinner"></view>
+    <text class="load-text">{{loadingText}}</text>
+  </block>
+  <block wx:elif="{{status === 'noMore'}}">
+    <text class="no-more-text">{{noMoreText}}</text>
+  </block>
+</view>

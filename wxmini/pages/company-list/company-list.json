@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "企业客户",
+  "enablePullDownRefresh": true,
+  "usingComponents": {
+    "skeleton-list": "../../components/skeleton/skeleton-list/skeleton-list",
+    "empty-state": "../../components/empty-state/empty-state",
+    "load-more": "../../components/load-more/load-more"
+  }
+}

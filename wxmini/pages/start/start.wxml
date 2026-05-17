@@ -1,0 +1,32 @@
+<view class="start-page">
+  <view class="start-header">
+    <view class="start-logo">银</view>
+    <view class="start-name">银企来</view>
+    <view class="start-slogan">银企对接服务平台</view>
+  </view>
+
+  <view class="start-card">
+    <view class="start-card-title">请选择您的身份</view>
+
+    <view class="role-list">
+      <van-cell
+        wx:for="{{roles}}"
+        wx:key="key"
+        title="{{item.name}}"
+        data-key="{{item.key}}"
+        bindtap="onSelectRole"
+        is-link
+        center
+        custom-class="role-cell"
+        title-class="role-title"
+      >
+        <view slot="icon" class="role-icon">{{item.icon}}</view>
+      </van-cell>
+    </view>
+  </view>
+
+  <view class="start-footer">
+    <text class="start-footer-text">已有账号？</text>
+    <text class="start-footer-link" bindtap="onTapLogin">立即登录</text>
+  </view>
+</view>

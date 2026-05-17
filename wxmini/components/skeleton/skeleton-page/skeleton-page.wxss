@@ -1,0 +1,35 @@
+.skeleton-page {
+  padding: 20rpx;
+}
+
+.skeleton-form {
+  padding: 20rpx;
+}
+
+.skeleton-form-item {
+  margin-bottom: 32rpx;
+}
+
+.skeleton-label {
+  height: 32rpx;
+  width: 160rpx;
+  border-radius: 8rpx;
+  margin-bottom: 12rpx;
+}
+
+.skeleton-input {
+  height: 96rpx;
+  width: 100%;
+  border-radius: var(--radius-md);
+}
+
+.skeleton-bg {
+  background: linear-gradient(90deg, var(--skeleton-base) 25%, var(--skeleton-shine) 50%, var(--skeleton-base) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}

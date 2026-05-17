@@ -1,0 +1,111 @@
+<view class="home-page">
+  <view class="home-nav">
+    <view class="home-nav-city">📍 北京</view>
+    <view class="home-nav-title">银企来</view>
+    <view class="home-nav-msg">💬</view>
+  </view>
+
+  <view class="home-search">
+    <van-search
+      value=""
+      placeholder="搜索银行人员、网点"
+      disabled
+      bindtap="onFeatureTap"
+      data-path="/pages/bank-staff-list/bank-staff-list"
+      background="#fff"
+    />
+  </view>
+
+  <!-- Skeleton -->
+  <view wx:if="{{loading}}">
+    <skeleton-card showImage="{{true}}"></skeleton-card>
+    <skeleton-list count="4"></skeleton-list>
+  </view>
+
+  <block wx:else>
+    <!-- 功能入口 -->
+    <view class="feature-grid">
+      <view
+        class="feature-item"
+        wx:for="{{features}}"
+        wx:key="name"
+        data-path="{{item.path}}"
+        bindtap="onFeatureTap"
+      >
+        <view class="feature-icon">{{item.icon}}</view>
+        <view class="feature-name">{{item.name}}</view>
+      </view>
+    </view>
+
+    <view class="banner-wrap" wx:if="{{banners.length > 0}}">
+      <swiper
+        class="banner-swiper"
+        autoplay
+        interval="5000"
+        circular
+        bindchange="onBannerChange"
+      >
+        <swiper-item wx:for="{{banners}}" wx:key="*this">
+          <image class="banner-img" src="{{item}}" mode="aspectFill" />
+        </swiper-item>
+      </swiper>
+      <view class="banner-dots">
+        <view
+          class="dot {{currentBanner === index ? 'active' : ''}}"
+          wx:for="{{banners}}"
+          wx:key="*this"
+        ></view>
+      </view>
+    </view>
+
+    <view class="section-header">
+      <text class="section-title">推荐银行人员</text>
+      <text
+        class="section-more"
+        bindtap="onFeatureTap"
+        data-path="/pages/bank-staff-list/bank-staff-list"
+      >查看更多 ›</text>
+    </view>
+
+    <!-- 推荐银行人员 –垂直卡片列表 -->
+    <view class="staff-list">
+      <view
+        class="staff-card"
+        wx:for="{{staffList}}"
+        wx:key="id"
+        data-id="{{item.id}}"
+        bindtap="onStaffTap"
+      >
+        <view class="card-main">
+          <view class="avatar avatar-sm">{{(item.nickname && item.nickname[0]) || '银'}}</view>
+          <view class="card-info">
+            <view class="info-row">
+              <text class="staff-name">{{item.nickname || item.username}}</text>
+              <status-tag status="1" type="audit"></status-tag>
+            </view>
+            <view class="info-sub">{{item.bank_name || '中国银行'}} · {{item.position || '客户经理'}}</view>
+            <view class="scope-tags" wx:if="{{item.business_scope}}">
+              <van-tag
+                wx:for="{{item.business_scope.split(',')}}"
+                wx:for-item="scope"
+                wx:key="*this"
+                color="#DBEAFE"
+                text-color="#2563EB"
+                size="small"
+              >{{scope}}</van-tag>
+            </view>
+          </view>
+        </view>
+        
+        <view class="card-actions">
+          <view class="action-btn btn-phone" catchtap="onCallPhone" data-phone="{{item.phone}}">
+            <van-icon name="phone-o" size="20px" color="#fff" />
+          </view>
+          <view class="action-btn btn-chat" catchtap="onChat" data-id="{{item.id}}" data-name="{{item.nickname || item.username}}">
+            <van-icon name="chat-o" size="20px" color="#fff" />
+          </view>
+        </view>
+      </view>
+    </view>
+  </block>
+</view>

@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "我的",
+  "usingComponents": {
+    "status-tag": "../../components/status-tag/status-tag",
+    "upload-with-ref": "../../components/upload-with-ref/upload-with-ref"
+  }
+}

@@ -1,0 +1,66 @@
+<view class="page-container" wx:if="{{branch}}">
+  <view class="map-preview">
+    <map
+      class="detail-map"
+      latitude="{{branch.latitude || 39.9042}}"
+      longitude="{{branch.longitude || 116.4074}}"
+      scale="15"
+      markers="{{[{
+        id: branch.id,
+        latitude: branch.latitude || 39.9,
+        longitude: branch.longitude || 116.4,
+        title: branch.bank_name,
+        width: 30,
+        height: 30
+      }]}}"
+      show-location
+    ></map>
+
+    <view class="nav-float-btn" bindtap="onNavigate">
+      <van-icon name="location-o" size="48rpx" color="#fff" />
+    </view>
+  </view>
+
+  <view class="card card-shadow">
+    <view class="text-2xl font-bold">{{branch.bank_name}}</view>
+    <van-tag color="#DBEAFE" text-color="#2563EB" class="mt-sm">{{branch.bank_code || '银行网点'}}</van-tag>
+
+    <van-cell-group class="mt-md" border="{{false}}">
+      <van-cell
+        title="地址"
+        label="{{branch.address || '暂无地址'}}"
+        bindtap="onCopyAddress"
+        is-link
+        border="{{true}}"
+      >
+        <van-icon slot="icon" name="location-o" size="36rpx" color="#2563EB" class="mr-sm" />
+      </van-cell>
+      <van-cell
+        title="电话"
+        label="{{branch.phone || '暂无电话'}}"
+        bindtap="onCallPhone"
+        is-link
+        border="{{true}}"
+      >
+        <van-icon slot="icon" name="phone-o" size="36rpx" color="#2563EB" class="mr-sm" />
+      </van-cell>
+      <van-cell
+        title="营业时间"
+        label="{{branch.hours || '暂无营业时间'}}"
+        border="{{false}}"
+      >
+        <van-icon slot="icon" name="clock-o" size="36rpx" color="#2563EB" class="mr-sm" />
+      </van-cell>
+    </van-cell-group>
+  </view>
+
+  <view class="footer-fixed">
+    <van-button
+      type="primary"
+      block
+      round
+      size="large"
+      bind:click="onNavigate"
+    >导航到此处</van-button>
+  </view>
+</view>

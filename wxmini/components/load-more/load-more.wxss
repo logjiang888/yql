@@ -1,0 +1,31 @@
+.load-more {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32rpx;
+}
+
+.load-spinner {
+  width: 32rpx;
+  height: 32rpx;
+  border: 4rpx solid var(--border);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-right: 12rpx;
+}
+
+.load-text {
+  font-size: 24rpx;
+  color: var(--text-tertiary);
+}
+
+.no-more-text {
+  font-size: 24rpx;
+  color: var(--text-tertiary);
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

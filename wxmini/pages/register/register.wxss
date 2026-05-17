@@ -1,0 +1,196 @@
+.register-tabs {
+  margin-bottom: 16rpx;
+}
+
+.scope-section {
+  margin: 0 32rpx;
+  background-color: #fff;
+  border-radius: 16rpx;
+  overflow: hidden;
+}
+
+.scope-section-title {
+  font-size: 28rpx;
+  font-weight: 500;
+  color: #323233;
+  padding: 24rpx 32rpx 16rpx;
+}
+
+.scope-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+  padding: 16rpx 32rpx 24rpx;
+  background-color: #fff;
+}
+
+.scope-tag {
+  display: inline-block;
+  position: relative;
+  padding: 12rpx 24rpx;
+  border-radius: 8rpx;
+  background-color: #f5f5f5;
+  border: 2rpx solid #ebedf0;
+  font-size: 26rpx;
+  color: #333;
+  line-height: 1.4;
+}
+
+.scope-tag-hover {
+  opacity: 0.7;
+}
+
+.scope-active {
+  background-color: #2563EB;
+  color: #fff;
+  border-color: #2563EB;
+}
+
+.protocol-row {
+  display: flex;
+  align-items: center;
+  margin-top: 32rpx;
+  padding: 0 8rpx;
+}
+
+.protocol-text {
+  font-size: 26rpx;
+  color: var(--van-text-color-2);
+  margin-left: 12rpx;
+}
+
+.error-msg {
+  display: flex;
+  align-items: center;
+  font-size: 24rpx;
+  color: var(--van-danger-color);
+  margin-top: 16rpx;
+  padding-left: 8rpx;
+}
+
+.register-tip {
+  text-align: center;
+  font-size: 24rpx;
+  color: var(--van-text-color-3);
+  margin-top: 24rpx;
+}
+
+.code-btn {
+  height: 56rpx !important;
+  line-height: 56rpx !important;
+  font-size: 24rpx !important;
+}
+
+.sample-btn {
+  display: flex;
+  align-items: center;
+  gap: 6rpx;
+}
+
+.sample-thumb {
+  width: 50rpx;
+  height: 50rpx;
+  border-radius: 6rpx;
+  background-color: #f5f5f5;
+}
+
+.sample-text {
+  font-size: 22rpx;
+  color: #2563EB;
+  white-space: nowrap;
+}
+
+.group-title {
+  font-size: 28rpx;
+  font-weight: 500;
+  color: #333;
+  background-color: #f0f7ff;
+  padding: 20rpx 32rpx;
+  margin: 32rpx 32rpx 0;
+  border-radius: 16rpx 16rpx 0 0;
+  text-align: center;
+}
+
+/* 银行联行号选择器*/
+.bank-picker-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24rpx 32rpx;
+  border-bottom: 1rpx solid var(--van-border-color);
+}
+
+.bank-picker-title {
+  font-size: 32rpx;
+  font-weight: 500;
+  color: var(--van-text-color);
+}
+
+.bank-picker-subtitle {
+  font-size: 26rpx;
+  color: var(--van-text-color-3);
+  padding: 16rpx 32rpx 0;
+}
+
+.bank-picker-list {
+  max-height: 800rpx;
+  padding-bottom: constant(safe-area-inset-bottom);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.bank-picker-item {
+  position: relative;
+  padding: 24rpx 32rpx;
+  border-bottom: 1rpx solid #f5f5f5;
+  background-color: #fff;
+  transition: background-color 0.2s;
+}
+
+.bank-picker-item:active {
+  background-color: var(--van-active-color);
+}
+
+.bank-picker-item-active {
+  background-color: var(--van-primary-color-light, #DBEAFE);
+}
+
+.bank-picker-name {
+  font-size: 30rpx;
+  color: var(--van-text-color);
+  margin-bottom: 8rpx;
+  padding-right: 60rpx;
+}
+
+.bank-picker-code {
+  font-size: 26rpx;
+  color: var(--van-text-color-3);
+}
+
+.bank-picker-check {
+  position: absolute;
+  right: 32rpx;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.bank-picker-empty {
+  padding: 60rpx 0;
+}
+
+/* 银行联行号输入行 */
+.bank-code-row {
+  display: flex;
+  align-items: center;
+}
+
+.bank-code-field {
+  flex: 1;
+}
+
+.search-icon-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 24rpx;
+  height: 88rpx;
+}

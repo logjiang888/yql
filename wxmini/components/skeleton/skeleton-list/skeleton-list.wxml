@@ -1,0 +1,9 @@
+<view class="skeleton-list">
+  <view class="skeleton-item" wx:for="{{count}}" wx:key="index">
+    <view class="skeleton-avatar skeleton-bg"></view>
+    <view class="skeleton-content">
+      <view class="skeleton-line skeleton-bg" style="width: 60%;"></view>
+      <view class="skeleton-line skeleton-bg" style="width: 40%; margin-top: 16rpx;"></view>
+    </view>
+  </view>
+</view>

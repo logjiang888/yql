@@ -1,0 +1,20 @@
+.detail-header {
+  background: linear-gradient(180deg, #DBEAFE 0%, var(--van-background-color) 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60rpx 40rpx 40rpx;
+}
+
+.detail-name {
+  font-size: 40rpx;
+  font-weight: 600;
+  color: var(--van-text-color);
+  margin-bottom: 12rpx;
+}
+
+.detail-code {
+  font-size: 28rpx;
+  color: var(--van-text-color-2);
+  margin-bottom: 16rpx;
+}

@@ -1,0 +1,20 @@
+<view class="skeleton-page">
+  <block wx:if="{{type === 'list'}}">
+    <skeleton-list count="{{count}}"></skeleton-list>
+  </block>
+  <block wx:elif="{{type === 'card'}}">
+    <skeleton-card wx:for="{{count}}" wx:key="index"></skeleton-card>
+  </block>
+  <block wx:elif="{{type === 'form'}}">
+    <view class="skeleton-form">
+      <view class="skeleton-form-item" wx:for="{{count}}" wx:key="index">
+        <view class="skeleton-label skeleton-bg"></view>
+        <view class="skeleton-input skeleton-bg"></view>
+      </view>
+    </view>
+  </block>
+  <block wx:else>
+    <skeleton-list count="3"></skeleton-list>
+    <skeleton-card wx:for="2" wx:key="index"></skeleton-card>
+  </block>
+</view>

@@ -1,0 +1,16 @@
+需求文档 D:\yql\docs\微信小程序开发需求.docx
+源代码目录 D:\yql\wxmini
+前端使用微信小程序、后端使用开源nocobase开发，nocobase链接postgreSql数据库
+微信小程序 APPID:wx60d0cc962cd1640f
+后端API BASE URL：http://47.99.192.178/api/
+后端nocobase 文档查看该目录下的 nocobase-api-cheatsheet.md，nocobase-api-reference.md
+后端API 的API 密钥：eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInJvbGVOYW1lIjoiYWRtaW4iLCJpYXQiOjE3Nzc3ODM5OTcsImV4cCI6MzMzMzUzODM5OTd9.MbfoXrFgbnkuG4YIjdnHpvm02aRp7O8GdPQ1Z1bu8a4
+API调用列子：
+curl -X 'GET' \
+  'http://47.99.192.178/api/users:list' \
+  -H 'accept: application/json' \
+  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInJvbGVOYW1lIjoiYWRtaW4iLCJpYXQiOjE3Nzc3ODM5OTcsImV4cCI6MzMzMzUzODM5OTd9.MbfoXrFgbnkuG4YIjdnHpvm02aRp7O8GdPQ1Z1bu8a4'
+  
+  依据上面的信息。召唤P9产品经理，使用pencil设置统一风格的项目所需要的界面。全栈P8开发工程师，开发项目。特别注意：有图片显示页面要Skeleton骨架屏。所有列表显示，要懒加载、分页、带图片也要Skeleton骨架屏。
+  你分析需求和我的要求后，先给我项目开发的都技术架构，计划阶段。我同意后再开始设计和开发
+  

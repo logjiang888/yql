@@ -1,0 +1,200 @@
+<view class="page-container">
+
+  <!-- 查看模式 -->
+  <block wx:if="{{!isEditMode}}">
+    <view class="profile-header">
+      <view class="avatar avatar-lg">{{(userInfo && userInfo.nickname && userInfo.nickname[0]) || '用'}}</view>
+      <view class="profile-name">{{(userInfo && userInfo.nickname) || (userInfo && userInfo.username) || '用户'}}</view>
+      <view class="profile-role">
+        <status-tag status="{{role}}" type="role"></status-tag>
+      </view>
+      <view class="profile-phone">{{(userInfo && userInfo.phone) || ''}}</view>
+    </view>
+
+    <view class="card card-shadow menu-card">
+      <van-cell
+        wx:for="{{menuList}}"
+        wx:key="title"
+        title="{{item.title}}"
+        icon="{{item.icon}}"
+        is-link
+        data-path="{{item.path}}"
+        data-title="{{item.title}}"
+        bindtap="onMenuTap"
+        border="{{ index < menuList.length - 1 }}"
+      />
+    </view>
+
+    <view class="px-lg mt-xl">
+      <van-button block round plain hairline type="danger" bind:click="onLogout">退出登录</van-button>
+    </view>
+  </block>
+
+  <!-- 编辑模式 -->
+  <block wx:else>
+    <view class="edit-header">
+      <view class="edit-back" bindtap="onCancel">取消</view>
+      <view class="edit-title">编辑资料</view>
+      <view class="edit-save" bindtap="onSave">保存</view>
+    </view>
+
+    <!-- 企业客户表单 -->
+    <block wx:if="{{role === 'company'}}">
+      <view class="edit-section">
+        <view class="section-title">企业基本信息</view>
+        <van-field label="企业名称" value="{{form.company_name}}" data-field="company_name" bind:input="onInputChange" placeholder="请输入企业名称" required />
+        <van-field label="统一社会信用代码" value="{{form.credit_code}}" data-field="credit_code" bind:input="onInputChange" placeholder="请输入统一社会信用代码" required />
+        <van-field label="法人姓名" value="{{form.legal_representative}}" data-field="legal_representative" bind:input="onInputChange" placeholder="请输入法人姓名" required />
+        <van-field label="联系人手机" value="{{form.contact_phone}}" data-field="contact_phone" bind:input="onInputChange" placeholder="请输入联系人手机号" type="number" required />
+      </view>
+
+      <view class="edit-section">
+        <view class="section-title">企业运营信息</view>
+        <van-field label="年营收(开票) 万元" value="{{form.annual_revenue_invoiced}}" data-field="annual_revenue_invoiced" bind:input="onNumberInput" placeholder="请输入年营收" type="digit" />
+        <van-field label="近两年营收(无票) 万元" value="{{form.recent_two_year_revenue_uninvoiced}}" data-field="recent_two_year_revenue_uninvoiced" bind:input="onNumberInput" placeholder="请输入近两年营收" type="digit" />
+        <van-field label="行业" value="{{form.industry}}" data-field="industry" bind:input="onInputChange" placeholder="请输入行业" />
+        <van-field label="办公地址" value="{{form.office_address}}" data-field="office_address" bind:input="onInputChange" placeholder="请输入办公地址" />
+        <van-field label="财力(公司) 万元" value="{{form.financial_resources_company}}" data-field="financial_resources_company" bind:input="onNumberInput" placeholder="请输入公司财力" type="digit" />
+        <van-field label="财力(法人) 万元" value="{{form.financial_resources_legal_rep}}" data-field="financial_resources_legal_rep" bind:input="onNumberInput" placeholder="请输入法人财力" type="digit" />
+      </view>
+
+      <view class="edit-section">
+        <view class="section-title">企业负债</view>
+        <van-field label="企业负债 万元" value="{{form.company_debt_status}}" data-field="company_debt_status" bind:input="onInputChange" placeholder="请输入企业负债" />
+        <van-field label="法人负债 万元" value="{{form.legal_rep_debt_status}}" data-field="legal_rep_debt_status" bind:input="onInputChange" placeholder="请输入法人负债" />
+      </view>
+
+      <view class="edit-section">
+        <view class="section-title">信用信息</view>
+        <van-field label="开户数" value="{{form.bank_account_count}}" data-field="bank_account_count" bind:input="onNumberInput" placeholder="请输入开户数" type="number" />
+        <van-field label="逾期数" value="{{form.overdue_count}}" data-field="overdue_count" bind:input="onNumberInput" placeholder="请输入逾期数" type="number" />
+        <van-field label="负债数" value="{{form.debt_count}}" data-field="debt_count" bind:input="onNumberInput" placeholder="请输入负债数" type="number" />
+        <van-field label="近6月征信查询次数" value="{{form.credit_inquiry_6m}}" data-field="credit_inquiry_6m" bind:input="onNumberInput" placeholder="请输入查询次数" type="number" />
+      </view>
+
+      <view class="edit-section">
+        <view class="section-title">贷款需求</view>
+        <van-field label="贷款需求 万元" value="{{form.loan_requirement}}" data-field="loan_requirement" bind:input="onNumberInput" placeholder="请输入贷款需求" type="digit" />
+      </view>
+    </block>
+
+    <!-- 银行人员表单 -->
+    <block wx:if="{{role === 'bank'}}">
+      <view class="edit-section">
+        <view class="section-title">基本信息</view>
+        <van-field label="姓名" value="{{form.name}}" data-field="name" bind:input="onInputChange" placeholder="请输入姓名" required />
+        <van-field label="手机号" value="{{form.phone}}" data-field="phone" bind:input="onInputChange" placeholder="请输入手机号" type="number" required />
+
+        <!-- 银行联行号选择器 -->
+        <view class="bank-code-row">
+          <van-field
+            value="{{ form.bank_code_input }}"
+            label="银行联行号"
+            placeholder="输入联行号搜索并选择银行"
+            required
+            data-field="bank_code_input"
+            bind:input="onInputChange"
+            custom-class="bank-code-field"
+          />
+          <view class="search-icon-wrap" bindtap="onBankCodeSearch">
+            <van-icon name="search" size="40rpx" color="#2563EB" />
+          </view>
+        </view>
+        <view wx:if="{{ form.bank_code }}" class="bank-selected-info">
+          <text class="bank-selected-label">已选银行：</text>
+          <text class="bank-selected-name">{{ form.bank_name }}（联行号：{{ form.bank_code }}）</text>
+        </view>
+
+        <van-field label="岗位" value="{{form.position}}" data-field="position" bind:input="onInputChange" placeholder="请输入岗位" />
+        <van-field label="工作年限" value="{{form.work_years}}" data-field="work_years" bind:input="onNumberInput" placeholder="请输入工作年限" type="number" />
+
+        <!-- 工作证件 -->
+        <view class="edit-section" style="margin-top:24rpx;padding:0;">
+          <upload-with-ref
+            label="工作证件"
+            maxCount="3"
+            files="{{form.work_proof}}"
+            data-field="work_proof"
+            bindchange="onUploadChange"
+            autoUpload="{{false}}"
+          />
+        </view>
+
+        <!-- 业务范围多选 -->
+        <view class="scope-section">
+          <view class="scope-section-title">业务范围</view>
+          <view class="scope-grid">
+            <view
+              wx:for="{{ scopeTags }}"
+              wx:key="name"
+              class="scope-tag {{ item.checked ? 'scope-active' : '' }}"
+              data-name="{{ item.name }}"
+              bindtap="onScopeToggle"
+              hover-class="scope-tag-hover"
+            >
+              {{ item.name }}
+              <van-icon wx:if="{{ item.checked }}" name="success" size="24rpx" color="#fff" class="scope-check-icon" />
+            </view>
+          </view>
+        </view>
+
+        <van-field label="发布的产品" value="{{form.published_products}}" data-field="published_products" bind:input="onInputChange" placeholder="请输入发布的产品" />
+      </view>
+    </block>
+
+    <!-- 业务员表单 -->
+    <block wx:if="{{role !== 'company' && role !== 'bank'}}">
+      <view class="edit-section">
+        <view class="section-title">基本信息</view>
+        <van-field label="姓名" value="{{form.name}}" data-field="name" bind:input="onInputChange" placeholder="请输入姓名" required />
+        <van-field label="手机号" value="{{form.phone}}" data-field="phone" bind:input="onInputChange" placeholder="请输入手机号" type="number" required />
+        <van-field label="岗位" value="{{form.position}}" data-field="position" bind:input="onInputChange" placeholder="请输入岗位" />
+        <van-field label="工作年限" value="{{form.work_years}}" data-field="work_years" bind:input="onNumberInput" placeholder="请输入工作年限" type="number" />
+      </view>
+    </block>
+
+    <!-- 银行选择弹窗 -->
+    <van-popup
+      show="{{ showBankCodePicker }}"
+      position="bottom"
+      round
+      bind:close="onCloseBankCodePicker"
+    >
+      <view class="bank-picker-header">
+        <text class="bank-picker-title">选择银行</text>
+        <van-icon name="cross" size="40rpx" color="#969799" bind:click="onCloseBankCodePicker" />
+      </view>
+      <view class="bank-picker-subtitle" wx:if="{{ bankSearchKeyword }}">
+        搜索: {{ bankSearchKeyword }}
+      </view>
+      <scroll-view scroll-y class="bank-picker-list">
+        <view wx:if="{{ bankSearchList.length === 0 }}" class="bank-picker-empty">
+          <van-empty description="暂无匹配银行" />
+        </view>
+        <view
+          wx:for="{{ bankSearchList }}"
+          wx:key="id"
+          class="bank-picker-item {{ form.bank_id === item.id ? 'bank-picker-item-active' : '' }}"
+          data-item="{{ item }}"
+          bindtap="onBankSelect"
+        >
+          <view class="bank-picker-name">{{ item.bank_name }}</view>
+          <view class="bank-picker-code">联行号: {{ item.bank_code }}</view>
+          <van-icon
+            wx:if="{{ form.bank_id === item.id }}"
+            name="success"
+            color="#2563EB"
+            size="36rpx"
+            class="bank-picker-check"
+          />
+        </view>
+      </scroll-view>
+    </van-popup>
+
+    <view class="edit-footer">
+      <van-button block round type="primary" bind:click="onSave" loading="{{saving}}">保存</van-button>
+      <van-button block round plain hairline type="default" bind:click="onCancel" class="mt-md">取消</van-button>
+    </view>
+  </block>
+
+</view>

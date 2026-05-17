@@ -1,0 +1,572 @@
+<view class="page-white">
+  <view class="px-lg py-md">
+    <!-- 企业客户表单 -->
+    <block wx:if="{{role === 'company'}}">
+      <view class="group-title">企业基本信息</view>
+      <van-cell-group inset>
+        <van-field
+          value="{{ form.company_name }}"
+          label="企业名称"
+          placeholder="请输入企业名称"
+          required
+          data-field="company_name"
+          bind:input="onInputChange"
+          error="{{ errorField === 'company_name' }}"
+        />
+        <van-field
+          value="{{ form.credit_code }}"
+          label="信用代码"
+          placeholder="请输入统一社会信用代码"
+          required
+          data-field="credit_code"
+          bind:input="onInputChange"
+          error="{{ errorField === 'credit_code' }}"
+        />
+        <van-field
+          value="{{ form.legal_representative }}"
+          label="法人"
+          placeholder="请输入法人姓名"
+          required
+          data-field="legal_representative"
+          bind:input="onInputChange"
+          error="{{ errorField === 'legal_representative' }}"
+        />
+        <van-field
+          value="{{ form.contact_phone }}"
+          label="手机号"
+          placeholder="请输入联系人手机号"
+          type="number"
+          maxlength="11"
+          required
+          data-field="contact_phone"
+          bind:input="onInputChange"
+          error="{{ errorField === 'contact_phone' }}"
+        />
+
+        <van-field
+          value="{{ form.password }}"
+          label="登录密码"
+          placeholder="请设置登录密码"
+          password
+          required
+          data-field="password"
+          bind:input="onInputChange"
+          error="{{ errorField === 'password' }}"
+        />
+
+        <van-field
+          value="{{ form.confirm_password }}"
+          label="确认密码"
+          placeholder="请再次输入密码"
+          password
+          required
+          data-field="confirm_password"
+          bind:input="onInputChange"
+          error="{{ errorField === 'confirm_password' }}"
+        />
+      </van-cell-group>
+
+      <view class="group-title">企业运营信息</view>
+      <van-cell-group inset>
+        <van-field
+          value="{{ form.annual_revenue_invoiced }}"
+          label="年营收开祹"
+          placeholder="请输入年营收(开祹(万元)"
+          type="digit"
+          data-field="annual_revenue_invoiced"
+          bind:input="onInputChange"
+        />
+
+        <van-field
+          value="{{ form.recent_two_year_revenue_uninvoiced }}"
+          label="近两年营收"
+          placeholder="请输入近两年营收(无票)(万元)"
+          type="digit"
+          data-field="recent_two_year_revenue_uninvoiced"
+          bind:input="onInputChange"
+        />
+
+        <upload-with-ref
+          label="年营收开祹附件"
+          maxCount="5"
+          referenceUrl="{{referenceImages.annual_revenue_invoiced_image || ''}}"
+          files="{{form.annual_revenue_invoiced_image}}"
+          data-field="annual_revenue_invoiced_image"
+          bindchange="onUploadChange"
+          autoUpload="{{false}}"
+        ></upload-with-ref>
+
+        <upload-with-ref
+          label="近两年营收无票)附件"
+          maxCount="5"
+          referenceUrl="{{referenceImages.revenue_no_ticket || ''}}"
+          files="{{form.recent_two_year_revenue_image}}"
+          data-field="recent_two_year_revenue_image"
+          bindchange="onUploadChange"
+          autoUpload="{{false}}"
+        ></upload-with-ref>
+
+        <van-field
+          value="{{ industryLabel }}"
+          label="行业"
+          placeholder="请选择行业"
+          readonly
+          is-link
+          bind:click-input="onShowIndustryPicker"
+        />
+
+        <van-field
+          value="{{ form.office_address }}"
+          label="办公地址"
+          placeholder="请输入办公地址"
+          type="textarea"
+          autosize="{{ { maxHeight: 100, minHeight: 50 } }}"
+          data-field="office_address"
+          bind:input="onInputChange"
+        />
+
+        <van-field
+          value="{{ form.financial_resources_company }}"
+          label="财力(公司)"
+          placeholder="请输入财力公司)(万元)"
+          type="digit"
+          data-field="financial_resources_company"
+          bind:input="onInputChange"
+        />
+
+        <van-field
+          value="{{ form.financial_resources_legal_rep }}"
+          label="财力(法人)"
+          placeholder="请输入财力法人)(万元)"
+          type="digit"
+          data-field="financial_resources_legal_rep"
+          bind:input="onInputChange"
+        />
+      </van-cell-group>
+
+      <view class="group-title">企业负债</view>
+      <van-cell-group inset>
+        <van-field
+          value="{{ form.company_debt_status }}"
+          label="企业负债"
+          placeholder="请输入企业负债万元)"
+          type="textarea"
+          autosize="{{ { maxHeight: 100, minHeight: 50 } }}"
+          data-field="company_debt_status"
+          bind:input="onInputChange"
+        />
+
+        <van-field
+          value="{{ form.legal_rep_debt_status }}"
+          label="法人负债"
+          placeholder="请输入法人负债万元)"
+          type="textarea"
+          autosize="{{ { maxHeight: 100, minHeight: 50 } }}"
+          data-field="legal_rep_debt_status"
+          bind:input="onInputChange"
+        />
+
+        <upload-with-ref
+          label="企业负债附件"
+          maxCount="5"
+          referenceUrl="{{referenceImages.company_debt_image || ''}}"
+          files="{{form.company_debt_image}}"
+          data-field="company_debt_image"
+          bindchange="onUploadChange"
+          autoUpload="{{false}}"
+        ></upload-with-ref>
+
+        <upload-with-ref
+          label="法人负债附件"
+          maxCount="5"
+          referenceUrl="{{referenceImages.legal_rep_debt_image || ''}}"
+          files="{{form.legal_rep_debt_image}}"
+          data-field="legal_rep_debt_image"
+          bindchange="onUploadChange"
+          autoUpload="{{false}}"
+        ></upload-with-ref>
+      </van-cell-group>
+
+      <view class="group-title">信用信息</view>
+      <van-cell-group inset>
+        <van-field
+          value="{{ form.bank_account_count }}"
+          label="开户数"
+          placeholder="请输入开户数"
+          type="number"
+          data-field="bank_account_count"
+          bind:input="onInputChange"
+        />
+
+        <van-field
+          value="{{ form.overdue_count }}"
+          label="逾期数"
+          placeholder="请输入逾期数"
+          type="number"
+          data-field="overdue_count"
+          bind:input="onInputChange"
+        />
+
+        <van-field
+          value="{{ form.debt_count }}"
+          label="负债数"
+          placeholder="请输入负债数"
+          type="number"
+          data-field="debt_count"
+          bind:input="onInputChange"
+        />
+
+        <van-field
+          value="{{ form.credit_inquiry_6m }}"
+          label="征信查询次数"
+          placeholder="请输入近6个月征信查询次数"
+          type="number"
+          data-field="credit_inquiry_6m"
+          bind:input="onInputChange"
+        />
+
+        <upload-with-ref
+          label="近个月征信查询附件"
+          maxCount="5"
+          referenceUrl="{{referenceImages.credit_inquiry_6m_image || ''}}"
+          files="{{form.credit_inquiry_6m_image}}"
+          data-field="credit_inquiry_6m_image"
+          bindchange="onUploadChange"
+          autoUpload="{{false}}"
+        ></upload-with-ref>
+      </van-cell-group>
+
+      <view class="group-title">贷款需求</view>
+      <van-cell-group inset>
+        <van-field
+          value="{{ form.loan_requirement }}"
+          label="贷款需求"
+          placeholder="请输入贷款需求"
+          type="digit"
+          data-field="loan_requirement"
+          bind:input="onInputChange"
+        />
+      </van-cell-group>
+
+      <van-cell-group inset class="mt-md">
+        <upload-with-ref
+          label="其它附件"
+          maxCount="5"
+          files="{{form.other_attachment}}"
+          data-field="other_attachment"
+          bindchange="onUploadChange"
+          autoUpload="{{false}}"
+        ></upload-with-ref>
+      </van-cell-group>
+    </block>
+
+    <!-- 银行人员表单 -->
+    <block wx:if="{{role === 'bank'}}">
+      <van-cell-group inset>
+        <van-field
+          value="{{ form.name }}"
+          label="姓名"
+          placeholder="请输入姓名"
+          required
+          data-field="name"
+          bind:input="onInputChange"
+          error="{{ errorField === 'name' }}"
+        />
+
+        <view class="bank-code-row">
+          <van-field
+            value="{{ form.bank_code_input }}"
+            label="银行联行号"
+            placeholder="请输入部分或全部银行联行号"
+            required
+            type="number"
+            data-field="bank_code_input"
+            bind:input="onInputChange"
+            error="{{ errorField === 'bank_id' }}"
+            custom-class="bank-code-field"
+          />
+          <view class="search-icon-wrap" bindtap="onBankCodeSearch">
+            <van-icon name="search" size="40rpx" color="#2563EB" />
+          </view>
+        </view>
+
+        <van-field
+          value="{{ form.work_years }}"
+          label="工作年限"
+          placeholder="请输入工作年限年"
+          type="number"
+          maxlength="3"
+          data-field="work_years"
+          bind:input="onInputChange"
+        />
+
+        <van-field
+          value="{{ form.position }}"
+          label="岗位"
+          placeholder="请输入岗位"
+          data-field="position"
+          bind:input="onInputChange"
+        />
+
+      </van-cell-group>
+
+      <van-cell-group inset class="mt-md">
+        <upload-with-ref
+          label="工作证明附件"
+          maxCount="3"
+          files="{{form.work_proof}}"
+          data-field="work_proof"
+          bindchange="onUploadChange"
+          autoUpload="{{false}}"
+        ></upload-with-ref>
+      </van-cell-group>
+
+      <van-cell-group inset class="mt-md">
+        <van-field
+          value="{{ form.phone }}"
+          label="手机号"
+          placeholder="请输入手机号"
+          type="number"
+          maxlength="11"
+          required
+          data-field="phone"
+          bind:input="onInputChange"
+          error="{{ errorField === 'phone' }}"
+        />
+
+        <van-field
+          value="{{ form.code }}"
+          label="验证码"
+          placeholder="请输入验证码"
+          type="number"
+          maxlength="6"
+          required
+          data-field="code"
+          bind:input="onInputChange"
+          error="{{ errorField === 'code' }}"
+          use-button-slot
+        >
+          <van-button
+            slot="button"
+            size="small"
+            type="primary"
+            plain
+            disabled="{{ countdown > 0 }}"
+            bind:click="onSendCode"
+            custom-class="code-btn"
+          >
+            {{ countdown > 0 ? countdown + 's' : '获取验证码' }}
+          </van-button>
+        </van-field>
+
+        <van-field
+          value="{{ form.password }}"
+          label="登录密码"
+          placeholder="请设置登录密码"
+          password
+          required
+          data-field="password"
+          bind:input="onInputChange"
+          error="{{ errorField === 'password' }}"
+        />
+
+        <van-field
+          value="{{ form.confirm_password }}"
+          label="确认密码"
+          placeholder="请再次输入密码"
+          password
+          required
+          data-field="confirm_password"
+          bind:input="onInputChange"
+          error="{{ errorField === 'confirm_password' }}"
+        />
+      </van-cell-group>
+    </block>
+
+    <!-- 业务员表单-->
+    <block wx:if="{{role === 'salesperson'}}">
+      <van-cell-group inset>
+        <van-field
+          value="{{ form.name }}"
+          label="姓名"
+          placeholder="请输入姓名"
+          required
+          data-field="name"
+          bind:input="onInputChange"
+          error="{{ errorField === 'name' }}"
+        />
+
+        <van-field
+          value="{{ form.work_years }}"
+          label="工作年限"
+          placeholder="请输入工作年限年"
+          type="number"
+          maxlength="3"
+          data-field="work_years"
+          bind:input="onInputChange"
+        />
+
+        <van-field
+          value="{{ form.position }}"
+          label="岗位"
+          placeholder="请输入岗位"
+          data-field="position"
+          bind:input="onInputChange"
+        />
+
+      </van-cell-group>
+
+      <van-cell-group inset class="mt-md">
+        <upload-with-ref
+          label="工作证明附件"
+          maxCount="3"
+          files="{{form.work_proof}}"
+          data-field="work_proof"
+          bindchange="onUploadChange"
+          autoUpload="{{false}}"
+        ></upload-with-ref>
+      </van-cell-group>
+
+      <van-cell-group inset class="mt-md">
+        <van-field
+          value="{{ form.phone }}"
+          label="手机号"
+          placeholder="请输入手机号"
+          type="number"
+          maxlength="11"
+          required
+          data-field="phone"
+          bind:input="onInputChange"
+          error="{{ errorField === 'phone' }}"
+        />
+
+        <van-field
+          value="{{ form.code }}"
+          label="验证码"
+          placeholder="请输入验证码"
+          type="number"
+          maxlength="6"
+          required
+          data-field="code"
+          bind:input="onInputChange"
+          error="{{ errorField === 'code' }}"
+          use-button-slot
+        >
+          <van-button
+            slot="button"
+            size="small"
+            type="primary"
+            plain
+            disabled="{{ countdown > 0 }}"
+            bind:click="onSendCode"
+            custom-class="code-btn"
+          >
+            {{ countdown > 0 ? countdown + 's' : '获取验证码' }}
+          </van-button>
+        </van-field>
+
+        <van-field
+          value="{{ form.password }}"
+          label="登录密码"
+          placeholder="请设置登录密码"
+          password
+          required
+          data-field="password"
+          bind:input="onInputChange"
+          error="{{ errorField === 'password' }}"
+        />
+
+        <van-field
+          value="{{ form.confirm_password }}"
+          label="确认密码"
+          placeholder="请再次输入密码"
+          password
+          required
+          data-field="confirm_password"
+          bind:input="onInputChange"
+          error="{{ errorField === 'confirm_password' }}"
+        />
+      </van-cell-group>
+    </block>
+
+    <!-- 协议 -->
+    <view class="protocol-row">
+      <van-checkbox
+        value="{{ agreed }}"
+        icon-size="36rpx"
+        bind:change="onToggleAgree"
+        checked-color="#2563EB"
+      ></van-checkbox>
+      <view class="protocol-text">
+        我已阅读并同意        <text class="text-primary" bindtap="onTapProtocol">《用户注册协议》</text>
+      </view>
+    </view>
+
+    <van-button
+      type="primary"
+      block
+      round
+      size="large"
+      bind:click="onSubmit"
+      custom-class="mt-xl"
+    >提交注册</van-button>
+
+    <view class="register-tip" wx:if="{{role !== 'company'}}">
+      提交后需等待后台审核通过后方可登录    </view>
+  </view>
+</view>
+
+<!-- 银行联行号选择弹窗 -->
+<van-popup
+  show="{{ showBankCodePicker }}"
+  position="bottom"
+  round
+  bind:close="onCloseBankCodePicker"
+>
+  <view class="bank-picker-header">
+    <text class="bank-picker-title">选择银行</text>
+    <van-icon name="cross" size="40rpx" color="#969799" bind:click="onCloseBankCodePicker" />
+  </view>
+  <view class="bank-picker-subtitle" wx:if="{{ bankSearchKeyword }}">
+    搜索: {{ bankSearchKeyword }}
+  </view>
+  <scroll-view scroll-y class="bank-picker-list">
+    <view wx:if="{{ bankSearchList.length === 0 }}" class="bank-picker-empty">
+      <van-empty description="暂无匹配银行" />
+    </view>
+    <view
+      wx:for="{{ bankSearchList }}"
+      wx:key="id"
+      class="bank-picker-item {{ form.bank_id === item.id ? 'bank-picker-item-active' : '' }}"
+      data-item="{{ item }}"
+      bindtap="onBankSelect"
+    >
+      <view class="bank-picker-name">{{ item.bank_name }}</view>
+      <view class="bank-picker-code">联行号 {{ item.bank_code }}</view>
+      <van-icon
+        wx:if="{{ form.bank_id === item.id }}"
+        name="success"
+        color="#2563EB"
+        size="36rpx"
+        class="bank-picker-check"
+      />
+    </view>
+  </scroll-view>
+</van-popup>
+
+<!-- 行业选择弹窗 -->
+<van-popup
+  show="{{ showIndustryPicker }}"
+  position="bottom"
+  bind:close="onCloseIndustryPicker"
+>
+  <van-picker
+    show-toolbar
+    title="选择行业"
+    columns="{{ industryColumns }}"
+    bind:confirm="onIndustryConfirm"
+    bind:cancel="onCloseIndustryPicker"
+  />
+</van-popup>
+
+<van-toast id="van-toast" />

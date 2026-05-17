@@ -1,0 +1,65 @@
+<view class="page-container">
+  <van-search
+    value="{{ keyword }}"
+    placeholder="搜索企业名称"
+    bind:change="onSearchInput"
+    background="#fff"
+  />
+
+  <view class="card-list">
+    <skeleton-list count="5" wx:if="{{loading && list.length === 0}}"></skeleton-list>
+
+    <block wx:elif="{{list.length > 0}}">
+      <view
+        class="company-card"
+        wx:for="{{list}}"
+        wx:key="id"
+        data-id="{{item.id}}"
+        bindtap="onItemTap"
+      >
+        <view class="card-header">
+          <view class="company-name">{{item.company_name}}</view>
+          <view class="company-code">统一社会信用代码：{{item._creditCodeMasked || '-'}}</view>
+        </view>
+        <view class="card-body">
+          <view class="info-row-company">
+            <van-icon name="contact-o" size="14px" color="#9CA3AF" />
+            <text class="info-text">联系人：{{item.contact_name || '-'}}</text>
+          </view>
+          <view class="info-row-company">
+            <van-icon name="phone-o" size="14px" color="#9CA3AF" />
+            <text class="info-text">{{item.contact_phone || '-'}}</text>
+          </view>
+          <view class="info-row-company">
+            <van-icon name="clock-o" size="14px" color="#9CA3AF" />
+            <text class="info-text">注册时间：{{item._createdAtFormatted}}</text>
+          </view>
+        </view>
+        <view class="card-actions">
+          <view
+            class="action-btn"
+            data-user-id="{{item.user_id}}"
+            data-name="{{item.company_name}}"
+            bindtap="onChatTap"
+          >
+            <van-icon name="chat-o" size="14px" color="#2563EB" />
+            <text class="action-text">聊天</text>
+          </view>
+          <view
+            class="action-btn"
+            data-id="{{item.id}}"
+            data-name="{{item.company_name}}"
+            bindtap="onAddIntentionTap"
+          >
+            <van-icon name="plus" size="14px" color="#10B981" />
+            <text class="action-text">意向客户</text>
+          </view>
+        </view>
+      </view>
+
+      <load-more status="{{loadStatus}}"></load-more>
+    </block>
+
+    <empty-state wx:else title="暂无企业客户" desc="" bindretry="loadList"></empty-state>
+  </view>
+</view>

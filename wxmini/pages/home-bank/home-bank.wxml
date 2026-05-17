@@ -1,0 +1,93 @@
+<view class="home-bank-page">
+  <view class="home-bank-nav">
+    <view class="home-bank-title">工作台</view>
+    <view class="home-bank-msg" bindtap="onFeatureTap" data-path="/pages/message-list/message-list">💬</view>
+  </view>
+
+  <view wx:if="{{loading}}">
+    <skeleton-card showImage="{{false}}"></skeleton-card>
+    <skeleton-card showImage="{{false}}"></skeleton-card>
+  </view>
+
+  <block wx:else>
+    <view class="overview-card">
+      <view class="overview-header">
+        <view class="overview-avatar">{{(userInfo && userInfo.nickname && userInfo.nickname[0]) || '用'}}</view>
+        <view class="overview-info">
+          <view class="overview-name">{{(userInfo && userInfo.nickname) || (userInfo && userInfo.username) || '用户'}}</view>
+          <status-tag status="{{role}}" type="role"></status-tag>
+        </view>
+      </view>
+      <view class="overview-bank">{{role === 'bank' ? (userInfo.bank_name ? '所属银行：' + userInfo.bank_name : '所属银行') : '所属机构：' + (userInfo.org_name || '')}}</view>
+    </view>
+
+    <view class="stats-card">
+      <view class="stats-item">
+        <view class="stats-num">{{stats.total}}</view>
+        <view class="stats-label">客户总数</view>
+      </view>
+      <view class="stats-divider"></view>
+      <view class="stats-item">
+        <view class="stats-num">{{stats.monthNew}}</view>
+        <view class="stats-label">本月新增</view>
+      </view>
+    </view>
+
+    <view class="section-header">
+      <text class="section-title">我的客户</text>
+      <text
+        class="section-more"
+        bindtap="onFeatureTap"
+        data-path="/pages/company-list/company-list"
+      >查看更多 ›</text>
+    </view>
+
+    <view class="recent-list">
+      <van-cell
+        wx:for="{{myCustList}}"
+        wx:key="id"
+        title="{{item.companyName}}"
+        label="{{item.contactName}} {{item.contactPhone}}"
+        data-company-id="{{item.companyId}}"
+        bindtap="onMyCustTap"
+        is-link
+        border="{{ index < myCustList.length - 1 }}"
+      >
+        <view slot="right-icon" class="cust-meta">
+          <view wx:if="{{item.custType}}" class="cust-type-tag">{{item.custType}}</view>
+          <view class="text-muted text-xs">{{item.createdAt}}</view>
+        </view>
+      </van-cell>
+      <view class="empty-state" wx:if="{{myCustList.length === 0}}">
+        <van-empty description="暂无我的客户" />
+      </view>
+    </view>
+
+    <view class="section-header">
+      <text class="section-title">最近浏览</text>
+      <text
+        class="section-more"
+        bindtap="onFeatureTap"
+        data-path="/pages/company-list/company-list"
+      >查看更多 ›</text>
+    </view>
+
+    <view class="recent-list">
+      <van-cell
+        wx:for="{{recentList}}"
+        wx:key="id"
+        title="{{item.company_name}}"
+        label="{{item.contact_name}} {{item.contact_phone}}"
+        data-id="{{item.id}}"
+        bindtap="onCompanyTap"
+        is-link
+        border="{{ index < recentList.length - 1 }}"
+      >
+        <view slot="right-icon" class="text-muted text-xs">{{item._createdAtFormatted}}</view>
+      </van-cell>
+      <view class="empty-state" wx:if="{{recentList.length === 0}}">
+        <van-empty description="暂无浏览记录" />
+      </view>
+    </view>
+  </block>
+</view>

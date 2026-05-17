@@ -1,0 +1,21 @@
+<view class="upload-wrap">
+  <view class="upload-label" wx:if="{{label}}">
+    {{label}}
+    <view class="upload-ref-btn" wx:if="{{referenceUrl}}" bindtap="onPreviewRef">
+      <view class="ref-icon">👁</view>
+      <text class="ref-text">参考图</text>
+    </view>
+  </view>
+  <view class="upload-grid">
+    <view class="upload-file" wx:for="{{files}}" wx:key="*this">
+      <image class="upload-file-img" src="{{item.url || item}}" mode="aspectFill" bindtap="onPreviewFile" data-index="{{index}}"></image>
+      <view class="upload-file-del" bindtap="onDeleteFile" data-index="{{index}}">
+        <text class="del-icon">×</text>
+      </view>
+    </view>
+    <view class="upload-box" wx:if="{{files.length < maxCount}}" bindtap="onTapUpload">
+      <view class="upload-box-icon">+</view>
+      <text class="upload-box-text">点击上传</text>
+    </view>
+  </view>
+</view>

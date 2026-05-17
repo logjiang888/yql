@@ -1,0 +1,8 @@
+{
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "skeleton-list": "../../components/skeleton/skeleton-list/skeleton-list",
+    "skeleton-card": "../../components/skeleton/skeleton-card/skeleton-card",
+    "status-tag": "../../components/status-tag/status-tag"
+  }
+}

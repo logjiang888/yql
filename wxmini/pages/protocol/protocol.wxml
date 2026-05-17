@@ -1,0 +1,18 @@
+<view class="page-white">
+  <view class="px-lg py-lg">
+    <van-divider content-position="center">用户注册协议</van-divider>
+    <view class="text-base text-secondary" style="line-height: 1.8;">
+      <rich-text nodes="{{content}}"></rich-text>
+    </view>
+  </view>
+
+  <view class="footer-fixed" wx:if="{{showAgreeBtn}}">
+    <van-button
+      type="primary"
+      block
+      round
+      size="large"
+      bind:click="onAgree"
+    >同意并继续</van-button>
+  </view>
+</view>

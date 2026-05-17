@@ -1,0 +1,10 @@
+{
+  "navigationBarTitleText": "网点查询",
+  "enablePullDownRefresh": true,
+  "usingComponents": {
+    "skeleton-list": "../../components/skeleton/skeleton-list/skeleton-list",
+    "skeleton-image": "../../components/skeleton/skeleton-image/skeleton-image",
+    "empty-state": "../../components/empty-state/empty-state",
+    "load-more": "../../components/load-more/load-more"
+  }
+}

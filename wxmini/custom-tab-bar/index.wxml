@@ -1,0 +1,25 @@
+<view class="tab-bar" wx:if="{{list.length > 0}}">
+  <view
+    class="tab-bar-item {{selected === index ? 'active' : ''}}"
+    wx:for="{{list}}"
+    wx:key="index"
+    data-index="{{index}}"
+    data-path="{{item.pagePath}}"
+    bindtap="switchTab"
+  >
+    <view class="tab-icon">
+      <image
+        wx:if="{{item.iconImage}}"
+        class="tab-image"
+        src="{{selected === index ? item.activeIconImage : item.iconImage}}"
+        mode="aspectFit"
+      />
+      <van-icon
+        wx:else
+        name="{{selected === index ? item.activeIcon : item.icon}}"
+        size="48rpx"
+      />
+    </view>
+    <text class="tab-text">{{item.text}}</text>
+  </view>
+</view>

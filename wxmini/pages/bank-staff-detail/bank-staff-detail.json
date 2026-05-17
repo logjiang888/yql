@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "人员详情",
+  "usingComponents": {
+    "skeleton-card": "../../components/skeleton/skeleton-card/skeleton-card",
+    "status-tag": "../../components/status-tag/status-tag"
+  }
+}

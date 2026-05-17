@@ -1,0 +1,553 @@
+FILE: D:\yql\wxmini\pages\bank-staff-detail\bank-staff-detail.wxml
+PREFIX: e993
+CONTEXT: ame && staff.nickname[0]) || '???}}</view>
+
+---
+FILE: D:\yql\wxmini\pages\bank-staff-detail\bank-staff-detail.wxml
+PREFIX: e593
+CONTEXT: s="section-title">发布的产???/view>
+   
+---
+FILE: D:\yql\wxmini\pages\bank-staff-detail\bank-staff-detail.wxml
+PREFIX: e6a0
+CONTEXT: </view>
+
+    <!-- 底部操作???-->
+    <v
+---
+FILE: D:\yql\wxmini\pages\bank-staff-detail\bank-staff-detail.wxss
+PREFIX: e6a0
+CONTEXT: dius: 3rpx;
+}
+
+/* 底部操作???*/
+.detail
+---
+FILE: D:\yql\wxmini\pages\bank-staff-list\bank-staff-list.wxml
+PREFIX: e6a0
+CONTEXT: text>
+  </view>
+
+  <!-- 搜索???-->
+  <vie
+---
+FILE: D:\yql\wxmini\pages\bank-staff-list\bank-staff-list.wxml
+PREFIX: e7a7
+CONTEXT: lder="搜索姓名、银行名???
+      bin
+---
+FILE: D:\yql\wxmini\pages\bank-staff-list\bank-staff-list.wxml
+PREFIX: e993
+CONTEXT: name && item.nickname[0]) || '???}}</view>
+
+---
+FILE: D:\yql\wxmini\pages\branch-detail\branch-detail.wxml
+PREFIX: e5a4
+CONTEXT: "onNavigate"
+    >导航到此???/van-butto
+---
+FILE: D:\yql\wxmini\pages\branch-query\branch-query.wxml
+PREFIX: e59f
+CONTEXT: lder="搜索网点名称、区???
+    bind:
+---
+FILE: D:\yql\wxmini\pages\branch-query\branch-query.wxml
+PREFIX: e987
+CONTEXT: ame}}"
+          >导航到这???/van-butto
+---
+FILE: D:\yql\wxmini\pages\company-detail\company-detail.wxml
+PREFIX: e280
+CONTEXT: pany.legal_representative || '???}}"
+      
+---
+FILE: D:\yql\wxmini\pages\company-detail\company-detail.wxml
+PREFIX: e280
+CONTEXT: ="{{company.contact_phone || '???}}"
+      
+---
+FILE: D:\yql\wxmini\pages\company-detail\company-detail.wxml
+PREFIX: e280
+CONTEXT: mpany._createdAtFormatted || '???}}"
+      
+---
+FILE: D:\yql\wxmini\pages\company-detail\company-detail.wxml
+PREFIX: e694
+CONTEXT:        <van-cell title="年营???开�?" va
+---
+FILE: D:\yql\wxmini\pages\company-detail\company-detail.wxml
+PREFIX: e7a5
+CONTEXT:  <van-cell title="年营�?开???" value="{
+---
+FILE: D:\yql\wxmini\pages\company-detail\company-detail.wxml
+PREFIX: e280
+CONTEXT: y.annual_revenue_invoiced || '???}}" border
+---
+FILE: D:\yql\wxmini\pages\company-detail\company-detail.wxml
+PREFIX: e694
+CONTEXT:  <van-cell title="近两年营???无票)" v
+---
+FILE: D:\yql\wxmini\pages\company-detail\company-detail.wxml
+PREFIX: e280
+CONTEXT: o_year_revenue_uninvoiced || '???}}" border
+---
+FILE: D:\yql\wxmini\pages\company-detail\company-detail.wxml
+PREFIX: e280
+CONTEXT: value="{{company.industry || '???}}" border
+---
+FILE: D:\yql\wxmini\pages\company-detail\company-detail.wxml
+PREFIX: e280
+CONTEXT: "{{company.office_address || '???}}" border
+---
+FILE: D:\yql\wxmini\pages\company-detail\company-detail.wxml
+PREFIX: e280
+CONTEXT: nancial_resources_company || '???}}" border
+---
+FILE: D:\yql\wxmini\pages\company-detail\company-detail.wxml
+PREFIX: e280
+CONTEXT: ncial_resources_legal_rep || '???}}" border
+---
+FILE: D:\yql\wxmini\pages\company-detail\company-detail.wxml
+PREFIX: e586
+CONTEXT: lass="section-title">负债情???/view>
+   
+---
+FILE: D:\yql\wxmini\pages\company-detail\company-detail.wxml
+PREFIX: e586
+CONTEXT: an-cell title="企业负债情??? value="{{
+---
+FILE: D:\yql\wxmini\pages\company-detail\company-detail.wxml
+PREFIX: e280
+CONTEXT: mpany.company_debt_status || '???}}" border
+---
+FILE: D:\yql\wxmini\pages\company-detail\company-detail.wxml
+PREFIX: e586
+CONTEXT: an-cell title="法人负债情??? value="{{
+---
+FILE: D:\yql\wxmini\pages\company-detail\company-detail.wxml
+PREFIX: e280
+CONTEXT: any.legal_rep_debt_status || '???}}" border
+---
+FILE: D:\yql\wxmini\pages\company-detail\company-detail.wxml
+PREFIX: e280
+CONTEXT: ompany.bank_account_count || '???}}" border
+---
+FILE: D:\yql\wxmini\pages\company-detail\company-detail.wxml
+PREFIX: e695
+CONTEXT:        <van-cell title="逾期??? value="{{
+---
+FILE: D:\yql\wxmini\pages\company-detail\company-detail.wxml
+PREFIX: e280
+CONTEXT: ="{{company.overdue_count || '???}}" border
+---
+FILE: D:\yql\wxmini\pages\company-detail\company-detail.wxml
+PREFIX: e280
+CONTEXT: lue="{{company.debt_count || '???}}" border
+---
+FILE: D:\yql\wxmini\pages\company-detail\company-detail.wxml
+PREFIX: e8bf
+CONTEXT: " />
+        <van-cell title="???个月征�
+---
+FILE: D:\yql\wxmini\pages\company-detail\company-detail.wxml
+PREFIX: e280
+CONTEXT: company.credit_inquiry_6m || '???}}" border
+---
+FILE: D:\yql\wxmini\pages\company-detail\company-detail.wxml
+PREFIX: e6b1
+CONTEXT:     <van-cell title="贷款需??? value="{{
+---
+FILE: D:\yql\wxmini\pages\company-detail\company-detail.wxml
+PREFIX: e280
+CONTEXT: {company.loan_requirement || '???}}" border
+---
+FILE: D:\yql\wxmini\pages\company-detail\company-detail.wxml
+PREFIX: e694
+CONTEXT: w class="section-title">年营???开�?附�
+---
+FILE: D:\yql\wxmini\pages\company-detail\company-detail.wxml
+PREFIX: e7a5
+CONTEXT: s="section-title">年营�?开???附件</vi
+---
+FILE: D:\yql\wxmini\pages\company-detail\company-detail.wxml
+PREFIX: e694
+CONTEXT: s="section-title">近两年营???无票)附
+---
+FILE: D:\yql\wxmini\pages\company-detail\company-detail.wxml
+PREFIX: e4bb
+CONTEXT: section-title">企业负债附???/view>
+   
+---
+FILE: D:\yql\wxmini\pages\company-detail\company-detail.wxml
+PREFIX: e4bb
+CONTEXT: section-title">法人负债附???/view>
+   
+---
+FILE: D:\yql\wxmini\pages\company-detail\company-detail.wxml
+PREFIX: e8bf
+CONTEXT:   <view class="section-title">???个月征�
+---
+FILE: D:\yql\wxmini\pages\home\home.wxml
+PREFIX: e69d
+CONTEXT:  class="home-nav-title">银企???/view>
+   
+---
+FILE: D:\yql\wxmini\pages\home\home.wxml
+PREFIX: e782
+CONTEXT: lder="搜索银行人员、网???
+      dis
+---
+FILE: D:\yql\wxmini\pages\home\home.wxml
+PREFIX: e280
+CONTEXT: aff-list"
+      >查看更多 ???/text>
+   
+---
+FILE: D:\yql\wxmini\pages\home\home.wxml
+PREFIX: e280
+CONTEXT: 
+
+    <!-- 推荐银行人员 ???垂直卡�
+---
+FILE: D:\yql\wxmini\pages\home\home.wxml
+PREFIX: e993
+CONTEXT: name && item.nickname[0]) || '???}}</view>
+
+---
+FILE: D:\yql\wxmini\pages\home\home.wxss
+PREFIX: e280
+CONTEXT: ry);
+}
+
+/* 推荐银行人员 ???垂直卡�
+---
+FILE: D:\yql\wxmini\pages\login\login.wxml
+PREFIX: e58f
+CONTEXT: n-subtitle">请登录您的账???/view>
+  <
+---
+FILE: D:\yql\wxmini\pages\login\login.wxml
+PREFIX: e5bd
+CONTEXT:   <van-tab title="验证码登??? name="cod
+---
+FILE: D:\yql\wxmini\pages\login\login.wxml
+PREFIX: e58f
+CONTEXT: hone }}"
+        label="手机???
+        p
+---
+FILE: D:\yql\wxmini\pages\login\login.wxml
+PREFIX: e7a0
+CONTEXT: code }}"
+        label="验证???
+        p
+---
+FILE: D:\yql\wxmini\pages\login\login.wxml
+PREFIX: e7a0
+CONTEXT: ountdown + 's' : '获取验证??? }}
+      
+---
+FILE: D:\yql\wxmini\pages\login\login.wxml
+PREFIX: e7a0
+CONTEXT:      placeholder="请输入密???
+        p
+---
+FILE: D:\yql\wxmini\pages\login\login.wxml
+PREFIX: efbc
+CONTEXT: TapForgot">
+      忘记密码???    </view
+---
+FILE: D:\yql\wxmini\pages\login\login.wxml
+PREFIX: e799
+CONTEXT:     custom-class="mt-xl"
+    >???�?/van-bu
+---
+FILE: D:\yql\wxmini\pages\login\login.wxml
+PREFIX: e5bd
+CONTEXT:  custom-class="mt-xl"
+    >�????/van-butto
+---
+FILE: D:\yql\wxmini\pages\register\register.wxml
+PREFIX: e7a7
+CONTEXT: laceholder="请输入企业名???
+         
+---
+FILE: D:\yql\wxmini\pages\register\register.wxml
+PREFIX: e590
+CONTEXT: laceholder="请输入法人姓???
+         
+---
+FILE: D:\yql\wxmini\pages\register\register.wxml
+PREFIX: e58f
+CONTEXT: ne }}"
+          label="手机???
+         
+---
+FILE: D:\yql\wxmini\pages\register\register.wxml
+PREFIX: e58f
+CONTEXT: lder="请输入联系人手机???
+         
+---
+FILE: D:\yql\wxmini\pages\register\register.wxml
+PREFIX: e7a0
+CONTEXT: laceholder="请设置登录密???
+         
+---
+FILE: D:\yql\wxmini\pages\register\register.wxml
+PREFIX: e7a0
+CONTEXT: laceholder="请再次输入密???
+         
+---
+FILE: D:\yql\wxmini\pages\register\register.wxml
+PREFIX: e694
+CONTEXT: ed }}"
+          label="年营???开�?"
+  
+---
+FILE: D:\yql\wxmini\pages\register\register.wxml
+PREFIX: e7a5
+CONTEXT: 
+          label="年营�?开???"
+        
+---
+FILE: D:\yql\wxmini\pages\register\register.wxml
+PREFIX: e7a5
+CONTEXT: holder="请输入年营收(开???(万元)"
+
+---
+FILE: D:\yql\wxmini\pages\register\register.wxml
+PREFIX: e694
+CONTEXT: 
+          label="近两年营???
+         
+---
+FILE: D:\yql\wxmini\pages\register\register.wxml
+PREFIX: e694
+CONTEXT: th-ref
+          label="年营???开�?附�
+---
+FILE: D:\yql\wxmini\pages\register\register.wxml
+PREFIX: e7a5
+CONTEXT: 
+          label="年营�?开???附件"
+  
+---
+FILE: D:\yql\wxmini\pages\register\register.wxml
+PREFIX: e694
+CONTEXT: 
+          label="近两年营???无票)附
+---
+FILE: D:\yql\wxmini\pages\register\register.wxml
+PREFIX: e58a
+CONTEXT:      placeholder="请输入财???公司)(�
+---
+FILE: D:\yql\wxmini\pages\register\register.wxml
+PREFIX: e58a
+CONTEXT:      placeholder="请输入财???法人)(�
+---
+FILE: D:\yql\wxmini\pages\register\register.wxml
+PREFIX: e580
+CONTEXT:  class="group-title">企业负???/view>
+   
+---
+FILE: D:\yql\wxmini\pages\register\register.wxml
+PREFIX: e580
+CONTEXT: }}"
+          label="企业负???
+         
+---
+FILE: D:\yql\wxmini\pages\register\register.wxml
+PREFIX: e580
+CONTEXT: laceholder="请输入企业负???万元)"
+ 
+---
+FILE: D:\yql\wxmini\pages\register\register.wxml
+PREFIX: e580
+CONTEXT: }}"
+          label="法人负???
+         
+---
+FILE: D:\yql\wxmini\pages\register\register.wxml
+PREFIX: e580
+CONTEXT: laceholder="请输入法人负???万元)"
+ 
+---
+FILE: D:\yql\wxmini\pages\register\register.wxml
+PREFIX: e4bb
+CONTEXT:         label="企业负债附???
+         
+---
+FILE: D:\yql\wxmini\pages\register\register.wxml
+PREFIX: e4bb
+CONTEXT:         label="法人负债附???
+         
+---
+FILE: D:\yql\wxmini\pages\register\register.wxml
+PREFIX: e695
+CONTEXT: nt }}"
+          label="逾期???
+         
+---
+FILE: D:\yql\wxmini\pages\register\register.wxml
+PREFIX: e695
+CONTEXT:   placeholder="请输入逾期???
+         
+---
+FILE: D:\yql\wxmini\pages\register\register.wxml
+PREFIX: e8bf
+CONTEXT: oad-with-ref
+          label="???个月征�
+---
+FILE: D:\yql\wxmini\pages\register\register.wxml
+PREFIX: e6b1
+CONTEXT:  class="group-title">贷款需???/view>
+   
+---
+FILE: D:\yql\wxmini\pages\register\register.wxml
+PREFIX: e6b1
+CONTEXT: }}"
+          label="贷款需???
+         
+---
+FILE: D:\yql\wxmini\pages\register\register.wxml
+PREFIX: e6b1
+CONTEXT: laceholder="请输入贷款需???
+         
+---
+FILE: D:\yql\wxmini\pages\register\register.wxml
+PREFIX: e590
+CONTEXT:      placeholder="请输入姓???
+         
+---
+FILE: D:\yql\wxmini\pages\register\register.wxml
+PREFIX: e58f
+CONTEXT:            label="银行联行???
+         
+---
+FILE: D:\yql\wxmini\pages\register\register.wxml
+PREFIX: e58f
+CONTEXT: 入部分或全部银行联行???
+         
+---
+FILE: D:\yql\wxmini\pages\register\register.wxml
+PREFIX: e999
+CONTEXT: laceholder="请输入工作年???�?"
+     
+---
+FILE: D:\yql\wxmini\pages\register\register.wxml
+PREFIX: e5b9
+CONTEXT: eholder="请输入工作年�????"
+        
+---
+FILE: D:\yql\wxmini\pages\register\register.wxml
+PREFIX: e4bd
+CONTEXT:      placeholder="请输入岗???
+         
+---
+FILE: D:\yql\wxmini\pages\register\register.wxml
+PREFIX: e58f
+CONTEXT: ne }}"
+          label="手机???
+         
+---
+FILE: D:\yql\wxmini\pages\register\register.wxml
+PREFIX: e7a0
+CONTEXT: de }}"
+          label="验证???
+         
+---
+FILE: D:\yql\wxmini\pages\register\register.wxml
+PREFIX: e7a0
+CONTEXT: ountdown + 's' : '获取验证??? }}
+      
+---
+FILE: D:\yql\wxmini\pages\register\register.wxml
+PREFIX: e7a0
+CONTEXT: laceholder="请设置登录密???
+         
+---
+FILE: D:\yql\wxmini\pages\register\register.wxml
+PREFIX: e7a0
+CONTEXT: laceholder="请再次输入密???
+         
+---
+FILE: D:\yql\wxmini\pages\register\register.wxml
+PREFIX: e58d
+CONTEXT: /block>
+
+    <!-- 业务员表???-->
+    <b
+---
+FILE: D:\yql\wxmini\pages\register\register.wxml
+PREFIX: e590
+CONTEXT:      placeholder="请输入姓???
+         
+---
+FILE: D:\yql\wxmini\pages\register\register.wxml
+PREFIX: e999
+CONTEXT: laceholder="请输入工作年???�?"
+     
+---
+FILE: D:\yql\wxmini\pages\register\register.wxml
+PREFIX: e5b9
+CONTEXT: eholder="请输入工作年�????"
+        
+---
+FILE: D:\yql\wxmini\pages\register\register.wxml
+PREFIX: e4bd
+CONTEXT:      placeholder="请输入岗???
+         
+---
+FILE: D:\yql\wxmini\pages\register\register.wxml
+PREFIX: e58f
+CONTEXT: ne }}"
+          label="手机???
+         
+---
+FILE: D:\yql\wxmini\pages\register\register.wxml
+PREFIX: e7a0
+CONTEXT: de }}"
+          label="验证???
+         
+---
+FILE: D:\yql\wxmini\pages\register\register.wxml
+PREFIX: e7a0
+CONTEXT: ountdown + 's' : '获取验证??? }}
+      
+---
+FILE: D:\yql\wxmini\pages\register\register.wxml
+PREFIX: e7a0
+CONTEXT: laceholder="请设置登录密???
+         
+---
+FILE: D:\yql\wxmini\pages\register\register.wxml
+PREFIX: e7a0
+CONTEXT: laceholder="请再次输入密???
+         
+---
+FILE: D:\yql\wxmini\pages\register\register.wxml
+PREFIX: e684
+CONTEXT: t">
+        我已阅读并同???        <t
+---
+FILE: D:\yql\wxmini\pages\register\register.wxml
+PREFIX: e380
+CONTEXT: rotocol">《用户注册协议???/text>
+   
+---
+FILE: D:\yql\wxmini\pages\register\register.wxml
+PREFIX: e5bd
+CONTEXT: 后台审核通过后方可登???    </view
+---
+FILE: D:\yql\wxmini\pages\register\register.wxml
+PREFIX: e58f
+CONTEXT: lass="bank-picker-code">联行??? {{ item.b
+---
+FILE: D:\yql\wxmini\pages\register\register.wxss
+PREFIX: e599
+CONTEXT: r;
+}
+
+/* 银行联行号选择???*/
+.bank-p
+---

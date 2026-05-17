@@ -1,0 +1,23 @@
+<view class="page-white">
+  <van-cell
+    wx:for="{{messageList}}"
+    wx:key="toUserId"
+    data-id="{{item.toUserId}}"
+    data-name="{{item.toUserName}}"
+    bindtap="onItemTap"
+    border="{{ index < messageList.length - 1 }}"
+    custom-class="msg-cell"
+  >
+    <view slot="icon" class="avatar avatar-sm mr-md">{{item.toUserName[0]}}</view>
+    <view slot="title" class="msg-title-wrap">
+      <view class="flex-between items-center">
+        <view class="text-base font-medium">{{item.toUserName}}</view>
+        <view class="text-xs text-muted">{{item.lastTime}}</view>
+      </view>
+      <view class="text-sm text-secondary mt-xs msg-preview">{{item.lastContent}}</view>
+    </view>
+    <view wx:if="{{item.unread > 0}}" slot="right-icon" class="msg-badge">{{item.unread}}</view>
+  </van-cell>
+
+  <empty-state wx:if="{{messageList.length === 0}}" title="暂无消息" desc="开始聊天后将在此显示"></empty-state>
+</view>

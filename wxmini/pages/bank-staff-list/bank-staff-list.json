@@ -1,0 +1,10 @@
+{
+  "navigationBarTitleText": "银行人员",
+  "enablePullDownRefresh": true,
+  "usingComponents": {
+    "skeleton-list": "../../components/skeleton/skeleton-list/skeleton-list",
+    "empty-state": "../../components/empty-state/empty-state",
+    "load-more": "../../components/load-more/load-more",
+    "status-tag": "../../components/status-tag/status-tag"
+  }
+}

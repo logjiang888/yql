@@ -1,0 +1,96 @@
+<view class="page-container">
+  <skeleton-card wx:if="{{loading}}" showImage="{{false}}"></skeleton-card>
+
+  <block wx:elif="{{staff}}">
+    <!-- 头部信息 -->
+    <view class="detail-header">
+      <view class="avatar avatar-lg">{{(staff.nickname && staff.nickname[0]) || '银'}}</view>
+      <view class="detail-name">{{staff.nickname || staff.username}}</view>
+      <view class="detail-status">
+        <status-tag status="1" type="audit"></status-tag>
+      </view>
+      <view class="detail-bank">{{staff.bank_name || '中国银行'}} · {{staff.position || '客户经理'}}</view>
+    </view>
+
+    <!-- 信息卡片 -->
+    <view class="card card-shadow mx-md mt-md">
+      <view class="card-section">
+        <view class="section-title">联系信息</view>
+        <van-cell
+          title="电话"
+          label="{{staff.phone || '-'}}"
+          bindtap="onCallPhone"
+          is-link
+          border="{{true}}"
+        >
+          <van-icon slot="icon" name="phone-o" size="36rpx" color="#2563EB" class="mr-sm" />
+        </van-cell>
+        <van-cell
+          title="网点"
+          label="{{staff.branch_name || '-'}}"
+          border="{{false}}"
+        >
+          <van-icon slot="icon" name="location-o" size="36rpx" color="#2563EB" class="mr-sm" />
+        </van-cell>
+      </view>
+
+      <view class="divider"></view>
+
+      <view class="card-section" wx:if="{{staff.business_scope}}">
+        <view class="section-title">业务范围</view>
+        <view class="flex flex-wrap gap-sm">
+          <van-tag
+            wx:for="{{staff.business_scope.split(',')}}"
+            wx:key="*this"
+            color="#DBEAFE"
+            text-color="#2563EB"
+            size="medium"
+          >{{item}}</van-tag>
+        </view>
+      </view>
+
+      <view class="divider" wx:if="{{staff.published_products}}"></view>
+
+      <view class="card-section" wx:if="{{staff.published_products_text}}">
+        <view class="section-title">发布的产品</view>
+        <view class="product-text">{{staff.published_products_text}}</view>
+      </view>
+
+      <view class="divider" wx:if="{{staff.work_proof_urls.length > 0}}"></view>
+
+      <view class="card-section" wx:if="{{staff.work_proof_urls.length > 0}}">
+        <view class="section-title">工作证明</view>
+        <view class="proof-grid">
+          <image
+            wx:for="{{staff.work_proof_urls}}"
+            wx:key="*this"
+            class="proof-image"
+            src="{{item}}"
+            mode="aspectFill"
+            bindtap="onPreviewImage"
+            binderror="onImageError"
+            data-url="{{item}}"
+            data-urls="{{staff.work_proof_urls}}"
+            lazy-load
+          />
+        </view>
+      </view>
+    </view>
+
+    <!-- 底部操作栏-->
+    <view class="footer-fixed detail-footer">
+      <view class="footer-actions">
+        <view class="footer-btn btn-phone-secondary" bindtap="onCallPhone">
+          <van-icon name="phone-o" size="20px" color="#fff" />
+          <text class="btn-text">拨打电话</text>
+        </view>
+        <view class="footer-btn btn-chat-secondary" bindtap="onStartChat">
+          <van-icon name="chat-o" size="20px" color="#fff" />
+          <text class="btn-text">发起聊天</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="footer-placeholder"></view>
+  </block>
+</view>

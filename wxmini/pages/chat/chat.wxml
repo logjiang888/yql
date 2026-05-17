@@ -1,0 +1,44 @@
+<view class="chat-page">
+  <scroll-view
+    class="chat-messages"
+    scroll-y
+    scroll-into-view="{{scrollToId}}"
+    scroll-with-animation
+  >
+    <view
+      class="message-item {{item.fromId === toUserId ? 'left' : 'right'}}"
+      wx:for="{{messages}}"
+      wx:key="id"
+      id="msg_{{item.id}}"
+    >
+      <view class="msg-avatar" wx:if="{{item.fromId === toUserId}}">{{toUserName[0]}}</view>
+
+      <view class="msg-content">
+        <view class="msg-bubble">{{item.content}}</view>
+        <view class="msg-time">{{formatTime(item.createTime)}}</view>
+      </view>
+    </view>
+
+    <view class="chat-empty" wx:if="{{messages.length === 0}}">
+      <text class="text-secondary">开始聊天吧~</text>
+    </view>
+  </scroll-view>
+
+  <view class="chat-input-bar">
+    <input
+      class="chat-input"
+      placeholder="输入消息..."
+      value="{{inputValue}}"
+      confirm-type="send"
+      bindconfirm="onSend"
+      bindinput="onInputChange"
+    />
+    <van-button
+      size="small"
+      type="primary"
+      disabled="{{!inputValue || !inputValue.trim()}}"
+      bind:click="onSend"
+      custom-class="send-btn"
+    >发送</van-button>
+  </view>
+</view>
