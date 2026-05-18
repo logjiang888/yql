@@ -9,6 +9,7 @@
   font-weight: 500;
   color: var(--text-primary);
   margin-bottom: 16rpx;
+  padding: 0 32rpx;
 }
 
 .upload-ref-btn {
@@ -34,6 +35,8 @@
   display: flex;
   flex-wrap: wrap;
   gap: 16rpx;
+  padding: 0 32rpx;
+  padding-left: 88rpx;
 }
 
 .upload-file {

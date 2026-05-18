@@ -42,22 +42,45 @@
       >查看更多 ›</text>
     </view>
 
+    <view class="cust-type-tabs">
+      <view
+        class="cust-tab {{activeCustType === item.value ? 'active' : ''}}"
+        wx:for="{{custTypeTabs}}"
+        wx:key="value"
+        data-value="{{item.value}}"
+        bindtap="onCustTypeTabChange"
+      >
+        <van-icon name="{{item.icon}}" size="14px" class="tab-icon" />
+        <text class="tab-text">{{item.label}}</text>
+      </view>
+    </view>
+
     <view class="recent-list">
-      <van-cell
+      <view
+        class="cust-item"
         wx:for="{{myCustList}}"
         wx:key="id"
-        title="{{item.companyName}}"
-        label="{{item.contactName}} {{item.contactPhone}}"
         data-company-id="{{item.companyId}}"
         bindtap="onMyCustTap"
-        is-link
-        border="{{ index < myCustList.length - 1 }}"
       >
-        <view slot="right-icon" class="cust-meta">
-          <view wx:if="{{item.custType}}" class="cust-type-tag">{{item.custType}}</view>
-          <view class="text-muted text-xs">{{item.createdAt}}</view>
+        <view class="cust-main">
+          <view class="cust-name">{{item.companyName}}</view>
+          <view class="cust-contact">{{item.contactName}} {{item.contactPhone}}</view>
         </view>
-      </van-cell>
+        <view class="cust-right">
+          <view class="cust-time">{{item.createdAt}}</view>
+          <view class="remark-btn" catchtap="onRemarkTap"
+            data-id="{{item.id}}"
+            data-company-name="{{item.companyName}}"
+            data-cust-type="{{item.custType}}"
+            data-cust-level="{{item.custLevel}}"
+            data-remark="{{item.remark}}"
+          >
+            <van-icon name="notes-o" size="12px" color="#2563EB" />
+            <text class="remark-text">备注</text>
+          </view>
+        </view>
+      </view>
       <view class="empty-state" wx:if="{{myCustList.length === 0}}">
         <van-empty description="暂无我的客户" />
       </view>
@@ -91,3 +114,5 @@
     </view>
   </block>
 </view>
+
+

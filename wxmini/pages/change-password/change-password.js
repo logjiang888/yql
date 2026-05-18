@@ -34,7 +34,7 @@ Page({
     }
 
     showLoading('提交中')
-    authAPI.changePassword({ oldPassword: oldPassword, newPassword: newPassword }).then(() => {
+    authAPI.changePassword({ oldPassword: oldPassword, newPassword: newPassword, confirmPassword: confirmPassword }).then(() => {
       hideLoading()
       showToast('密码修改成功')
       wx.navigateBack()

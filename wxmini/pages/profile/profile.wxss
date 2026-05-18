@@ -106,7 +106,7 @@
 }
 
 .edit-footer {
-  padding: 32rpx;
+  padding: 32rpx 32rpx calc(140rpx + env(safe-area-inset-bottom));
   background-color: #fff;
 }
 
@@ -261,4 +261,9 @@
 
 .scope-check-icon {
   margin-left: 8rpx;
+}
+
+.field-unit {
+  font-size: 28rpx;
+  color: var(--text-secondary);
 }

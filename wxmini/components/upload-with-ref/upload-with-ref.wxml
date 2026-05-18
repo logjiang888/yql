@@ -3,7 +3,7 @@
     {{label}}
     <view class="upload-ref-btn" wx:if="{{referenceUrl}}" bindtap="onPreviewRef">
       <view class="ref-icon">👁</view>
-      <text class="ref-text">参考图</text>
+      <text class="ref-text">样例图</text>
     </view>
   </view>
   <view class="upload-grid">

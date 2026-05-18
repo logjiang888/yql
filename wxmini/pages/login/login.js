@@ -5,9 +5,16 @@ const { LOGIN_ERROR_CODE, AUDIT_STATUS } = require('../../constants/index')
 
 const userAPI = createNocoBaseAPI('users')
 
+const ROLE_TEXT_MAP = {
+  company: '企业',
+  bank: '银行',
+  plat_salesperson: '平台业务员'
+}
+
 Page({
   data: {
     role: '',
+    roleText: '',
     loginType: 'password',
     phone: '',
     code: '',
@@ -20,7 +27,11 @@ Page({
 
   onLoad(options) {
     if (options.role) {
-      this.setData({ role: options.role })
+      var roleText = ROLE_TEXT_MAP[options.role] || ''
+      this.setData({ role: options.role, roleText: roleText })
+      if (roleText) {
+        wx.setNavigationBarTitle({ title: '登录-' + roleText })
+      }
     }
     if (options.phone) {
       this.setData({ phone: options.phone, loginType: 'password' })

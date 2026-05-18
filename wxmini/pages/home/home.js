@@ -1,20 +1,30 @@
-const { createNocoBaseAPI } = require('../../api/nocobase')
+const { createNocoBaseAPI, BASE_URL } = require('../../api/nocobase')
 const { getUserInfo } = require('../../stores/auth')
-const { PAGE_SIZE } = require('../../constants/index')
 
 const userAPI = createNocoBaseAPI('users')
-const configAPI = createNocoBaseAPI('dim_data_config')
+
+const SCOPE_TAGS = [
+  { name: '对公', checked: false },
+  { name: '税贷', checked: false },
+  { name: '科技贷', checked: false },
+  { name: '抵押贷', checked: false },
+  { name: '流水贷', checked: false },
+  { name: '贷抵贷', checked: false },
+  { name: '房抵贷', checked: false },
+  { name: '设备贷', checked: false }
+]
 
 Page({
   data: {
     loading: true,
-    banners: [],
-    features: [
-      { name: '联系银行人员', icon: '👔', path: '/pages/bank-staff-list/bank-staff-list' },
-      { name: '查询网点', icon: '🏦', path: '/pages/branch-query/branch-query' }
-    ],
     staffList: [],
-    currentBanner: 0
+    page: 1,
+    pageSize: 100,
+    hasMore: true,
+    loadingMore: false,
+    scopeFilterTags: JSON.parse(JSON.stringify(SCOPE_TAGS)),
+    selectedScope: '',
+    searchKeyword: ''
   },
 
   onLoad() {
@@ -22,84 +32,132 @@ Page({
   },
 
   onShow() {
-    const userInfo = getUserInfo()
-    this.setData({ userInfo })
+    var userInfo = getUserInfo()
+    this.setData({ userInfo: userInfo })
   },
 
   onPullDownRefresh() {
-    this.loadData().then(() => {}, () => {}).then(() => {
+    var that = this
+    this.loadData().then(function() {}, function() {}).then(function() {
       wx.stopPullDownRefresh()
     })
   },
 
+  onReachBottom() {
+    if (this.data.hasMore && !this.data.loadingMore && !this.data.loading) {
+      this.loadStaffList()
+    }
+  },
+
   loadData() {
     this.setData({ loading: true })
-    return Promise.all([
-      this.loadBanners(),
-      this.loadStaffList()
-    ]).then(() => {
-      this.setData({ loading: false })
-    }).catch(() => {
-      this.setData({ loading: false })
+    var that = this
+    return this.loadStaffList(true).then(function() {
+      that.setData({ loading: false })
+    }).catch(function() {
+      that.setData({ loading: false })
     })
   },
 
-  loadBanners() {
-    return configAPI.list({
-      filter: { data_type: { $eq: 'image' } },
-      pageSize: 5,
-      sort: '-createdAt'
-    }, true).then((res) => {
-      const banners = (res.data || []).map(item => item.data_url).filter(Boolean)
-      this.setData({ banners })
-    })
-  },
+  loadStaffList(reset) {
+    var page = reset ? 1 : this.data.page
+    if (reset) {
+      this.setData({ staffList: [], hasMore: true, page: 1, loadingMore: false })
+      page = 1
+    }
+    if (this.data.loadingMore) return Promise.resolve()
+    this.setData({ loadingMore: true })
 
-  loadStaffList() {
+    var filter = {
+      $and: [
+        { user_type: 'bank' },
+        { audit_status: { $eq: 'approved' } }
+      ]
+    }
+    var selectedScope = this.data.selectedScope || ''
+    if (selectedScope) {
+      filter.$and.push({ business_scope: { $includes: selectedScope } })
+    }
+
+    var that = this
     return userAPI.list({
-      page: 1,
-      pageSize: 6,
-      filter: {
-        $and: [
-          { user_type: 'bank' },
-          { audit_status: { $eq: 'approved' } }
-        ]
-      },
+      page: page,
+      pageSize: this.data.pageSize,
+      filter: filter,
       sort: '-createdAt',
       appends: ['to_dim_bank_info']
-    }, true).then((res) => {
-      const users = res.data || []
-      const list = users.map(function (u) {
-        const item = {}
-        for (const k in u) { item[k] = u[k] }
-        const bankInfo = u.to_dim_bank_info || {}
+    }, true).then(function(res) {
+      var users = res.data || []
+      var list = users.map(function(u) {
+        var item = {}
+        for (var k in u) { item[k] = u[k] }
+        var bankInfo = u.to_dim_bank_info || {}
         item.bank_name = bankInfo.bank_name || u.bank_name || ''
         return item
       })
-      this.setData({ staffList: list })
+      var keyword = that.data.searchKeyword || ''
+      if (keyword) {
+        list = list.filter(function(item) {
+          var bankName = item.bank_name || ''
+          return bankName.indexOf(keyword) >= 0
+        })
+      }
+      var staffList = reset ? list : that.data.staffList.concat(list)
+      var hasMore = users.length === that.data.pageSize
+      that.setData({
+        staffList: staffList,
+        page: page + 1,
+        hasMore: hasMore,
+        loadingMore: false,
+        loading: false
+      })
+    }).catch(function() {
+      that.setData({ loadingMore: false, loading: false })
     })
   },
 
-  onBannerChange(e) {
-    this.setData({ currentBanner: e.detail.current })
+  onScopeFilterTap(e) {
+    var name = e.currentTarget.dataset.name
+    var scopeFilterTags = this.data.scopeFilterTags.map(function(tag) {
+      var newTag = {}
+      for (var k in tag) { newTag[k] = tag[k] }
+      if (tag.name === name) {
+        newTag.checked = !tag.checked
+      } else {
+        newTag.checked = false
+      }
+      return newTag
+    })
+    var selectedTag = null
+    for (var i = 0; i < scopeFilterTags.length; i++) {
+      if (scopeFilterTags[i].checked) {
+        selectedTag = scopeFilterTags[i]
+        break
+      }
+    }
+    var selectedScope = selectedTag ? selectedTag.name : ''
+    this.setData({ scopeFilterTags: scopeFilterTags, selectedScope: selectedScope })
+    this.loadStaffList(true)
   },
 
-  onFeatureTap(e) {
-    const { path } = e.currentTarget.dataset
-    if (!path) {
-      wx.showToast({ title: '功能开发中', icon: 'none' })
-      return
-    }
-    wx.navigateTo({ url: path })
+  onSearch(e) {
+    var keyword = (e.detail || '').trim()
+    this.setData({ searchKeyword: keyword })
+    this.loadStaffList(true)
+  },
+
+  onSearchClear() {
+    this.setData({ searchKeyword: '' })
+    this.loadStaffList(true)
   },
 
   onStaffTap(e) {
-    const { id } = e.currentTarget.dataset
-    wx.navigateTo({ url: `/pages/bank-staff-detail/bank-staff-detail?id=${id}` })
+    var id = e.currentTarget.dataset.id
+    wx.navigateTo({ url: '/pages/bank-staff-detail/bank-staff-detail?id=' + id })
   },
 
   onCallPhone(e) {
-    const phone = e.currentTarget.dataset.phone
+    var phone = e.currentTarget.dataset.phone
     if (!phone) {
       wx.showToast({ title: '暂无联系方式', icon: 'none' })
       return
@@ -108,10 +166,10 @@ Page({
   },
 
   onChat(e) {
-    const id = e.currentTarget.dataset.id
-    const name = e.currentTarget.dataset.name
+    var id = e.currentTarget.dataset.id
+    var name = e.currentTarget.dataset.name
     wx.navigateTo({
-      url: `/pages/chat/chat?toUserId=${id}&toUserName=${encodeURIComponent(name || '')}`
+      url: '/pages/chat/chat?toUserId=' + id + '&toUserName=' + encodeURIComponent(name || '')
     })
   }
 })

@@ -122,6 +122,28 @@
   background-color: #fff;
 }
 
+/* 业务范围筛选 */
+.scope-filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+  padding: 0 32rpx 24rpx;
+  background-color: #fff;
+}
+
+.scope-filter-tag {
+  padding: 8rpx 20rpx;
+  background-color: #F3F4F6;
+  color: #6B7280;
+  font-size: 24rpx;
+  border-radius: 8rpx;
+}
+
+.scope-filter-tag.active {
+  background-color: #DBEAFE;
+  color: #2563EB;
+}
+
 .section-header {
   display: flex;
   align-items: center;
@@ -228,4 +250,18 @@
 
 .btn-chat {
   background: linear-gradient(135deg, #10B981, #34D399);
+}
+
+.load-more {
+  text-align: center;
+  padding: 24rpx 0 48rpx;
+  font-size: 24rpx;
+  color: var(--text-tertiary);
+}
+
+.empty-tip {
+  text-align: center;
+  padding: 120rpx 32rpx;
+  font-size: 28rpx;
+  color: var(--text-secondary);
 }

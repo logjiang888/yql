@@ -16,7 +16,8 @@
     "pages/company-detail/company-detail",
     "pages/profile/profile",
     "pages/change-password/change-password",
-    "pages/message-list/message-list"
+    "pages/message-list/message-list",
+    "pages/cust-remark/cust-remark"
   ],
   "tabBar": {
     "custom": true,

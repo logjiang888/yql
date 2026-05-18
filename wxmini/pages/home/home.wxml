@@ -7,64 +7,30 @@
 
   <view class="home-search">
     <van-search
-      value=""
-      placeholder="搜索银行人员、网点"
-      disabled
-      bindtap="onFeatureTap"
-      data-path="/pages/bank-staff-list/bank-staff-list"
+      value="{{searchKeyword}}"
+      placeholder="搜索银行名称"
+      bind:search="onSearch"
+      bind:clear="onSearchClear"
       background="#fff"
     />
   </view>
 
   <!-- Skeleton -->
-  <view wx:if="{{loading}}">
+  <view wx:if="{{loading && staffList.length === 0}}">
     <skeleton-card showImage="{{true}}"></skeleton-card>
     <skeleton-list count="4"></skeleton-list>
   </view>
 
   <block wx:else>
-    <!-- 功能入口 -->
-    <view class="feature-grid">
+    <!-- 业务范围筛选 -->
+    <view class="scope-filter-bar">
       <view
-        class="feature-item"
-        wx:for="{{features}}"
+        class="scope-filter-tag {{item.checked ? 'active' : ''}}"
+        wx:for="{{scopeFilterTags}}"
         wx:key="name"
-        data-path="{{item.path}}"
-        bindtap="onFeatureTap"
-      >
-        <view class="feature-icon">{{item.icon}}</view>
-        <view class="feature-name">{{item.name}}</view>
-      </view>
-    </view>
-
-    <view class="banner-wrap" wx:if="{{banners.length > 0}}">
-      <swiper
-        class="banner-swiper"
-        autoplay
-        interval="5000"
-        circular
-        bindchange="onBannerChange"
-      >
-        <swiper-item wx:for="{{banners}}" wx:key="*this">
-          <image class="banner-img" src="{{item}}" mode="aspectFill" />
-        </swiper-item>
-      </swiper>
-      <view class="banner-dots">
-        <view
-          class="dot {{currentBanner === index ? 'active' : ''}}"
-          wx:for="{{banners}}"
-          wx:key="*this"
-        ></view>
-      </view>
-    </view>
-
-    <view class="section-header">
-      <text class="section-title">推荐银行人员</text>
-      <text
-        class="section-more"
-        bindtap="onFeatureTap"
-        data-path="/pages/bank-staff-list/bank-staff-list"
-      >查看更多 ›</text>
+        data-name="{{item.name}}"
+        bindtap="onScopeFilterTap"
+      >{{item.name}}</view>
     </view>
 
     <!-- 推荐银行人员 –垂直卡片列表 -->
@@ -107,5 +73,9 @@
         </view>
       </view>
     </view>
+
+    <view class="load-more" wx:if="{{loadingMore}}">加载中...</view>
+    <view class="load-more" wx:if="{{!hasMore && staffList.length > 0}}">没有更多了</view>
+    <view class="empty-tip" wx:if="{{!loading && staffList.length === 0}}">暂无符合条件的银行人员</view>
   </block>
 </view>

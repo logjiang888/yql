@@ -121,7 +121,7 @@ Page({
 
   loadBankList() {
     console.log('[loadBankList] 开始加载银行列表')
-    return bankAPI.list({ pageSize: 1000 }).then((res) => {
+    return bankAPI.list({ pageSize: 1000 }, true).then((res) => {
       console.log('[loadBankList] API 原始返回:', JSON.stringify(res).slice(0, 500))
       let rawList = []
       if (res && Array.isArray(res.data)) {
@@ -247,7 +247,7 @@ Page({
     const filter = { bank_code: { $includes: keyword } }
     console.log('[doBankCodeFilter] API filter:', JSON.stringify(filter))
     showLoading('搜索中')
-    bankAPI.list({ pageSize: 100, filter }).then((res) => {
+    bankAPI.list({ pageSize: 100, filter }, true).then((res) => {
       hideLoading()
       let rawList = []
       if (res && Array.isArray(res.data)) {
@@ -382,7 +382,7 @@ Page({
 
     if (role === 'company') {
       if (!form.company_name) return { valid: false, msg: '请输入企业名称', field: 'company_name' }
-      if (!form.credit_code) return { valid: false, msg: '请输入统一社会信用代码', field: 'credit_code' }
+      if (!form.credit_code) return { valid: false, msg: '请输入统一信用代码', field: 'credit_code' }
       if (!form.legal_representative) return { valid: false, msg: '请输入法人姓名', field: 'legal_representative' }
       if (!isValidPhone(form.contact_phone)) return { valid: false, msg: '联系人手机号格式不正确', field: 'contact_phone' }
       if (form.password.length < 6) return { valid: false, msg: '密码长度不能少于6位', field: 'password' }
@@ -500,8 +500,8 @@ Page({
       console.log('[uploadAttachments] 文件列表为空，返回 []')
       return Promise.resolve([])
     }
-    const token = getToken() || ADMIN_TOKEN
-    console.log('[uploadAttachments] 使用的 token:', token ? '存在' : '不存在')
+    const token = ADMIN_TOKEN
+    console.log('[uploadAttachments] 使用 ADMIN_TOKEN 上传')
     return Promise.all(filePaths.map((filePath, index) => {
       console.log(`[uploadAttachments] 开始上传第 ${index + 1} 个文件:`, filePath)
       return new Promise((resolve) => {
@@ -510,7 +510,7 @@ Page({
           filePath,
           name: 'file',
           formData: { t: Date.now() },
-          header: { Authorization: `Bearer ${token}` },
+          header: { 'Authorization': `Bearer ${token}`, 'X-Role': 'root' },
           success: (res) => {
             console.log(`[uploadAttachments] 第 ${index + 1} 个文件上传响应 statusCode:`, res.statusCode)
             console.log(`[uploadAttachments] 第 ${index + 1} 个文件上传响应 data:`, res.data)

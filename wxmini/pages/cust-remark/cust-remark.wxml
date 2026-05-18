@@ -1,0 +1,44 @@
+<view class="remark-page">
+  <view class="remark-company">{{companyName}}</view>
+
+  <view class="form-section">
+    <view class="form-label">客户类型</view>
+    <view class="type-selector">
+      <view
+        class="type-tag {{custType === item.value ? 'active' : ''}}"
+        wx:for="{{custTypeTabs}}"
+        wx:key="value"
+        data-value="{{item.value}}"
+        bindtap="onTypeChange"
+      >{{item.label}}</view>
+    </view>
+  </view>
+
+  <view class="form-section">
+    <view class="form-label">客户等级</view>
+    <view class="type-selector">
+      <view
+        class="type-tag {{custLevel === item.value ? 'active' : ''}}"
+        wx:for="{{custLevelOptions}}"
+        wx:key="value"
+        data-value="{{item.value}}"
+        bindtap="onLevelChange"
+      >{{item.label}}</view>
+    </view>
+  </view>
+
+  <view class="form-section">
+    <view class="form-label">备注</view>
+    <textarea
+      class="remark-textarea"
+      value="{{remark}}"
+      placeholder="请输入备注"
+      maxlength="500"
+      bindinput="onRemarkInput"
+    />
+  </view>
+
+  <view class="form-footer">
+    <van-button type="primary" block round bind:click="onSave">保存</van-button>
+  </view>
+</view>

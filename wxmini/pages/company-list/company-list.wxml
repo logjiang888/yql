@@ -19,7 +19,7 @@
       >
         <view class="card-header">
           <view class="company-name">{{item.company_name}}</view>
-          <view class="company-code">统一社会信用代码：{{item._creditCodeMasked || '-'}}</view>
+          <view class="company-code">统一信用代码：{{item._creditCodeMasked || '-'}}</view>
         </view>
         <view class="card-body">
           <view class="info-row-company">
@@ -40,7 +40,7 @@
             class="action-btn"
             data-user-id="{{item.user_id}}"
             data-name="{{item.company_name}}"
-            bindtap="onChatTap"
+            catchtap="onChatTap"
           >
             <van-icon name="chat-o" size="14px" color="#2563EB" />
             <text class="action-text">聊天</text>
@@ -49,7 +49,7 @@
             class="action-btn"
             data-id="{{item.id}}"
             data-name="{{item.company_name}}"
-            bindtap="onAddIntentionTap"
+            catchtap="onAddIntentionTap"
           >
             <van-icon name="plus" size="14px" color="#10B981" />
             <text class="action-text">意向客户</text>

@@ -45,7 +45,7 @@ const REGISTER_ERROR_CODE = {
   PROTOCOL_REQUIRED: { code: 3003, message: '请阅读并同意用户协议' },
   PASSWORD_MISMATCH: { code: 3004, message: '两次输入的密码不一致' },
   PASSWORD_TOO_SHORT: { code: 3005, message: '密码长度不能少于6位' },
-  CREDIT_CODE_EXISTS: { code: 3006, message: '该统一社会信用代码已注册' },
+  CREDIT_CODE_EXISTS: { code: 3006, message: '该统一信用代码已注册' },
   COMPANY_NAME_EXISTS: { code: 3007, message: '该企业名称已注册' }
 }
 

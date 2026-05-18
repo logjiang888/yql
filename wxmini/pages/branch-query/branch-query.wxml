@@ -1,9 +1,4 @@
 <view class="page-container">
-  <van-tabs active="{{ mode }}" bind:change="onSwitchMode" color="#2563EB" line-width="40">
-    <van-tab title="列表模式" name="list"></van-tab>
-    <van-tab title="地图模式" name="map"></van-tab>
-  </van-tabs>
-
   <van-search
     value="{{ keyword }}"
     placeholder="搜索网点名称、区域"
@@ -12,7 +7,7 @@
   />
 
   <!-- 列表模式 -->
-  <block wx:if="{{mode === 'list'}}">
+  <block>
     <view class="card-list">
       <skeleton-list count="5" wx:if="{{loading && list.length === 0}}"></skeleton-list>
 
@@ -37,8 +32,8 @@
               <text class="info-text">{{item.phone || '-'}}</text>
             </view>
             <view class="info-row-branch">
-              <van-icon name="clock-o" size="14px" color="#9CA3AF" />
-              <text class="info-text">{{item.hours || '-'}}</text>
+              <van-icon name="label-o" size="14px" color="#9CA3AF" />
+              <text class="info-text">{{item.bank_code || '-'}}</text>
             </view>
           </view>
           <view class="card-footer">
@@ -55,46 +50,6 @@
       </block>
 
       <empty-state wx:else title="暂无网点信息" desc="" bindretry="loadList"></empty-state>
-    </view>
-  </block>
-
-  <!-- 地图模式 -->
-  <block wx:if="{{mode === 'map'}}">
-    <view class="map-container">
-      <map
-        class="map"
-        latitude="{{latitude || 39.9042}}"
-        longitude="{{longitude || 116.4074}}"
-        scale="12"
-        markers="{{markers}}"
-        bindmarkertap="onMarkerTap"
-        show-location
-      ></map>
-
-      <van-popup
-        show="{{showBranchPopup}}"
-        position="bottom"
-        round
-        bind:close="onClosePopup"
-      >
-        <view class="px-lg py-lg">
-          <view class="flex-between mb-md">
-            <view class="text-lg font-bold">{{selectedBranch.bank_name}}</view>
-            <van-icon name="cross" size="36rpx" color="#969799" bindtap="onClosePopup" />
-          </view>
-          <view class="text-secondary mb-sm">📍 {{selectedBranch.address || '-'}}</view>
-          <view class="text-secondary mb-md">📞 {{selectedBranch.phone || '-'}}</view>
-          <van-button
-            type="primary"
-            block
-            round
-            bind:click="onNavigate"
-            data-lat="{{selectedBranch.latitude}}"
-            data-lng="{{selectedBranch.longitude}}"
-            data-name="{{selectedBranch.bank_name}}"
-          >导航到这里</van-button>
-        </view>
-      </van-popup>
     </view>
   </block>
 </view>

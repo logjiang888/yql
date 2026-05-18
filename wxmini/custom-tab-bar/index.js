@@ -3,8 +3,9 @@ const { getPagePath } = require('../utils/util')
 
 const TAB_CONFIG = {
   company: [
-    { pagePath: '/pages/home/home', text: '首页', icon: 'home-o', activeIcon: 'home' },
+    { pagePath: '/pages/home/home', text: '银行', icon: 'home-o', activeIcon: 'home', iconImage: '/assets/tabbar/bank.png', activeIconImage: '/assets/tabbar/bank-active.png' },
     { pagePath: '/pages/branch-query/branch-query', text: '网点', icon: 'location-o', activeIcon: 'location' },
+    { pagePath: '/pages/message-list/message-list', text: '消息', icon: 'comment-o', activeIcon: 'comment' },
     { pagePath: '/pages/profile/profile', text: '我的', icon: 'user-o', activeIcon: 'user' }
   ],
   bank: [
@@ -34,7 +35,12 @@ Component({
 
   pageLifetimes: {
     show() {
-      this.updateTabListAndSelect()
+      this.updateTabList()
+      // 延迟执行，避免 switchTab 动画期间 getCurrentPages() 仍返回旧页面导致 selected 被重置
+      clearTimeout(this._selectTimer)
+      this._selectTimer = setTimeout(() => {
+        this.updateSelected()
+      }, 100)
     }
   },
 
@@ -65,7 +71,8 @@ Component({
           break
         }
       }
-      if (index !== -1) {
+      // 只有索引变化时才 setData，避免覆盖 switchTab 已设置的正确值
+      if (index !== -1 && this.data.selected !== index) {
         this.setData({ selected: index })
       }
     },
@@ -73,8 +80,13 @@ Component({
     switchTab(e) {
       const index = e.currentTarget.dataset.index
       const path = e.currentTarget.dataset.path
-      wx.switchTab({ url: path })
       this.setData({ selected: index })
+      wx.switchTab({
+        url: path,
+        complete: () => {
+          this.updateSelected()
+        }
+      })
     }
   }
 })

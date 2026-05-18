@@ -43,25 +43,82 @@
       <view class="edit-section">
         <view class="section-title">企业基本信息</view>
         <van-field label="企业名称" value="{{form.company_name}}" data-field="company_name" bind:input="onInputChange" placeholder="请输入企业名称" required />
-        <van-field label="统一社会信用代码" value="{{form.credit_code}}" data-field="credit_code" bind:input="onInputChange" placeholder="请输入统一社会信用代码" required />
+        <van-field label="统一信用代码" value="{{form.credit_code}}" data-field="credit_code" bind:input="onInputChange" placeholder="请输入统一信用代码" required />
         <van-field label="法人姓名" value="{{form.legal_representative}}" data-field="legal_representative" bind:input="onInputChange" placeholder="请输入法人姓名" required />
         <van-field label="联系人手机" value="{{form.contact_phone}}" data-field="contact_phone" bind:input="onInputChange" placeholder="请输入联系人手机号" type="number" required />
       </view>
 
       <view class="edit-section">
         <view class="section-title">企业运营信息</view>
-        <van-field label="年营收(开票) 万元" value="{{form.annual_revenue_invoiced}}" data-field="annual_revenue_invoiced" bind:input="onNumberInput" placeholder="请输入年营收" type="digit" />
-        <van-field label="近两年营收(无票) 万元" value="{{form.recent_two_year_revenue_uninvoiced}}" data-field="recent_two_year_revenue_uninvoiced" bind:input="onNumberInput" placeholder="请输入近两年营收" type="digit" />
-        <van-field label="行业" value="{{form.industry}}" data-field="industry" bind:input="onInputChange" placeholder="请输入行业" />
+        <van-field label="年营收(开票)" value="{{form.annual_revenue_invoiced}}" data-field="annual_revenue_invoiced" bind:input="onNumberInput" placeholder="请输入年营收" type="digit">
+          <text slot="button" class="field-unit">万元</text>
+        </van-field>
+        <upload-with-ref
+          label="年营收开票附件"
+          maxCount="5"
+          files="{{form.annual_revenue_invoiced_image}}"
+          data-field="annual_revenue_invoiced_image"
+          bindchange="onUploadChange"
+          autoUpload="{{true}}"
+          referenceUrl="{{refImages.annual_revenue_invoiced_image}}"
+          bind:previewRef="onPreviewRefImage"
+        />
+        <van-field label="近两年营收(无票)" value="{{form.recent_two_year_revenue_uninvoiced}}" data-field="recent_two_year_revenue_uninvoiced" bind:input="onNumberInput" placeholder="请输入近两年营收" type="digit">
+          <text slot="button" class="field-unit">万元</text>
+        </van-field>
+        <upload-with-ref
+          label="近两年营收无票附件"
+          maxCount="5"
+          files="{{form.recent_two_year_revenue_image}}"
+          data-field="recent_two_year_revenue_image"
+          bindchange="onUploadChange"
+          autoUpload="{{true}}"
+        />
+        <van-field
+          label="行业"
+          value="{{industryLabel}}"
+          placeholder="请选择行业"
+          readonly
+          is-link
+          bind:click-input="onShowIndustryPicker"
+        />
         <van-field label="办公地址" value="{{form.office_address}}" data-field="office_address" bind:input="onInputChange" placeholder="请输入办公地址" />
-        <van-field label="财力(公司) 万元" value="{{form.financial_resources_company}}" data-field="financial_resources_company" bind:input="onNumberInput" placeholder="请输入公司财力" type="digit" />
-        <van-field label="财力(法人) 万元" value="{{form.financial_resources_legal_rep}}" data-field="financial_resources_legal_rep" bind:input="onNumberInput" placeholder="请输入法人财力" type="digit" />
+        <van-field label="财力(公司)" value="{{form.financial_resources_company}}" data-field="financial_resources_company" bind:input="onNumberInput" placeholder="请输入公司财力" type="digit">
+          <text slot="button" class="field-unit">万元</text>
+        </van-field>
+        <van-field label="财力(法人)" value="{{form.financial_resources_legal_rep}}" data-field="financial_resources_legal_rep" bind:input="onNumberInput" placeholder="请输入法人财力" type="digit">
+          <text slot="button" class="field-unit">万元</text>
+        </van-field>
       </view>
 
       <view class="edit-section">
         <view class="section-title">企业负债</view>
-        <van-field label="企业负债 万元" value="{{form.company_debt_status}}" data-field="company_debt_status" bind:input="onInputChange" placeholder="请输入企业负债" />
-        <van-field label="法人负债 万元" value="{{form.legal_rep_debt_status}}" data-field="legal_rep_debt_status" bind:input="onInputChange" placeholder="请输入法人负债" />
+        <van-field label="企业负债" value="{{form.company_debt_status}}" data-field="company_debt_status" bind:input="onInputChange" placeholder="请输入企业负债">
+          <text slot="button" class="field-unit">万元</text>
+        </van-field>
+        <upload-with-ref
+          label="企业负债附件"
+          maxCount="5"
+          files="{{form.company_debt_image}}"
+          data-field="company_debt_image"
+          bindchange="onUploadChange"
+          autoUpload="{{true}}"
+          referenceUrl="{{refImages.company_debt_image}}"
+          bind:previewRef="onPreviewRefImage"
+        />
+        <van-field label="法人负债" value="{{form.legal_rep_debt_status}}" data-field="legal_rep_debt_status" bind:input="onInputChange" placeholder="请输入法人负债">
+          <text slot="button" class="field-unit">万元</text>
+        </van-field>
+        <upload-with-ref
+          label="法人负债附件"
+          maxCount="5"
+          files="{{form.legal_rep_debt_image}}"
+          data-field="legal_rep_debt_image"
+          bindchange="onUploadChange"
+          autoUpload="{{true}}"
+          referenceUrl="{{refImages.legal_rep_debt_image}}"
+          bind:previewRef="onPreviewRefImage"
+        />
       </view>
 
       <view class="edit-section">
@@ -70,11 +127,29 @@
         <van-field label="逾期数" value="{{form.overdue_count}}" data-field="overdue_count" bind:input="onNumberInput" placeholder="请输入逾期数" type="number" />
         <van-field label="负债数" value="{{form.debt_count}}" data-field="debt_count" bind:input="onNumberInput" placeholder="请输入负债数" type="number" />
         <van-field label="近6月征信查询次数" value="{{form.credit_inquiry_6m}}" data-field="credit_inquiry_6m" bind:input="onNumberInput" placeholder="请输入查询次数" type="number" />
+        <upload-with-ref
+          label="近6个月征信查询附件"
+          maxCount="5"
+          files="{{form.credit_inquiry_6m_image}}"
+          data-field="credit_inquiry_6m_image"
+          bindchange="onUploadChange"
+          autoUpload="{{true}}"
+          referenceUrl="{{refImages.credit_inquiry_6m_image}}"
+          bind:previewRef="onPreviewRefImage"
+        />
       </view>
 
       <view class="edit-section">
         <view class="section-title">贷款需求</view>
-        <van-field label="贷款需求 万元" value="{{form.loan_requirement}}" data-field="loan_requirement" bind:input="onNumberInput" placeholder="请输入贷款需求" type="digit" />
+        <van-field label="贷款需求" value="{{form.loan_requirement}}" data-field="loan_requirement" bind:input="onInputChange" placeholder="请输入贷款需求" />
+        <upload-with-ref
+          label="其它附件"
+          maxCount="5"
+          files="{{form.other_attachment}}"
+          data-field="other_attachment"
+          bindchange="onUploadChange"
+          autoUpload="{{true}}"
+        />
       </view>
     </block>
 
@@ -116,7 +191,7 @@
             files="{{form.work_proof}}"
             data-field="work_proof"
             bindchange="onUploadChange"
-            autoUpload="{{false}}"
+            autoUpload="{{true}}"
           />
         </view>
 
@@ -195,6 +270,16 @@
       <van-button block round type="primary" bind:click="onSave" loading="{{saving}}">保存</van-button>
       <van-button block round plain hairline type="default" bind:click="onCancel" class="mt-md">取消</van-button>
     </view>
-  </block>
 
+    <!-- 行业选择弹窗 -->
+    <van-popup show="{{showIndustryPicker}}" position="bottom" bind:close="onCloseIndustryPicker">
+      <van-picker
+        show-toolbar
+        title="选择行业"
+        columns="{{industryColumns}}"
+        bind:confirm="onIndustryConfirm"
+        bind:cancel="onCloseIndustryPicker"
+      />
+    </van-popup>
+  </block>
 </view>

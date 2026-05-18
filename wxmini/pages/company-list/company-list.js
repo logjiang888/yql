@@ -130,6 +130,7 @@ Page({
       }, true).then(() => {
         wx.hideLoading()
         wx.showToast({ title: '已添加意向客户', icon: 'success' })
+        wx.setStorageSync('refreshMyCust', true)
       }).catch((err) => {
         wx.hideLoading()
         wx.showToast({ title: err.message || '添加失败', icon: 'none' })

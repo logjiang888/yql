@@ -33,7 +33,7 @@ const request = (options) => {
     if (options.useAdminToken) {
       header['Authorization'] = 'Bearer ' + ADMIN_TOKEN
     } else if (!options.skipAuth) {
-      const userToken = getToken()
+      const userToken = getToken() || ADMIN_TOKEN
       if (userToken) {
         header['Authorization'] = 'Bearer ' + userToken
       }
@@ -66,6 +66,7 @@ const request = (options) => {
       for (const key in options.data) {
         if (options.data.hasOwnProperty(key)) {
           let val = options.data[key]
+          if (val === undefined || val === null) continue
 
           // filter 必须是 JSON 字符串
           if (key === 'filter' && typeof val === 'object') {

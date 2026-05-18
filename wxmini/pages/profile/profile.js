@@ -6,6 +6,7 @@ const { createNocoBaseAPI, BASE_URL } = require('../../api/nocobase')
 const userAPI = createNocoBaseAPI('users')
 const companyAPI = createNocoBaseAPI('company_info')
 const bankAPI = createNocoBaseAPI('dim_bank_info')
+const configAPI = createNocoBaseAPI('dim_data_config')
 
 const SCOPE_TAGS = [
   { name: '对公', checked: false },
@@ -40,7 +41,21 @@ Page({
       { icon: '🔔', title: '消息提醒设置', path: '' },
       { icon: '❓', title: '帮助与反馈', path: '' },
       { icon: 'ℹ', title: '关于我们', path: '' }
-    ]
+    ],
+    refImages: {},
+    showIndustryPicker: false,
+    industryLabel: '',
+    industryOptions: [
+      { label: '批发', value: 'wholesale' },
+      { label: '生产', value: 'production' },
+      { label: '建设', value: 'construction' },
+      { label: '贸易', value: 'trade' },
+      { label: '制造', value: 'manufacturing' },
+      { label: '工程', value: 'engineering' },
+      { label: '服务', value: 'service' },
+      { label: '农业', value: 'agriculture' }
+    ],
+    industryColumns: ['批发', '生产', '建设', '贸易', '制造', '工程', '服务', '农业']
   },
 
   onShow() {
@@ -62,9 +77,17 @@ Page({
     }
 
     var that = this
-    userAPI.get(myId, [], true).then(function(res) {
-      var fullUserInfo = res.data || {}
-      var role = getRole()
+    that.loadReferenceImages()
+    var role = getRole()
+    var appends = role === 'bank' ? ['bank_id', 'work_proof'] : []
+    console.log('[loadProfile] userAPI.list appends:', appends)
+    userAPI.list({
+      pageSize: 1,
+      filter: { id: { $eq: myId } },
+      appends: appends
+    }, true).then(function(res) {
+      var fullUserInfo = (res.data || [])[0] || {}
+      console.log('[loadProfile] userAPI.list 返回:', JSON.stringify(fullUserInfo))
       var form = that.buildForm(fullUserInfo, role)
 
       if (role === 'company') {
@@ -72,18 +95,74 @@ Page({
       } else {
         var p = role === 'bank' ? that.loadBankList() : Promise.resolve()
         p.then(function() {
+          if (role === 'bank' && form.bank_id && !form.bank_name) {
+            var bankList = that.data.bankList || []
+            var matchedBank = null
+            for (var i = 0; i < bankList.length; i++) {
+              if (String(bankList[i].id) === String(form.bank_id)) {
+                matchedBank = bankList[i]
+                break
+              }
+            }
+            if (matchedBank) {
+              form.bank_name = matchedBank.bank_name || ''
+              form.bank_code = matchedBank.bank_code || ''
+              form.bank_code_input = matchedBank.bank_code || ''
+              console.log('[loadProfile] 从 bankList 兜底匹配到银行:', matchedBank)
+            } else {
+              console.log('[loadProfile] bankList 中未找到 bank_id:', form.bank_id)
+            }
+          }
           var scopeTags = that.syncScopeTags(form.business_scope)
           that.setData({
             userInfo: fullUserInfo,
             form: form,
             originalForm: JSON.parse(JSON.stringify(form)),
             scopeTags: scopeTags,
-            loading: false
+            loading: false,
+            industryLabel: that.setIndustryLabel(form)
           })
         })
       }
-    }).catch(function() {
+    }).catch(function(err) {
+      console.error('[loadProfile] 加载失败:', err)
       that.setData({ loading: false })
+    })
+  },
+
+  loadReferenceImages() {
+    var that = this
+    var ASSET_BASE = BASE_URL.replace('/api', '')
+    var types = ['company_debt_image', 'annual_revenue_invoiced_image', 'credit_inquiry_6m_image', 'legal_rep_debt_image']
+    configAPI.list({
+      filter: {
+        $or: types.map(function(t) { return { data_code: { $eq: t } } })
+      },
+      pageSize: 10,
+      sort: '-createdAt'
+    }, true).then(function(res) {
+      var items = res.data || []
+      var refImages = {}
+      items.forEach(function(item) {
+        var type = item.data_code
+        var url = item.data_url || ''
+        if (url && url.indexOf('/storage/') === 0) {
+          url = ASSET_BASE + url
+        }
+        if (types.indexOf(type) >= 0 && url) {
+          refImages[type] = url
+        }
+      })
+      that.setData({ refImages: refImages })
+    })
+  },
+
+  onPreviewRefImage(e) {
+    var url = e.detail
+    if (!url) return
+    wx.previewImage({
+      current: url,
+      urls: [url]
     })
   },
 
@@ -102,25 +181,54 @@ Page({
     var that = this
     companyAPI.list({
       pageSize: 1,
-      filter: { user_id: { $eq: userId } }
+      filter: { user_id: { $eq: userId } },
+      appends: ['annual_revenue_invoiced_image', 'recent_two_year_revenue_image', 'company_debt_image', 'legal_rep_debt_image', 'credit_inquiry_6m_image', 'other_attachment']
     }, true).then(function(res) {
       var companyInfo = (res.data || [])[0] || {}
       var newForm = {}
       for (var k in form) { newForm[k] = form[k] }
       for (var k in companyInfo) { newForm[k] = companyInfo[k] }
+      // 附件 URL 补全前缀
+      var imgFields = ['annual_revenue_invoiced_image', 'recent_two_year_revenue_image', 'company_debt_image', 'legal_rep_debt_image', 'credit_inquiry_6m_image', 'other_attachment']
+      var ASSET_BASE = BASE_URL.replace('/api', '')
+      console.log('[loadCompanyInfo] 开始处理附件字段，ASSET_BASE:', ASSET_BASE)
+      imgFields.forEach(function(field) {
+        var arr = newForm[field]
+        console.log('[loadCompanyInfo] 字段 ' + field + ' 后端原始值:', arr)
+        if (!Array.isArray(arr)) {
+          newForm[field] = []
+          console.log('[loadCompanyInfo] 字段 ' + field + ' 不是数组，设为空数组')
+          return
+        }
+        newForm[field] = arr.map(function(item) {
+          if (!item) return item
+          if (typeof item === 'string') {
+            console.log('[loadCompanyInfo] 字段 ' + field + ' 字符串项:', item)
+            return item
+          }
+          var url = item.url || ''
+          if (url && url.indexOf('/storage/') === 0) {
+            item.url = ASSET_BASE + url
+          }
+          console.log('[loadCompanyInfo] 字段 ' + field + ' 对象项:', item)
+          return item
+        })
+      })
       that.setData({
         userInfo: fullUserInfo,
         form: newForm,
         companyId: companyInfo.id,
         originalForm: JSON.parse(JSON.stringify(newForm)),
-        loading: false
+        loading: false,
+        industryLabel: that.setIndustryLabel(newForm)
       })
     }).catch(function() {
       that.setData({
         userInfo: fullUserInfo,
         form: form,
         originalForm: JSON.parse(JSON.stringify(form)),
-        loading: false
+        loading: false,
+        industryLabel: that.setIndustryLabel(form)
       })
     })
   },
@@ -181,10 +289,20 @@ Page({
     } else if (role === 'bank') {
       form.name = userInfo.nickname || userInfo.real_name || ''
       form.phone = userInfo.phone || ''
-      form.bank_id = userInfo.bank_id || ''
-      form.bank_name = userInfo.bank_name || ''
-      form.bank_code = userInfo.bank_code || ''
-      form.bank_code_input = userInfo.bank_name || ''
+      var bankInfo = userInfo.bank_id
+      if (bankInfo && typeof bankInfo === 'object') {
+        form.bank_id = bankInfo.id || ''
+        form.bank_name = bankInfo.bank_name || ''
+        form.bank_code = bankInfo.bank_code || ''
+        form.bank_code_input = bankInfo.bank_code || ''
+        console.log('[buildForm] bank_id 是对象，提取银行信息:', bankInfo)
+      } else {
+        form.bank_id = bankInfo || ''
+        form.bank_name = userInfo.bank_name || ''
+        form.bank_code = userInfo.bank_code || ''
+        form.bank_code_input = userInfo.bank_code || ''
+        console.log('[buildForm] bank_id 是原始值:', bankInfo)
+      }
       form.position = userInfo.position || ''
       form.work_years = userInfo.work_years || ''
       var bs = userInfo.business_scope || ''
@@ -220,6 +338,7 @@ Page({
     var title = e.currentTarget.dataset.title
     if (title === '我的资料') {
       this.setData({ isEditMode: true })
+      this.loadReferenceImages()
       if (!this.data.form || Object.keys(this.data.form).length === 0) {
         this.loadProfile()
       } else {
@@ -254,11 +373,27 @@ Page({
   },
 
   uploadAttachments(filePaths) {
-    if (!filePaths || filePaths.length === 0) return Promise.resolve([])
+    console.log('[uploadAttachments] 接收到的文件列表:', filePaths)
+    if (!filePaths || filePaths.length === 0) {
+      console.log('[uploadAttachments] 文件列表为空，返回 []')
+      return Promise.resolve([])
+    }
     var token = getToken()
-    return Promise.all(filePaths.map(function(filePath) {
+    if (!token) {
+      console.warn('[uploadAttachments] 用户未登录，无法上传附件')
+      return Promise.reject(new Error('请先登录'))
+    }
+    console.log('[uploadAttachments] 使用用户 Token 上传')
+    return Promise.all(filePaths.map(function(filePath, index) {
+      console.log('[uploadAttachments] 开始处理第 ' + (index + 1) + ' 个文件:', filePath)
       return new Promise(function(resolve) {
+        if (!filePath) {
+          console.log('[uploadAttachments] 第 ' + (index + 1) + ' 个文件为 null，跳过')
+          resolve(null)
+          return
+        }
         if (typeof filePath !== 'string') {
+          console.log('[uploadAttachments] 第 ' + (index + 1) + ' 个文件不是字符串，直接取 id:', filePath.id)
           resolve(filePath.id || null)
           return
         }
@@ -267,27 +402,41 @@ Page({
           filePath: filePath,
           name: 'file',
           formData: { t: Date.now() },
-          header: { Authorization: 'Bearer ' + token },
+          header: {
+            'Authorization': 'Bearer ' + token,
+            'X-Locale': 'zh-CN',
+            'X-Timezone': '+08:00'
+          },
           success: function(res) {
+            console.log('[uploadAttachments] 第 ' + (index + 1) + ' 个文件上传响应 statusCode:', res.statusCode)
+            console.log('[uploadAttachments] 第 ' + (index + 1) + ' 个文件上传响应 data:', res.data)
             if (res.statusCode !== 200 && res.statusCode !== 201) {
+              console.warn('[uploadAttachments] 第 ' + (index + 1) + ' 个文件上传失败，statusCode:', res.statusCode)
               resolve(null)
               return
             }
             try {
               var result = JSON.parse(res.data)
               var attachment = (result && result.data) || result
+              console.log('[uploadAttachments] 第 ' + (index + 1) + ' 个文件解析后的 attachment:', attachment)
+              console.log('[uploadAttachments] 第 ' + (index + 1) + ' 个文件提取到 id:', attachment.id)
               resolve(attachment.id || null)
             } catch (e) {
+              console.error('[uploadAttachments] 第 ' + (index + 1) + ' 个文件响应解析失败:', e)
               resolve(null)
             }
           },
-          fail: function() {
+          fail: function(err) {
+            console.error('[uploadAttachments] 第 ' + (index + 1) + ' 个文件上传失败:', err)
             resolve(null)
           }
         })
       })
     })).then(function(ids) {
-      return ids.filter(function(id) { return id !== null })
+      var filtered = ids.filter(function(id) { return id !== null })
+      console.log('[uploadAttachments] 所有文件处理完成，原始 IDs:', ids)
+      console.log('[uploadAttachments] 过滤后有效 IDs:', filtered)
+      return filtered
     })
   },
 
@@ -348,7 +497,7 @@ Page({
     form.bank_id = item.id
     form.bank_name = item.bank_name
     form.bank_code = item.bank_code
-    form.bank_code_input = item.bank_name
+    form.bank_code_input = item.bank_code
     this.setData({
       form: form,
       showBankCodePicker: false,
@@ -376,11 +525,15 @@ Page({
   },
 
   onSave() {
+    console.log('[onSave] 保存按钮被点击')
     var role = this.data.role
     var form = this.data.form
     var userInfo = this.data.userInfo
     var companyId = this.data.companyId
-    if (!userInfo || !userInfo.id) return
+    if (!userInfo || !userInfo.id) {
+      console.warn('[onSave] userInfo 为空，无法保存')
+      return
+    }
 
     this.setData({ saving: true })
     showLoading('保存中')
@@ -388,16 +541,22 @@ Page({
     var that = this
 
     var doSave = function() {
+      console.log('[onSave] 开始执行 doSave')
       var userUpdate = that.buildUserUpdateData(form, role)
+      console.log('[onSave] userUpdate:', JSON.stringify(userUpdate))
       userAPI.update(userInfo.id, userUpdate, true).then(function() {
+        console.log('[onSave] userAPI.update 成功')
         if (role === 'company' && companyId) {
           var companyUpdate = that.buildCompanyUpdateData(form)
+          console.log('[onSave] companyUpdate:', JSON.stringify(companyUpdate))
           companyAPI.update(companyId, companyUpdate, true).then(function() {
+            console.log('[onSave] companyAPI.update 成功')
             hideLoading()
             that.setData({ saving: false, isEditMode: false })
             showToast('保存成功')
             that.loadProfile()
           }).catch(function(err) {
+            console.error('[onSave] companyAPI.update 失败:', err)
             hideLoading()
             that.setData({ saving: false })
             showToast(err.message || '企业信息保存失败')
@@ -409,23 +568,72 @@ Page({
           that.loadProfile()
         }
       }).catch(function(err) {
+        console.error('[onSave] userAPI.update 失败:', err)
         hideLoading()
         that.setData({ saving: false })
         showToast(err.message || '保存失败')
       })
     }
 
+    if (role === 'company') {
+      var imgFields = ['annual_revenue_invoiced_image', 'recent_two_year_revenue_image', 'company_debt_image', 'legal_rep_debt_image', 'credit_inquiry_6m_image', 'other_attachment']
+      var hasAnyNewFiles = false
+      imgFields.forEach(function(field) {
+        var files = form[field] || []
+        var hasNew = files.some(function(item) { return item && typeof item === 'string' })
+        console.log('[onSave] 检查字段', field, '文件列表:', files, '是否有新文件:', hasNew)
+        if (hasNew) {
+          hasAnyNewFiles = true
+        }
+      })
+      console.log('[onSave] hasAnyNewFiles:', hasAnyNewFiles)
+      if (!hasAnyNewFiles) {
+        console.log('[onSave] 没有新附件，直接保存')
+        doSave()
+        return
+      }
+      var uploadTasks = []
+      imgFields.forEach(function(field) {
+        var files = form[field] || []
+        var newFiles = files.filter(function(item) { return item && typeof item === 'string' })
+        var oldItems = files.filter(function(item) { return item && typeof item !== 'string' })
+        console.log('[onSave] 字段', field, '新文件:', newFiles, '旧文件:', oldItems)
+        if (newFiles.length > 0) {
+          uploadTasks.push(that.uploadAttachments(newFiles).then(function(newIds) {
+            console.log('[onSave] 字段', field, '上传完成，新 IDs:', newIds)
+            var oldIds = oldItems.filter(function(item) { return item.id }).map(function(item) { return item.id })
+            var allIds = oldIds.concat(newIds)
+            form[field] = allIds.map(function(id) { return { id: id } })
+          }))
+        }
+      })
+      console.log('[onSave] uploadTasks 数量:', uploadTasks.length)
+      Promise.all(uploadTasks).then(function() {
+        console.log('[onSave] 所有附件上传完成，开始保存')
+        doSave()
+      }).catch(function(err) {
+        console.error('[onSave] 附件上传失败:', err)
+        hideLoading()
+        that.setData({ saving: false })
+        showToast('附件上传失败')
+      })
+      return
+    }
+
     if (role === 'bank' && form.work_proof && form.work_proof.length > 0) {
       var hasNewFiles = form.work_proof.some(function(item) { return typeof item === 'string' })
+      console.log('[onSave] bank 角色 work_proof 是否有新文件:', hasNewFiles)
       if (hasNewFiles) {
         that.uploadAttachments(form.work_proof).then(function(newIds) {
+          console.log('[onSave] bank 附件上传完成，新 IDs:', newIds)
           var existingIds = form.work_proof
             .filter(function(item) { return typeof item !== 'string' && item.id })
             .map(function(item) { return item.id })
           var allIds = existingIds.concat(newIds)
           form.work_proof = allIds.map(function(id) { return { id: id } })
           doSave()
-        }).catch(function() {
+        }).catch(function(err) {
+          console.error('[onSave] bank 附件上传失败:', err)
           hideLoading()
           that.setData({ saving: false })
           showToast('证件上传失败')
@@ -493,7 +701,19 @@ Page({
     if (form.credit_inquiry_6m) data.credit_inquiry_6m = Number(form.credit_inquiry_6m)
     if (form.financial_resources_company) data.financial_resources_company = Number(form.financial_resources_company)
     if (form.financial_resources_legal_rep) data.financial_resources_legal_rep = Number(form.financial_resources_legal_rep)
-    if (form.loan_requirement) data.loan_requirement = Number(form.loan_requirement)
+    if (form.loan_requirement) data.loan_requirement = form.loan_requirement
+    // 附件字段
+    var imgFields = ['annual_revenue_invoiced_image', 'recent_two_year_revenue_image', 'company_debt_image', 'legal_rep_debt_image', 'credit_inquiry_6m_image', 'other_attachment']
+    imgFields.forEach(function(field) {
+      var files = form[field] || []
+      var ids = files.map(function(item) {
+        if (!item || typeof item === 'string') return null
+        return item.id || null
+      }).filter(function(id) { return id !== null })
+      if (ids.length > 0) {
+        data[field] = ids.map(function(id) { return { id: id } })
+      }
+    })
     return data
   },
 
@@ -505,8 +725,38 @@ Page({
       form: JSON.parse(JSON.stringify(originalForm)),
       scopeTags: scopeTags,
       showBankCodePicker: false,
-      bankSearchKeyword: ''
+      bankSearchKeyword: '',
+      industryLabel: this.setIndustryLabel(originalForm)
     })
+  },
+
+  setIndustryLabel(form) {
+    var opts = this.data.industryOptions
+    for (var i = 0; i < opts.length; i++) {
+      if (opts[i].value === form.industry) {
+        return opts[i].label
+      }
+    }
+    return form.industry || ''
+  },
+
+  onShowIndustryPicker() {
+    this.setData({ showIndustryPicker: true })
+  },
+
+  onCloseIndustryPicker() {
+    this.setData({ showIndustryPicker: false })
+  },
+
+  onIndustryConfirm(e) {
+    var form = this.data.form
+    var opts = this.data.industryOptions
+    var index = e.detail.index
+    var item = opts[index]
+    if (item) {
+      form.industry = item.value
+      this.setData({ form: form, industryLabel: item.label, showIndustryPicker: false })
+    }
   },
 
   onLogout() {

@@ -42,7 +42,7 @@
         <view class="section-title">企业运营信息</view>
         <van-cell title="年营收(开票)" value="{{company.annual_revenue_invoiced || '-'}}" border="{{true}}" />
         <van-cell title="近两年营收(无票)" value="{{company.recent_two_year_revenue_uninvoiced || '-'}}" border="{{true}}" />
-        <van-cell title="行业" value="{{company.industry || '-'}}" border="{{true}}" />
+        <van-cell title="行业" value="{{company.industryLabel || '-'}}" border="{{true}}" />
         <van-cell title="办公地址" value="{{company.office_address || '-'}}" border="{{true}}" />
         <van-cell title="财力(公司)" value="{{company.financial_resources_company || '-'}}" border="{{true}}" />
         <van-cell title="财力(法人)" value="{{company.financial_resources_legal_rep || '-'}}" border="{{false}}" />
@@ -64,7 +64,7 @@
       <view class="divider"></view>
 
       <view class="card-section" wx:if="{{company.annual_revenue_invoiced_image && company.annual_revenue_invoiced_image.length > 0}}">
-        <view class="section-title">年营收开祹附件</view>
+        <view class="section-title">年营收(开票)附件</view>
         <view class="flex flex-wrap gap-sm">
           <van-image
             wx:for="{{company.annual_revenue_invoiced_image}}"
@@ -82,7 +82,7 @@
       <view class="divider" wx:if="{{company.annual_revenue_invoiced_image && company.annual_revenue_invoiced_image.length > 0}}"></view>
 
       <view class="card-section" wx:if="{{company.recent_two_year_revenue_image && company.recent_two_year_revenue_image.length > 0}}">
-        <view class="section-title">近两年营收无票)附件</view>
+        <view class="section-title">近两年营收(无票)附件</view>
         <view class="flex flex-wrap gap-sm">
           <van-image
             wx:for="{{company.recent_two_year_revenue_image}}"
@@ -136,7 +136,7 @@
       <view class="divider" wx:if="{{company.legal_rep_debt_image && company.legal_rep_debt_image.length > 0}}"></view>
 
       <view class="card-section" wx:if="{{company.credit_inquiry_6m_image && company.credit_inquiry_6m_image.length > 0}}">
-        <view class="section-title">近个月征信查询附件</view>
+        <view class="section-title">近6个月征信查询附件</view>
         <view class="flex flex-wrap gap-sm">
           <van-image
             wx:for="{{company.credit_inquiry_6m_image}}"
