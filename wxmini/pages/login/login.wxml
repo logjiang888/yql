@@ -1,9 +1,44 @@
 <view class="page-white">
+  <!-- 顶部标题 -->
   <view class="login-header">
     <view class="login-title">欢迎回来</view>
-    <view class="login-subtitle">请登录您的账号</view>
+    <view class="login-subtitle">请选择用户类型并登录</view>
   </view>
 
+  <!-- 用户类型选择 -->
+  <view class="type-section">
+    <view class="type-grid">
+      <view
+        class="type-card {{ role === 'company' ? 'type-active' : '' }}"
+        data-role="company"
+        bindtap="onRoleChange"
+      >
+        <view class="type-icon">🏢</view>
+        <view class="type-name">企业客户</view>
+        <view class="type-desc">贷款需求方</view>
+      </view>
+      <view
+        class="type-card {{ role === 'bank' ? 'type-active' : '' }}"
+        data-role="bank"
+        bindtap="onRoleChange"
+      >
+        <view class="type-icon">🏦</view>
+        <view class="type-name">银行人员</view>
+        <view class="type-desc">贷款提供方</view>
+      </view>
+      <view
+        class="type-card {{ role === 'salesperson' ? 'type-active' : '' }}"
+        data-role="salesperson"
+        bindtap="onRoleChange"
+      >
+        <view class="type-icon">🤝</view>
+        <view class="type-name">业务员</view>
+        <view class="type-desc">居间服务方</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 登录方式切换 -->
   <van-tabs
     active="{{ loginType }}"
     bind:change="onSwitchType"
@@ -15,6 +50,7 @@
     <van-tab title="验证码登录" name="code"></van-tab>
   </van-tabs>
 
+  <!-- 表单 -->
   <view class="px-lg">
     <van-cell-group border="{{ false }}">
       <van-field
@@ -28,6 +64,7 @@
         data-field="phone"
         bind:input="onInputChange"
         custom-class="field-item"
+        left-icon="phone-o"
       />
 
       <van-field
@@ -42,6 +79,7 @@
         data-field="code"
         bind:input="onInputChange"
         custom-class="field-item"
+        left-icon="shield-o"
         use-button-slot
       >
         <van-button
@@ -68,6 +106,7 @@
         data-field="password"
         bind:input="onInputChange"
         custom-class="field-item"
+        left-icon="lock"
         right-icon="{{ showPassword ? 'closed-eye' : 'eye-o' }}"
         bind:click-icon="onTogglePassword"
       />
@@ -79,7 +118,8 @@
     </view>
 
     <view class="forgot-link" wx:if="{{ loginType === 'password' }}" bindtap="onTapForgot">
-      忘记密码？    </view>
+      忘记密码？
+    </view>
 
     <van-button
       type="primary"

@@ -26,16 +26,20 @@ Page({
   },
 
   onLoad(options) {
-    if (options.role) {
-      var roleText = ROLE_TEXT_MAP[options.role] || ''
-      this.setData({ role: options.role, roleText: roleText })
-      if (roleText) {
-        wx.setNavigationBarTitle({ title: '登录-' + roleText })
-      }
+    var role = options.role || ''
+    if (role) {
+      var roleText = ROLE_TEXT_MAP[role] || ''
+      this.setData({ role: role, roleText: roleText })
     }
     if (options.phone) {
       this.setData({ phone: options.phone, loginType: 'password' })
     }
+    wx.setNavigationBarTitle({ title: '登录' })
+  },
+
+  onRoleChange(e) {
+    var role = e.currentTarget.dataset.role
+    this.setData({ role: role, errorMsg: '', errorField: '' })
   },
 
   onSwitchType(e) {
@@ -150,8 +154,11 @@ Page({
 
   onTapRegister() {
     const { role } = this.data
-    const url = role ? `/pages/register/register?role=${role}` : '/pages/register/register'
-    wx.navigateTo({ url })
+    var url = '/pages/register/register'
+    if (role) {
+      url += '?role=' + role
+    }
+    wx.navigateTo({ url: url })
   },
 
   onTapForgot() {

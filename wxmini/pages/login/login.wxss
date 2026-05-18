@@ -1,5 +1,5 @@
 .login-header {
-  padding: 80rpx 32rpx 48rpx;
+  padding: 60rpx 32rpx 32rpx;
 }
 
 .login-title {
@@ -14,6 +14,64 @@
   color: var(--van-text-color-2);
 }
 
+/* 用户类型选择 */
+.type-section {
+  margin: 0 32rpx 32rpx;
+}
+
+.type-grid {
+  display: flex;
+  gap: 20rpx;
+}
+
+.type-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #fff;
+  border: 2rpx solid #ebedf0;
+  border-radius: 16rpx;
+  padding: 24rpx 0;
+  transition: all 0.2s;
+}
+
+.type-card:active {
+  opacity: 0.8;
+}
+
+.type-active {
+  background-color: #2563EB;
+  border-color: #2563EB;
+}
+
+.type-icon {
+  font-size: 44rpx;
+  margin-bottom: 10rpx;
+}
+
+.type-name {
+  font-size: 26rpx;
+  font-weight: 500;
+  color: #323233;
+  margin-bottom: 4rpx;
+}
+
+.type-active .type-name {
+  color: #fff;
+}
+
+.type-desc {
+  font-size: 20rpx;
+  color: #999;
+}
+
+.type-active .type-desc {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* 登录方式切换 */
 .login-tabs {
   margin: 0 32rpx 32rpx;
 }

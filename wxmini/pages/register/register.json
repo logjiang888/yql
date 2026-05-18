@@ -1,7 +1,4 @@
 {
-  "navigationBarTitleText": "注册",
-  "usingComponents": {
-    "upload-with-ref": "../../components/upload-with-ref/upload-with-ref",
-    "status-tag": "../../components/status-tag/status-tag"
-  }
+  "navigationBarTitleText": "注册账号",
+  "usingComponents": {}
 }
