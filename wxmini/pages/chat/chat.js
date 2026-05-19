@@ -25,6 +25,7 @@ Page({
     toUserTypeText: '',
     toUserTypeIcon: '',
     toUserHeadImage: '',
+    toCompanyId: 0,
     inputValue: '',
     canSend: false,
     messages: [],
@@ -63,8 +64,93 @@ Page({
         toUserHeadImage: headImage
       })
       wx.setNavigationBarTitle({ title: displayName + (typeText ? '(' + typeText + ')' : '') })
+      // 企业类型时加载 company_info
+      if (userType === 'company') {
+        that.loadCompanyId(toUserId)
+      }
     }).catch(function(err) {
       console.error('[chat] 加载对方用户信息失败:', err)
+    })
+  },
+
+  loadCompanyId(userId) {
+    var that = this
+    companyAPI.list({
+      pageSize: 1,
+      filter: { user_id: { $eq: userId } }
+    }, true).then(function(res) {
+      var items = res.data || []
+      if (items.length > 0) {
+        that.setData({ toCompanyId: items[0].id })
+      }
+    }).catch(function(err) {
+      console.error('[chat] 加载企业信息失败:', err)
+    })
+  },
+
+  onViewDetail() {
+    var that = this
+    var userType = this.data.toUserType
+    var userId = this.data.toUserId
+    var companyId = this.data.toCompanyId
+    var pagePath = DETAIL_PAGE_MAP[userType] || ''
+    if (!pagePath) {
+      showToast('暂无详情页面')
+      return
+    }
+    if (userType === 'company') {
+      if (!companyId) {
+        showToast('该企业信息暂未同步')
+        return
+      }
+      wx.navigateTo({ url: pagePath + '?id=' + companyId })
+    } else {
+      wx.navigateTo({ url: pagePath + '?id=' + userId })
+    }
+  },
+
+  onAddIntention() {
+    var that = this
+    var myId = getUserId()
+    var companyId = this.data.toCompanyId
+    if (!myId) {
+      showToast('请先登录')
+      return
+    }
+    if (!companyId) {
+      showToast('该企业信息暂未同步')
+      return
+    }
+    wx.showLoading({ title: '处理中', mask: true })
+    myCustAPI.list({
+      pageSize: 1,
+      filter: {
+        $and: [
+          { user_id: { $eq: myId } },
+          { company_id: { $eq: companyId } }
+        ]
+      }
+    }, true).then(function(res) {
+      var items = res.data || []
+      if (items.length > 0) {
+        wx.hideLoading()
+        wx.showToast({ title: '该客户已是意向客户', icon: 'none' })
+        return
+      }
+      myCustAPI.create({
+        user_id: myId,
+        company_id: companyId
+      }, true).then(function() {
+        wx.hideLoading()
+        wx.showToast({ title: '已添加意向客户', icon: 'success' })
+        wx.setStorageSync('refreshMyCust', true)
+      }).catch(function(err) {
+        wx.hideLoading()
+        wx.showToast({ title: err.message || '添加失败', icon: 'none' })
+      })
+    }).catch(function(err) {
+      wx.hideLoading()
+      wx.showToast({ title: err.message || '查询失败', icon: 'none' })
     })
   },
 
