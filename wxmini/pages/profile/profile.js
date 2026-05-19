@@ -683,6 +683,13 @@ Page({
 
     var that = this
 
+    if ((role === 'bank' || role === 'plat_salesperson') && (!form.work_proof || form.work_proof.length === 0)) {
+      hideLoading()
+      that.setData({ saving: false })
+      showToast('请上传工作证件')
+      return
+    }
+
     var doSave = function() {
       console.log('[onSave] 开始执行 doSave')
       var userUpdate = that.buildUserUpdateData(form, role)
