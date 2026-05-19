@@ -19,6 +19,7 @@ const TAB_CONFIG = {
     { pagePath: '/pages/home-bank/home-bank', text: '工作台', icon: 'desktop-o', activeIcon: 'desktop', iconImage: '/assets/tabbar/workbench.png', activeIconImage: '/assets/tabbar/workbench-active.png' },
     { pagePath: '/pages/company-list/company-list', text: '企业', icon: 'shop-o', activeIcon: 'shop', iconImage: '/assets/tabbar/enterprise.png', activeIconImage: '/assets/tabbar/enterprise-active.png' },
     { pagePath: '/pages/audit/audit', text: '审核', iconImage: '/assets/tabbar/audit.png', activeIconImage: '/assets/tabbar/audit-active.png' },
+    { pagePath: '/pages/message-list/message-list', text: '消息', icon: 'comment-o', activeIcon: 'comment' },
     { pagePath: '/pages/profile/profile', text: '我的', icon: 'user-o', activeIcon: 'user' }
   ]
 }
