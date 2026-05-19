@@ -1,0 +1,15 @@
+<view class="page-container">
+  <view class="about-header">
+    <view class="about-logo">🏦</view>
+    <view class="about-title">银企来</view>
+    <view class="about-subtitle">银企对接服务平台</view>
+  </view>
+
+  <view class="about-content">
+    <van-loading wx:if="{{loading}}" size="24px" vertical>加载中...</van-loading>
+    <block wx:elif="{{content}}">
+      <text class="content-text" selectable>{{content}}</text>
+    </block>
+    <van-empty wx:else description="暂无内容" />
+  </view>
+</view>

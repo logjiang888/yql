@@ -20,7 +20,8 @@
     "pages/service/service",
     "pages/audit/audit",
     "pages/audit-detail/audit-detail",
-    "pages/cust-remark/cust-remark"
+    "pages/cust-remark/cust-remark",
+    "pages/about/about"
   ],
   "tabBar": {
     "custom": true,

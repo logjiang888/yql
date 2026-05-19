@@ -40,7 +40,7 @@ Page({
       { icon: '🔒', title: '修改密码', path: '/pages/change-password/change-password' },
       { icon: '📋', title: '审核结果', path: '' },
       { icon: '❓', title: '帮助与反馈', path: '' },
-      { icon: 'ℹ', title: '关于我们', path: '' }
+      { icon: 'ℹ', title: '关于我们', path: '/pages/about/about' }
     ],
     refImages: {},
     showIndustryPicker: false,

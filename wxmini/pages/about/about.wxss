@@ -1,0 +1,43 @@
+.page-container {
+  min-height: 100vh;
+  background-color: #F3F4F6;
+}
+
+.about-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 80rpx 40rpx 60rpx;
+  background: linear-gradient(180deg, #2563EB 0%, #1D4ED8 100%);
+}
+
+.about-logo {
+  font-size: 80rpx;
+  margin-bottom: 20rpx;
+}
+
+.about-title {
+  font-size: 44rpx;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 12rpx;
+}
+
+.about-subtitle {
+  font-size: 28rpx;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.about-content {
+  margin: 24rpx;
+  padding: 40rpx;
+  background-color: #fff;
+  border-radius: 16rpx;
+  min-height: 400rpx;
+}
+
+.content-text {
+  font-size: 30rpx;
+  color: #374151;
+  line-height: 1.8;
+}
