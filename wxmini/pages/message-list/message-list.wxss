@@ -1,7 +1,7 @@
 .msg-cell {
   padding: 20rpx 32rpx !important;
   align-items: flex-start !important;
-  border-bottom: 2rpx solid #E5E7EB !important;
+  border-bottom: 2rpx solid #D1D5DB !important;
 }
 
 .msg-cell:last-child {
