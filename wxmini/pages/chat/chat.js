@@ -1,13 +1,30 @@
 const { getUserId } = require('../../stores/auth')
 const { formatDateTime, storage, showToast, checkAuditInterceptor } = require('../../utils/util')
-const { createNocoBaseAPI, request } = require('../../api/nocobase')
+const { createNocoBaseAPI, request, BASE_URL } = require('../../api/nocobase')
 
 const chatAPI = createNocoBaseAPI('chat_info')
+const userAPI = createNocoBaseAPI('users')
+
+const ROLE_ICON_MAP = {
+  company: '🏢',
+  bank: '🏦',
+  plat_salesperson: '🤝'
+}
+
+const ROLE_TEXT_MAP = {
+  company: '企业',
+  bank: '银行',
+  plat_salesperson: '业务员'
+}
 
 Page({
   data: {
     toUserId: 0,
     toUserName: '',
+    toUserType: '',
+    toUserTypeText: '',
+    toUserTypeIcon: '',
+    toUserHeadImage: '',
     inputValue: '',
     canSend: false,
     messages: [],
@@ -20,7 +37,35 @@ Page({
     const toUserName = decodeURIComponent(options.toUserName || '聊天')
     this.setData({ toUserId, toUserName })
     wx.setNavigationBarTitle({ title: toUserName })
+    this.loadToUserInfo(toUserId)
     this.loadMessages(toUserId)
+  },
+
+  loadToUserInfo(toUserId) {
+    if (!toUserId) return
+    var that = this
+    var ASSET_BASE = BASE_URL.replace('/api', '')
+    userAPI.get(toUserId, [], true).then(function(res) {
+      var user = res.data || {}
+      var headImage = user.head_image || ''
+      if (headImage && headImage.indexOf('http') !== 0 && headImage.indexOf('/storage/') === 0) {
+        headImage = ASSET_BASE + headImage
+      }
+      var userType = user.user_type || ''
+      var typeText = ROLE_TEXT_MAP[userType] || ''
+      var typeIcon = ROLE_ICON_MAP[userType] || ''
+      var displayName = user.nickname || user.username || '用户' + toUserId
+      that.setData({
+        toUserName: displayName,
+        toUserType: userType,
+        toUserTypeText: typeText,
+        toUserTypeIcon: typeIcon,
+        toUserHeadImage: headImage
+      })
+      wx.setNavigationBarTitle({ title: displayName + (typeText ? '(' + typeText + ')' : '') })
+    }).catch(function(err) {
+      console.error('[chat] 加载对方用户信息失败:', err)
+    })
   },
 
   onShow() {

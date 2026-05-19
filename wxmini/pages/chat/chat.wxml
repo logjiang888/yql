@@ -1,4 +1,14 @@
 <view class="chat-page">
+  <!-- 顶部对方信息栏 -->
+  <view class="chat-header">
+    <image wx:if="{{toUserHeadImage}}" class="chat-header-avatar" src="{{toUserHeadImage}}" mode="aspectFill" />
+    <view wx:else class="chat-header-avatar chat-header-avatar-text">{{toUserName[0]}}</view>
+    <view class="chat-header-info">
+      <view class="chat-header-name">{{toUserName}}</view>
+      <view wx:if="{{toUserTypeText}}" class="chat-header-role">{{toUserTypeIcon}}{{toUserTypeText}}</view>
+    </view>
+  </view>
+
   <scroll-view
     class="chat-messages"
     scroll-y
@@ -11,7 +21,10 @@
       wx:key="id"
       id="msg_{{item.id}}"
     >
-      <view class="msg-avatar" wx:if="{{item.fromId === toUserId}}">{{toUserName[0]}}</view>
+      <view class="msg-avatar-wrap" wx:if="{{item.fromId === toUserId}}">
+        <image wx:if="{{toUserHeadImage}}" class="msg-avatar" src="{{toUserHeadImage}}" mode="aspectFill" />
+        <view wx:else class="msg-avatar">{{toUserName[0]}}</view>
+      </view>
 
       <view class="msg-content">
         <view class="msg-bubble">{{item.content}}</view>
