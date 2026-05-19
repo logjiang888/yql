@@ -672,6 +672,8 @@ Page({
       console.log('[onSave] 开始执行 doSave')
       var userUpdate = that.buildUserUpdateData(form, role)
       console.log('[onSave] userUpdate:', JSON.stringify(userUpdate))
+      var currentStatus = (that.data.userInfo && that.data.userInfo.audit_status) || ''
+      var isApproved = currentStatus === 'approved'
       userAPI.update(userInfo.id, userUpdate, true).then(function() {
         console.log('[onSave] userAPI.update 成功')
         if (role === 'company' && companyId) {
@@ -681,14 +683,19 @@ Page({
             console.log('[onSave] companyAPI.update 成功')
             hideLoading()
             that.setData({ saving: false, isEditMode: false })
-            wx.showModal({
-              title: '提交成功',
-              content: '等待审核通过，管理员联系方式：18650055458',
-              showCancel: false,
-              success: function() {
-                that.loadProfile()
-              }
-            })
+            if (isApproved) {
+              showToast('修改成功!')
+              that.loadProfile()
+            } else {
+              wx.showModal({
+                title: '提交成功',
+                content: '等待审核通过，管理员联系方式：18650055458',
+                showCancel: false,
+                success: function() {
+                  that.loadProfile()
+                }
+              })
+            }
           }).catch(function(err) {
             console.error('[onSave] companyAPI.update 失败:', err)
             hideLoading()
@@ -698,14 +705,19 @@ Page({
         } else {
           hideLoading()
           that.setData({ saving: false, isEditMode: false })
-          wx.showModal({
-            title: '提交成功',
-            content: '等待审核通过，管理员联系方式：18650055458',
-            showCancel: false,
-            success: function() {
-              that.loadProfile()
-            }
-          })
+          if (isApproved) {
+            showToast('修改成功!')
+            that.loadProfile()
+          } else {
+            wx.showModal({
+              title: '提交成功',
+              content: '等待审核通过，管理员联系方式：18650055458',
+              showCancel: false,
+              success: function() {
+                that.loadProfile()
+              }
+            })
+          }
         }
       }).catch(function(err) {
         console.error('[onSave] userAPI.update 失败:', err)
@@ -823,8 +835,6 @@ Page({
     var currentStatus = (this.data.userInfo && this.data.userInfo.audit_status) || ''
     if (currentStatus === 'unreviewed' || currentStatus === 'rejected') {
       data.audit_status = 'under_review'
-    } else if (currentStatus === 'approved') {
-      data.audit_status = 'unreviewed'
     }
     return data
   },
