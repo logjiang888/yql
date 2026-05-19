@@ -87,32 +87,6 @@
       </view>
     </view>
 
-    <view class="section-header">
-      <text class="section-title">最近浏览</text>
-      <text
-        class="section-more"
-        bindtap="onFeatureTap"
-        data-path="/pages/company-list/company-list"
-      >查看更多 ›</text>
-    </view>
-
-    <view class="recent-list">
-      <van-cell
-        wx:for="{{recentList}}"
-        wx:key="id"
-        title="{{item.company_name}}"
-        label="{{item.contact_name}} {{item.contact_phone}}"
-        data-id="{{item.id}}"
-        bindtap="onCompanyTap"
-        is-link
-        border="{{ index < recentList.length - 1 }}"
-      >
-        <view slot="right-icon" class="text-muted text-xs">{{item._createdAtFormatted}}</view>
-      </van-cell>
-      <view class="empty-state" wx:if="{{recentList.length === 0}}">
-        <van-empty description="暂无浏览记录" />
-      </view>
-    </view>
   </block>
 </view>
 

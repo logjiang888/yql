@@ -4,7 +4,6 @@ const { PAGE_SIZE } = require('../../constants/index')
 const { checkAuditInterceptor } = require('../../utils/util')
 const { formatDate } = require('../../utils/util')
 
-const companyAPI = createNocoBaseAPI('company_info')
 const userAPI = createNocoBaseAPI('users')
 const myCustAPI = createNocoBaseAPI('my_cust_list')
 const bankAPI = createNocoBaseAPI('dim_bank_info')
@@ -31,7 +30,6 @@ Page({
       total: 0,
       monthNew: 0
     },
-    recentList: [],
     myCustList: [],
     custTypeTabs: CUST_TYPE_TABS,
     custLevelOptions: CUST_LEVEL_OPTIONS,
@@ -70,7 +68,6 @@ Page({
     return Promise.all([
       this.loadUserInfo(),
       this.loadStats(),
-      this.loadRecentList(),
       this.loadMyCustList()
     ]).then(function() {
       that.setData({ loading: false })
@@ -134,24 +131,6 @@ Page({
       var total = (totalRes.meta && totalRes.meta.count) || 0
       var monthNew = (monthRes.meta && monthRes.meta.count) || 0
       that.setData({ 'stats.total': total, 'stats.monthNew': monthNew })
-    })
-  },
-
-  loadRecentList() {
-    var that = this
-    return companyAPI.list({
-      page: 1,
-      pageSize: 5,
-      sort: '-createdAt',
-      filter: { audit_status: { $eq: 'approved' } }
-    }, true).then(function(res) {
-      var items = (res.data || []).map(function(item) {
-        var newItem = {}
-        for (var k in item) { newItem[k] = item[k] }
-        newItem._createdAtFormatted = formatDate(item.createdAt)
-        return newItem
-      })
-      that.setData({ recentList: items })
     })
   },
 
@@ -223,11 +202,6 @@ Page({
     } else {
       wx.navigateTo({ url: path })
     }
-  },
-
-  onCompanyTap(e) {
-    var id = e.currentTarget.dataset.id
-    wx.navigateTo({ url: '/pages/company-detail/company-detail?id=' + id })
   },
 
   onMyCustTap(e) {
