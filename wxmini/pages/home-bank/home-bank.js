@@ -1,5 +1,5 @@
 const { getUserInfo, getRole, getUserId } = require('../../stores/auth')
-const { createNocoBaseAPI } = require('../../api/nocobase')
+const { createNocoBaseAPI, BASE_URL } = require('../../api/nocobase')
 const { PAGE_SIZE } = require('../../constants/index')
 const { checkAuditInterceptor } = require('../../utils/util')
 const { formatDate } = require('../../utils/util')
@@ -7,6 +7,8 @@ const { formatDate } = require('../../utils/util')
 const companyAPI = createNocoBaseAPI('company_info')
 const userAPI = createNocoBaseAPI('users')
 const myCustAPI = createNocoBaseAPI('my_cust_list')
+const bankAPI = createNocoBaseAPI('dim_bank_info')
+const ASSET_BASE = BASE_URL.replace('/api', '')
 
 const CUST_TYPE_TABS = [
   { value: '1', label: '意向客户', icon: 'smile-o' },
@@ -42,9 +44,9 @@ Page({
 
   onShow() {
     if (!checkAuditInterceptor()) return
-    var userInfo = getUserInfo()
     var role = getRole()
-    this.setData({ userInfo: userInfo, role: role })
+    this.setData({ role: role })
+    this.loadUserInfo()
     if (wx.getStorageSync('refreshMyCust')) {
       wx.removeStorageSync('refreshMyCust')
       this.loadMyCustList()
@@ -62,6 +64,7 @@ Page({
     this.setData({ loading: true })
     var that = this
     return Promise.all([
+      this.loadUserInfo(),
       this.loadStats(),
       this.loadRecentList(),
       this.loadMyCustList()
@@ -69,6 +72,33 @@ Page({
       that.setData({ loading: false })
     }).catch(function() {
       that.setData({ loading: false })
+    })
+  },
+
+  loadUserInfo() {
+    var that = this
+    var myId = getUserId()
+    if (!myId) return Promise.resolve()
+    return userAPI.get(myId, [], true).then(function(res) {
+      var userInfo = res.data || {}
+      // 头像 URL 补全
+      if (userInfo.head_image && userInfo.head_image.indexOf('http') !== 0 && userInfo.head_image.indexOf('/storage/') === 0) {
+        userInfo.head_image = ASSET_BASE + userInfo.head_image
+      }
+      // 银行角色关联银行表查询名称
+      var role = getRole()
+      if (role === 'bank' && userInfo.bank_id && !userInfo.bank_name) {
+        return bankAPI.get(userInfo.bank_id, [], true).then(function(bankRes) {
+          var bankInfo = bankRes.data || {}
+          userInfo.bank_name = bankInfo.bank_name || bankInfo.name || ''
+          that.setData({ userInfo: userInfo })
+        }).catch(function() {
+          that.setData({ userInfo: userInfo })
+        })
+      }
+      that.setData({ userInfo: userInfo })
+    }).catch(function(err) {
+      console.error('[home-bank] 加载用户信息失败:', err)
     })
   },
 

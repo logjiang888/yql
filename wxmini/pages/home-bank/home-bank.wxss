@@ -62,6 +62,12 @@
   font-size: 40rpx;
   font-weight: 600;
   margin-right: 24rpx;
+  flex-shrink: 0;
+}
+
+.overview-avatar-img {
+  display: block;
+  background-color: transparent;
 }
 
 .overview-info {

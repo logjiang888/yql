@@ -12,7 +12,8 @@
   <block wx:else>
     <view class="overview-card">
       <view class="overview-header">
-        <view class="overview-avatar">{{(userInfo && userInfo.nickname && userInfo.nickname[0]) || '用'}}</view>
+        <image wx:if="{{userInfo && userInfo.head_image}}" class="overview-avatar overview-avatar-img" src="{{userInfo.head_image}}" mode="aspectFill" />
+      <view wx:else class="overview-avatar">{{(userInfo && userInfo.nickname && userInfo.nickname[0]) || '用'}}</view>
         <view class="overview-info">
           <view class="overview-name">{{(userInfo && userInfo.nickname) || (userInfo && userInfo.username) || '用户'}}</view>
           <status-tag status="{{role}}" type="role"></status-tag>
