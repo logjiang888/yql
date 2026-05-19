@@ -8,10 +8,16 @@
     border="{{ index < messageList.length - 1 }}"
     custom-class="msg-cell"
   >
-    <view slot="icon" class="avatar avatar-sm mr-md">{{item.toUserName[0]}}</view>
+    <view slot="icon">
+      <image wx:if="{{item.headImage}}" class="avatar avatar-sm mr-md" src="{{item.headImage}}" mode="aspectFill" />
+      <view wx:else class="avatar avatar-sm mr-md">{{item.toUserName[0]}}</view>
+    </view>
     <view slot="title" class="msg-title-wrap">
       <view class="flex-between items-center">
-        <view class="text-base font-medium">{{item.toUserName}}</view>
+        <view class="flex items-center">
+          <view class="text-base font-medium">{{item.toUserName}}</view>
+          <view wx:if="{{item.toUserTypeText}}" class="role-tag">{{item.toUserTypeIcon}}{{item.toUserTypeText}}</view>
+        </view>
         <view class="text-xs text-muted">{{item.lastTime}}</view>
       </view>
       <view class="text-sm text-secondary mt-xs msg-preview">{{item.lastContent}}</view>

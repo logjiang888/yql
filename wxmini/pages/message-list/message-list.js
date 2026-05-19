@@ -1,9 +1,21 @@
 const { getUserId } = require('../../stores/auth')
-const { createNocoBaseAPI } = require('../../api/nocobase')
+const { createNocoBaseAPI, BASE_URL } = require('../../api/nocobase')
 const { formatDateTime, checkAuditInterceptor } = require('../../utils/util')
 
 const chatAPI = createNocoBaseAPI('chat_info')
 const userAPI = createNocoBaseAPI('users')
+
+const ROLE_ICON_MAP = {
+  company: '🏢',
+  bank: '🏦',
+  plat_salesperson: '🤝'
+}
+
+const ROLE_TEXT_MAP = {
+  company: '企业',
+  bank: '银行',
+  plat_salesperson: '业务员'
+}
 
 Page({
   data: {
@@ -44,6 +56,7 @@ Page({
       appends: ['to_users_from_id', 'to_users_reply']
     }, true).then((res) => {
       const items = res.data || []
+      const ASSET_BASE = BASE_URL.replace('/api', '')
 
       // 按对方用户聚合，取最后一条消息
       const chatMap = {}
@@ -58,11 +71,20 @@ Page({
         const existing = chatMap[otherId]
         if (!existing || new Date(item.createdAt) > new Date(existing.lastTime)) {
           const otherUser = fromId === myId ? item.to_users_reply : item.to_users_from_id
+          var headImage = (otherUser && otherUser.head_image) || ''
+          if (headImage && headImage.indexOf('http') !== 0 && headImage.indexOf('/storage/') === 0) {
+            headImage = ASSET_BASE + headImage
+          }
+          var userType = (otherUser && otherUser.user_type) || ''
           chatMap[otherId] = {
             toUserId: otherId,
             toUserName: (otherUser && otherUser.nickname) || (otherUser && otherUser.username) || '用户' + otherId,
+            toUserType: userType,
+            toUserTypeText: ROLE_TEXT_MAP[userType] || '',
+            toUserTypeIcon: ROLE_ICON_MAP[userType] || '',
+            headImage: headImage,
             lastContent: item.chat_content,
-            lastTime: item.createdAt,
+            lastTime: formatDateTime(item.createdAt),
             unread: 0
           }
         }
@@ -102,7 +124,7 @@ Page({
             toUserId,
             toUserName: `用户${toUserId}`,
             lastContent: lastMsg.content,
-            lastTime: lastMsg.createTime,
+            lastTime: formatDateTime(lastMsg.createTime),
             unread: 0
           })
         }

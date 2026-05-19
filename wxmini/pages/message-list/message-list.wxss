@@ -26,3 +26,15 @@
   margin-left: 16rpx;
   padding: 0 8rpx;
 }
+
+.role-tag {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 12rpx;
+  padding: 2rpx 12rpx;
+  background-color: #EFF6FF;
+  color: #2563EB;
+  font-size: 22rpx;
+  border-radius: 8rpx;
+  line-height: 1.4;
+}
