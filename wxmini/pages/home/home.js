@@ -36,6 +36,10 @@ Page({
     if (!checkAuditInterceptor()) return
     var userInfo = getUserInfo()
     this.setData({ userInfo: userInfo })
+    var tabBar = this.getTabBar()
+    if (tabBar && typeof tabBar.updateSelected === 'function') {
+      tabBar.updateSelected()
+    }
   },
 
   onPullDownRefresh() {

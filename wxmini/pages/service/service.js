@@ -21,6 +21,10 @@ Page({
     // TabBar 页面 switchTab 不会重复触发 onLoad，需要在 onShow 中刷新
     this.setData({ page: 1 })
     this.loadList()
+    var tabBar = this.getTabBar()
+    if (tabBar && typeof tabBar.updateSelected === 'function') {
+      tabBar.updateSelected()
+    }
   },
 
   onPullDownRefresh() {

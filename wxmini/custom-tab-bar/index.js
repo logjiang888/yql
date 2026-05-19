@@ -43,7 +43,7 @@ Component({
       clearTimeout(this._selectTimer)
       this._selectTimer = setTimeout(() => {
         this.updateSelected()
-      }, 100)
+      }, 200)
     }
   },
 
@@ -67,14 +67,15 @@ Component({
       const currentPage = pages[pages.length - 1]
       if (!currentPage) return
       const route = '/' + currentPage.route
+      const role = getRole() || 'company'
+      const list = TAB_CONFIG[role] || TAB_CONFIG.company
       let index = -1
-      for (let i = 0; i < this.data.list.length; i++) {
-        if (this.data.list[i].pagePath === route) {
+      for (let i = 0; i < list.length; i++) {
+        if (list[i].pagePath === route) {
           index = i
           break
         }
       }
-      // 只有索引变化时才 setData，避免覆盖 switchTab 已设置的正确值
       if (index !== -1 && this.data.selected !== index) {
         this.setData({ selected: index })
       }
@@ -101,7 +102,7 @@ Component({
       this.setData({ selected: index })
       wx.switchTab({
         url: path,
-        complete: () => {
+        success: () => {
           this.updateSelected()
         }
       })

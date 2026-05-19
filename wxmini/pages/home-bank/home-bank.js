@@ -51,6 +51,10 @@ Page({
       wx.removeStorageSync('refreshMyCust')
       this.loadMyCustList()
     }
+    var tabBar = this.getTabBar()
+    if (tabBar && typeof tabBar.updateSelected === 'function') {
+      tabBar.updateSelected()
+    }
   },
 
   onPullDownRefresh() {

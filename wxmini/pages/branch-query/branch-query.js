@@ -20,6 +20,10 @@ Page({
 
   onShow() {
     if (!checkAuditInterceptor()) return
+    var tabBar = this.getTabBar()
+    if (tabBar && typeof tabBar.updateSelected === 'function') {
+      tabBar.updateSelected()
+    }
   },
 
   onPullDownRefresh() {
