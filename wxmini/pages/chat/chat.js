@@ -22,7 +22,7 @@ const ROLE_TEXT_MAP = {
 const DETAIL_PAGE_MAP = {
   company: '/pages/company-detail/company-detail',
   bank: '/pages/bank-staff-detail/bank-staff-detail',
-  plat_salesperson: ''
+  plat_salesperson: '/pages/bank-staff-detail/bank-staff-detail'
 }
 
 Page({
