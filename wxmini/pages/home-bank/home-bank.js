@@ -74,17 +74,23 @@ Page({
 
   loadStats() {
     var that = this
+    var myId = getUserId()
+    if (!myId) {
+      that.setData({ 'stats.total': 0, 'stats.monthNew': 0 })
+      return Promise.resolve()
+    }
+    var monthStart = new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString()
     return Promise.all([
-      companyAPI.list({
+      myCustAPI.list({
         pageSize: 1,
-        filter: { audit_status: { $eq: 'approved' } }
+        filter: { user_id: { $eq: myId } }
       }, true),
-      companyAPI.list({
+      myCustAPI.list({
         pageSize: 1,
         filter: {
           $and: [
-            { audit_status: { $eq: 'approved' } },
-            { createdAt: { $gte: new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString() } }
+            { user_id: { $eq: myId } },
+            { createdAt: { $gte: monthStart } }
           ]
         }
       }, true)
