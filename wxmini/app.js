@@ -1,16 +1,40 @@
 const { initAuthStore } = require('./stores/auth')
+const { createNocoBaseAPI } = require('./api/nocobase')
+
+const configAPI = createNocoBaseAPI('dim_data_config')
 
 App({
   globalData: {
     userInfo: null,
     role: null,
-    systemInfo: null
+    systemInfo: null,
+    appName: '银企来'
   },
 
   onLaunch() {
     this.initSystemInfo()
     initAuthStore()
+    this.loadAppConfig()
     this.checkUpdate()
+  },
+
+  loadAppConfig() {
+    var that = this
+    configAPI.list({
+      pageSize: 1,
+      filter: { data_code: { $eq: 'app_name' } }
+    }, true).then(function(res) {
+      var items = res.data || []
+      if (items.length > 0 && items[0].data_value) {
+        var appName = items[0].data_value
+        that.globalData.appName = appName
+        wx.setStorageSync('appName', appName)
+      }
+    }).catch(function(err) {
+      console.error('[app] 加载应用配置失败:', err)
+      var cached = wx.getStorageSync('appName')
+      if (cached) that.globalData.appName = cached
+    })
   },
 
   initSystemInfo() {

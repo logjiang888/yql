@@ -1,7 +1,7 @@
 <view class="page-container">
   <view class="about-header">
     <view class="about-logo">🏦</view>
-    <view class="about-title">银企来</view>
+    <view class="about-title">{{appName}}</view>
     <view class="about-subtitle">银企对接服务平台</view>
   </view>
 

@@ -1,7 +1,7 @@
 <view class="home-page">
   <view class="home-nav">
     <view class="home-nav-city">📍 北京</view>
-    <view class="home-nav-title">银企来</view>
+    <view class="home-nav-title">{{appName}}</view>
     <view class="home-nav-msg">💬</view>
   </view>
 

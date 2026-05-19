@@ -18,6 +18,7 @@ const SCOPE_TAGS = [
 Page({
   data: {
     loading: true,
+    appName: '银企来',
     staffList: [],
     page: 1,
     pageSize: 100,
@@ -35,7 +36,9 @@ Page({
   onShow() {
     if (!checkAuditInterceptor()) return
     var userInfo = getUserInfo()
-    this.setData({ userInfo: userInfo })
+    var app = getApp()
+    var appName = (app && app.globalData && app.globalData.appName) || wx.getStorageSync('appName') || '银企来'
+    this.setData({ userInfo: userInfo, appName: appName })
     var tabBar = this.getTabBar()
     if (tabBar && typeof tabBar.updateSelected === 'function') {
       tabBar.updateSelected()

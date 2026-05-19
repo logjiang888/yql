@@ -6,10 +6,15 @@ const configAPI = createNocoBaseAPI('dim_data_config')
 Page({
   data: {
     loading: true,
+    appName: '银企来',
     content: ''
   },
 
   onLoad() {
+    var app = getApp()
+    var appName = (app && app.globalData && app.globalData.appName) || wx.getStorageSync('appName') || '银企来'
+    this.setData({ appName: appName })
+    wx.setNavigationBarTitle({ title: appName })
     this.loadAbout()
   },
 
@@ -17,16 +22,31 @@ Page({
     var that = this
     showLoading('加载中')
     configAPI.list({
-      pageSize: 1,
-      filter: { data_code: { $eq: 'app_about' } }
+      pageSize: 2,
+      filter: {
+        $or: [
+          { data_code: { $eq: 'app_about' } },
+          { data_code: { $eq: 'app_name' } }
+        ]
+      }
     }, true).then(function(res) {
       hideLoading()
       var items = res.data || []
       var content = ''
-      if (items.length > 0) {
-        content = items[0].data_value || ''
-      }
-      that.setData({ content: content, loading: false })
+      var appName = that.data.appName
+      items.forEach(function(item) {
+        if (item.data_code === 'app_about') {
+          content = item.data_value || ''
+        }
+        if (item.data_code === 'app_name' && item.data_value) {
+          appName = item.data_value
+          wx.setStorageSync('appName', appName)
+          var app = getApp()
+          if (app && app.globalData) app.globalData.appName = appName
+        }
+      })
+      that.setData({ content: content, appName: appName, loading: false })
+      wx.setNavigationBarTitle({ title: appName })
     }).catch(function(err) {
       hideLoading()
       that.setData({ loading: false })
