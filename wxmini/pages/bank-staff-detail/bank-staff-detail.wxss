@@ -6,6 +6,12 @@
   padding: 60rpx 40rpx 40rpx;
 }
 
+.detail-header .avatar {
+  width: 154rpx;
+  height: 154rpx;
+  font-size: 58rpx;
+}
+
 .detail-name {
   font-size: 40rpx;
   font-weight: 600;
