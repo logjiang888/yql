@@ -45,10 +45,7 @@ Page({
 
     const filter = {}
     if (keyword) {
-      filter.$or = [
-        { bank_name: { $like: `%${keyword}%` } },
-        { bank_code: { $like: `%${keyword}%` } }
-      ]
+      filter.bank_name = { $includes: keyword }
     }
 
     var params = {
@@ -76,7 +73,8 @@ Page({
   },
 
   onSearchInput: debounce(function(e) {
-    this.setData({ keyword: e.detail.value, page: 1, list: [] })
+    var value = (typeof e.detail === 'string') ? e.detail : (e.detail && e.detail.value !== undefined ? e.detail.value : '')
+    this.setData({ keyword: value, page: 1, list: [] })
     this.loadList()
   }, 500),
 

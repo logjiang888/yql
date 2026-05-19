@@ -1,7 +1,7 @@
 <view class="page-container">
   <van-search
     value="{{ keyword }}"
-    placeholder="搜索网点名称、区域"
+    placeholder="搜索网点名称"
     bind:change="onSearchInput"
     background="#fff"
   />
