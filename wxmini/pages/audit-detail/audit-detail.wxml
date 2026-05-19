@@ -243,8 +243,8 @@
       </view>
     </block>
 
-    <!-- 审核状态 -->
-    <view class="card card-shadow mx-md mt-md">
+    <!-- 审核状态（仅审核中显示） -->
+    <view wx:if="{{canAudit}}" class="card card-shadow mx-md mt-md">
       <view class="card-section">
         <view class="section-title">审核状态</view>
         <van-field
@@ -257,8 +257,8 @@
       </view>
     </view>
 
-    <!-- 审核结果区域 -->
-    <view class="card card-shadow mx-md mt-md mb-xl">
+    <!-- 审核结果区域（仅审核中显示） -->
+    <view wx:if="{{canAudit}}" class="card card-shadow mx-md mt-md mb-xl">
       <view class="card-section">
         <view class="section-title">审核结果</view>
         <van-field
@@ -271,9 +271,10 @@
       </view>
     </view>
 
-    <!-- 底部保存按钮 -->
+    <!-- 底部按钮 -->
     <view class="fixed-footer">
-      <van-button block round type="primary" loading="{{saving}}" bind:click="onSave">保存审核结果</van-button>
+      <van-button wx:if="{{canAudit}}" block round type="primary" loading="{{saving}}" bind:click="onSave">保存审核结果</van-button>
+      <van-button wx:else block round plain hairline type="primary" bind:click="onClosePage">关闭</van-button>
     </view>
 
     <!-- 审核状态选择弹窗 -->

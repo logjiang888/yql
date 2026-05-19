@@ -57,7 +57,8 @@ Page({
     auditStatusIndex: 0,
     showStatusPicker: false,
     auditResult: '',
-    refImages: {}
+    refImages: {},
+    canAudit: false
   },
 
   onLoad(options) {
@@ -118,7 +119,8 @@ Page({
         auditStatusValue: userInfo.audit_status || '',
         auditStatusLabel: statusConfig.text,
         auditStatusIndex: statusIndex,
-        auditResult: userInfo.audit_result || ''
+        auditResult: userInfo.audit_result || '',
+        canAudit: userInfo.audit_status === 'under_review'
       })
 
       if (role === 'company') {
@@ -200,6 +202,10 @@ Page({
     var url = e.currentTarget.dataset.url
     if (!url) return
     wx.previewImage({ urls: [url], current: url })
+  },
+
+  onClosePage() {
+    wx.navigateBack()
   },
 
   onShowStatusPicker() {
