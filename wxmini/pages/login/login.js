@@ -121,7 +121,22 @@ Page({
           // 审核状态校验：只有被禁用的账号不能登录
           const auditStatus = merged.audit_status || ''
           if (auditStatus === 'disabled') {
-            this.setData({ errorMsg: '账号已被禁用，请联系管理员', errorField: '' })
+            wx.showModal({
+              title: '⚠️ 账号已被禁用',
+              content: '您的账号因违规或异常已被管理员禁用，暂时无法登录。如有疑问，请联系管理员处理。',
+              confirmText: '复制电话',
+              cancelText: '我知道了',
+              success: function(res) {
+                if (res.confirm) {
+                  wx.setClipboardData({
+                    data: '18650055458',
+                    success: function() {
+                      wx.showToast({ title: '电话已复制', icon: 'success' })
+                    }
+                  })
+                }
+              }
+            })
             return
           }
 
