@@ -254,6 +254,10 @@ Page({
       // 更新本地显示状态
       var statusConfig = AUDIT_STATUS_MAP[auditStatusValue] || { text: auditStatusValue || '-', color: '#9CA3AF' }
       that.setData({ auditStatusText: statusConfig.text, auditStatusColor: statusConfig.color })
+      // 1.5秒后返回上一页
+      setTimeout(function() {
+        wx.navigateBack()
+      }, 1500)
     }).catch(function(err) {
       hideLoading()
       that.setData({ saving: false })
