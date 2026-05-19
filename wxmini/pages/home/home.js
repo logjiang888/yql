@@ -97,11 +97,15 @@ Page({
       appends: ['to_dim_bank_info']
     }, true).then(function(res) {
       var users = res.data || []
+      var ASSET_BASE = BASE_URL.replace('/api', '')
       var list = users.map(function(u) {
         var item = {}
         for (var k in u) { item[k] = u[k] }
         var bankInfo = u.to_dim_bank_info || {}
         item.bank_name = bankInfo.bank_name || u.bank_name || ''
+        if (item.head_image && item.head_image.indexOf('http') !== 0 && item.head_image.indexOf('/storage/') === 0) {
+          item.head_image = ASSET_BASE + item.head_image
+        }
         return item
       })
       var keyword = that.data.searchKeyword || ''

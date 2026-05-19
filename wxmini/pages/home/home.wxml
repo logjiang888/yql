@@ -43,11 +43,11 @@
         bindtap="onStaffTap"
       >
         <view class="card-main">
-          <view class="avatar avatar-sm">{{(item.nickname && item.nickname[0]) || '银'}}</view>
+          <image wx:if="{{item.head_image}}" class="avatar avatar-sm avatar-img" src="{{item.head_image}}" mode="aspectFill" />
+          <view wx:else class="avatar avatar-sm">{{(item.nickname && item.nickname[0]) || '银'}}</view>
           <view class="card-info">
             <view class="info-row">
               <text class="staff-name">{{item.nickname || item.username}}</text>
-              <status-tag status="1" type="audit"></status-tag>
             </view>
             <view class="info-sub">{{item.bank_name || '中国银行'}} · {{item.position || '客户经理'}}</view>
             <view class="scope-tags" wx:if="{{item.business_scope}}">
