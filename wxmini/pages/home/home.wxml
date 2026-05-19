@@ -48,8 +48,9 @@
           <view class="card-info">
             <view class="info-row">
               <text class="staff-name">{{item.nickname || item.username}}</text>
+              <text wx:if="{{item.position}}" class="staff-position">({{item.position}})</text>
             </view>
-            <view class="info-sub">{{item.bank_name || '中国银行'}} · {{item.position || '客户经理'}}</view>
+            <view class="info-sub">{{item.bank_name || '中国银行'}}</view>
             <view class="scope-tags" wx:if="{{item.business_scope}}">
               <van-tag
                 wx:for="{{item.business_scope.split(',')}}"

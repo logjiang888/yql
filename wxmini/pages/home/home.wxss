@@ -206,7 +206,12 @@
   font-size: 30rpx;
   font-weight: 500;
   color: var(--text-primary);
-  margin-right: 12rpx;
+  margin-right: 4rpx;
+}
+
+.staff-position {
+  font-size: 26rpx;
+  color: var(--text-secondary);
 }
 
 .info-sub {
