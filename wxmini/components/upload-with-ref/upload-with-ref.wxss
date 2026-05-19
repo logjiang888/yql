@@ -12,6 +12,12 @@
   padding: 0 32rpx;
 }
 
+.required-star {
+  color: var(--danger);
+  margin-right: 4rpx;
+  font-weight: bold;
+}
+
 .upload-ref-btn {
   display: flex;
   align-items: center;

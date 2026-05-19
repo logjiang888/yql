@@ -200,6 +200,7 @@
         <view class="edit-section" style="margin-top:24rpx;padding:0;">
           <upload-with-ref
             label="工作证件"
+            required="{{true}}"
             maxCount="3"
             files="{{form.work_proof}}"
             data-field="work_proof"
@@ -243,6 +244,7 @@
       <view class="edit-section" style="margin-top:24rpx;padding:0;">
         <upload-with-ref
           label="工作证件"
+          required="{{true}}"
           maxCount="3"
           files="{{form.work_proof}}"
           data-field="work_proof"

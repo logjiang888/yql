@@ -27,6 +27,10 @@ Component({
     autoUpload: {
       type: Boolean,
       value: true
+    },
+    required: {
+      type: Boolean,
+      value: false
     }
   },
 

@@ -1,5 +1,6 @@
 <view class="upload-wrap">
   <view class="upload-label" wx:if="{{label}}">
+    <text class="required-star" wx:if="{{required}}">*</text>
     {{label}}
     <view class="upload-ref-btn" wx:if="{{referenceUrl}}" bindtap="onPreviewRef">
       <view class="ref-icon">👁</view>
