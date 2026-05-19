@@ -4,8 +4,77 @@
   padding-bottom: 40rpx;
 }
 
+/* 区域块 */
+.section-block {
+  background-color: #fff;
+  margin-bottom: 24rpx;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  padding: 32rpx 24rpx 20rpx;
+  border-bottom: 2rpx solid #f3f4f6;
+}
+
+.section-icon {
+  font-size: 40rpx;
+}
+
+.section-title {
+  font-size: 34rpx;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+/* 子TAB */
+.status-tabs-scroll {
+  width: 100%;
+}
+
+.status-tabs {
+  display: flex;
+  flex-direction: row;
+  padding: 16rpx 24rpx;
+  gap: 12rpx;
+}
+
+.status-tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 16rpx 24rpx;
+  border-radius: 12rpx;
+  background-color: #f3f4f6;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.status-tab-active {
+  background-color: #eff6ff;
+  border-bottom: 4rpx solid #2563EB;
+}
+
+.status-tab-icon {
+  font-size: 36rpx;
+  margin-bottom: 6rpx;
+}
+
+.status-tab-label {
+  font-size: 24rpx;
+  color: #6b7280;
+}
+
+.status-tab-active .status-tab-label {
+  color: #2563EB;
+  font-weight: 600;
+}
+
+/* 列表 */
 .audit-list {
-  padding: 24rpx;
+  padding: 0 24rpx 24rpx;
 }
 
 .audit-card {
@@ -75,6 +144,12 @@
 .card-action {
   flex-shrink: 0;
   margin-left: 16rpx;
+}
+
+.load-more-wrap {
+  display: flex;
+  justify-content: center;
+  padding: 24rpx 0;
 }
 
 .load-more-text {

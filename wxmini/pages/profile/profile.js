@@ -817,7 +817,12 @@ Page({
       data.position = form.position
       if (form.work_years) data.work_years = parseInt(form.work_years)
     }
-    data.audit_status = 'unreviewed'
+    var currentStatus = (this.data.userInfo && this.data.userInfo.audit_status) || ''
+    if (currentStatus === 'unreviewed' || currentStatus === 'rejected') {
+      data.audit_status = 'under_review'
+    } else if (currentStatus === 'approved') {
+      data.audit_status = 'unreviewed'
+    }
     return data
   },
 
