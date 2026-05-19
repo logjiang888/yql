@@ -4,6 +4,8 @@ const { createNocoBaseAPI, request, BASE_URL } = require('../../api/nocobase')
 
 const chatAPI = createNocoBaseAPI('chat_info')
 const userAPI = createNocoBaseAPI('users')
+const companyAPI = createNocoBaseAPI('company_info')
+const myCustAPI = createNocoBaseAPI('my_cust_list')
 
 const ROLE_ICON_MAP = {
   company: '🏢',
@@ -15,6 +17,12 @@ const ROLE_TEXT_MAP = {
   company: '企业',
   bank: '银行',
   plat_salesperson: '业务员'
+}
+
+const DETAIL_PAGE_MAP = {
+  company: '/pages/company-detail/company-detail',
+  bank: '/pages/bank-staff-detail/bank-staff-detail',
+  plat_salesperson: ''
 }
 
 Page({
