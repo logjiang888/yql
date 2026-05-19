@@ -15,6 +15,7 @@ Page({
   data: {
     role: '',
     roleText: '',
+    appName: '银企来',
     loginType: 'password',
     phone: '',
     code: '',
@@ -34,6 +35,9 @@ Page({
     if (options.phone) {
       this.setData({ phone: options.phone, loginType: 'password' })
     }
+    var app = getApp()
+    var appName = (app && app.globalData && app.globalData.appName) || wx.getStorageSync('appName') || '银企来'
+    this.setData({ appName: appName })
     wx.setNavigationBarTitle({ title: '登录' })
   },
 
