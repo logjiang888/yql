@@ -90,7 +90,12 @@ Page({
     var that = this
     that.loadReferenceImages()
     var role = getRole()
-    var appends = role === 'bank' ? ['bank_id', 'work_proof'] : []
+    var appends = []
+    if (role === 'bank') {
+      appends = ['bank_id', 'work_proof']
+    } else if (role === 'plat_salesperson') {
+      appends = ['work_proof']
+    }
     console.log('[loadProfile] userAPI.list appends:', appends)
     userAPI.list({
       pageSize: 1,
@@ -350,6 +355,16 @@ Page({
       form.phone = userInfo.phone || ''
       form.position = userInfo.position || ''
       form.work_years = userInfo.work_years || ''
+      var wp = userInfo.work_proof || []
+      if (!Array.isArray(wp)) wp = []
+      form.work_proof = wp.map(function(item) {
+        if (typeof item === 'string') return item
+        var url = item.url || ''
+        if (url && url.indexOf('/storage/') === 0) {
+          url = BASE_URL.replace('/api', '') + url
+        }
+        return { id: item.id, url: url }
+      })
     }
     return form
   },
@@ -772,12 +787,12 @@ Page({
       return
     }
 
-    if (role === 'bank' && form.work_proof && form.work_proof.length > 0) {
+    if ((role === 'bank' || role === 'plat_salesperson') && form.work_proof && form.work_proof.length > 0) {
       var hasNewFiles = form.work_proof.some(function(item) { return typeof item === 'string' })
-      console.log('[onSave] bank 角色 work_proof 是否有新文件:', hasNewFiles)
+      console.log('[onSave] ' + role + ' 角色 work_proof 是否有新文件:', hasNewFiles)
       if (hasNewFiles) {
         that.uploadAttachments(form.work_proof).then(function(newIds) {
-          console.log('[onSave] bank 附件上传完成，新 IDs:', newIds)
+          console.log('[onSave] ' + role + ' 附件上传完成，新 IDs:', newIds)
           var existingIds = form.work_proof
             .filter(function(item) { return typeof item !== 'string' && item.id })
             .map(function(item) { return item.id })
@@ -785,7 +800,7 @@ Page({
           form.work_proof = allIds.map(function(id) { return { id: id } })
           doSave()
         }).catch(function(err) {
-          console.error('[onSave] bank 附件上传失败:', err)
+          console.error('[onSave] ' + role + ' 附件上传失败:', err)
           hideLoading()
           that.setData({ saving: false })
           showToast('证件上传失败')
@@ -831,6 +846,14 @@ Page({
       data.phone = form.phone
       data.position = form.position
       if (form.work_years) data.work_years = parseInt(form.work_years)
+      var wpFiles = form.work_proof || []
+      var wpIds = wpFiles.map(function(item) {
+        if (typeof item === 'string') return null
+        return item.id || null
+      }).filter(function(id) { return id !== null })
+      if (wpIds.length > 0) {
+        data.work_proof = wpIds.map(function(id) { return { id: id } })
+      }
     }
     var currentStatus = (this.data.userInfo && this.data.userInfo.audit_status) || ''
     if (currentStatus === 'unreviewed' || currentStatus === 'rejected') {

@@ -239,6 +239,17 @@
         <van-field label="岗位" value="{{form.position}}" data-field="position" bind:input="onInputChange" placeholder="请输入岗位" />
         <van-field label="工作年限" value="{{form.work_years}}" data-field="work_years" bind:input="onNumberInput" placeholder="请输入工作年限" type="number" />
       </view>
+
+      <view class="edit-section" style="margin-top:24rpx;padding:0;">
+        <upload-with-ref
+          label="工作证件"
+          maxCount="3"
+          files="{{form.work_proof}}"
+          data-field="work_proof"
+          bindchange="onUploadChange"
+          autoUpload="{{true}}"
+        />
+      </view>
     </block>
 
     <!-- 银行选择弹窗 -->
