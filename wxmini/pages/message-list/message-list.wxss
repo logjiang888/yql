@@ -1,6 +1,11 @@
 .msg-cell {
   padding: 20rpx 32rpx !important;
   align-items: flex-start !important;
+  border-bottom: 2rpx solid #F3F4F6 !important;
+}
+
+.msg-cell:last-child {
+  border-bottom: none !important;
 }
 
 .msg-title-wrap {
