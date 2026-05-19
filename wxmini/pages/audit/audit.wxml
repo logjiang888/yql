@@ -51,7 +51,7 @@
             </view>
           </view>
           <view class="card-action" catchtap="onAuditBtnTap">
-            <van-button size="small" round type="primary" icon="passed" bind:click="onAuditTap" data-user-id="{{item.id}}" data-role="{{item.user_type}}">审核</van-button>
+            <van-button wx:if="{{item.audit_status === 'under_review'}}" size="small" round type="primary" icon="passed" bind:click="onAuditTap" data-user-id="{{item.id}}" data-role="{{item.user_type}}">审核</van-button>
           </view>
         </view>
 
@@ -117,7 +117,7 @@
             </view>
           </view>
           <view class="card-action" catchtap="onAuditBtnTap">
-            <van-button size="small" round type="primary" icon="passed" bind:click="onAuditTap" data-user-id="{{item.id}}" data-role="{{item.user_type}}">审核</van-button>
+            <van-button wx:if="{{item.audit_status === 'under_review'}}" size="small" round type="primary" icon="passed" bind:click="onAuditTap" data-user-id="{{item.id}}" data-role="{{item.user_type}}">审核</van-button>
           </view>
         </view>
 
