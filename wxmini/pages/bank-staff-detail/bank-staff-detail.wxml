@@ -4,7 +4,8 @@
   <block wx:elif="{{staff}}">
     <!-- 头部信息 -->
     <view class="detail-header">
-      <view class="avatar avatar-lg">{{(staff.nickname && staff.nickname[0]) || '银'}}</view>
+      <image wx:if="{{staff.head_image}}" class="avatar avatar-lg avatar-img" src="{{staff.head_image}}" mode="aspectFill" />
+      <view wx:else class="avatar avatar-lg">{{(staff.nickname && staff.nickname[0]) || '银'}}</view>
       <view class="detail-name">{{staff.nickname || staff.username}}</view>
       <view class="detail-status">
         <status-tag status="1" type="audit"></status-tag>

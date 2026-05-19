@@ -31,6 +31,9 @@ Page({
       const staff = res.data || {}
       const bankInfo = staff.to_dim_bank_info || {}
       staff.bank_name = bankInfo.bank_name || staff.bank_name || ''
+      if (staff.head_image && staff.head_image.indexOf('http') !== 0 && staff.head_image.indexOf('/') === 0) {
+        staff.head_image = BASE_DOMAIN + staff.head_image
+      }
 
       // 处理发布的产品（兼容字符串或关联数组）
       let products = staff.published_products
