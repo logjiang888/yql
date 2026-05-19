@@ -107,7 +107,7 @@
     </view>
   </view>
 
-  <!-- 注册成功审核提示弹窗 -->
+  <!-- 注册成功提示弹窗 -->
   <van-popup
     show="{{ showAuditPopup }}"
     round
@@ -116,17 +116,17 @@
     custom-class="audit-popup"
   >
     <view class="audit-content">
-      <view class="audit-icon">⏳</view>
-      <view class="audit-title">注册成功</view>
+      <view class="audit-icon">🎉</view>
+      <view class="audit-title">恭喜您，注册成功！</view>
       <view class="audit-desc">
-        您的注册申请已提交，请等待管理员审核通过后方可登录。
+        为了给您提供更精准、更优质的服务，建议您尽快完善个人资料。
       </view>
-      <view class="audit-contact">
-        <text class="audit-contact-label">管理员联系方式：</text>
-        <text class="audit-phone" bindtap="onCopyPhone">18650055458</text>
+      <view class="audit-path">
+        <text class="audit-path-label">完善路径：</text>
+        <text class="audit-path-highlight">我的 → 个人资料</text>
       </view>
       <view class="audit-hint">
-        客户资料可在「我的」模块中完善
+        资料越完整，匹配越精准，服务更高效
       </view>
       <van-button
         type="primary"
@@ -134,7 +134,7 @@
         round
         bind:click="onGoLogin"
         custom-class="audit-btn"
-      >我知道了</van-button>
+      >立即去完善</van-button>
     </view>
   </van-popup>
 
