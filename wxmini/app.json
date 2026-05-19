@@ -17,6 +17,9 @@
     "pages/profile/profile",
     "pages/change-password/change-password",
     "pages/message-list/message-list",
+    "pages/service/service",
+    "pages/audit/audit",
+    "pages/audit-detail/audit-detail",
     "pages/cust-remark/cust-remark"
   ],
   "tabBar": {
@@ -41,6 +44,14 @@
       {
         "pagePath": "pages/message-list/message-list",
         "text": "消息"
+      },
+      {
+        "pagePath": "pages/service/service",
+        "text": "服务"
+      },
+      {
+        "pagePath": "pages/audit/audit",
+        "text": "审核"
       },
       {
         "pagePath": "pages/profile/profile",

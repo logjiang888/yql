@@ -18,7 +18,7 @@ Page({
     const typeMap = {
       company: PROTOCOL_TYPE.COMPANY,
       bank: PROTOCOL_TYPE.BANK,
-      salesperson: PROTOCOL_TYPE.SALESPERSON
+      plat_salesperson: PROTOCOL_TYPE.SALESPERSON
     }
     this.setData({ role, showAgreeBtn, protocolType: typeMap[role] || PROTOCOL_TYPE.COMPANY })
     this.loadProtocol()

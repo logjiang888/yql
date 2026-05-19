@@ -6,6 +6,13 @@
   padding: 100rpx 40rpx 80rpx;
 }
 
+.profile-header .avatar-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .profile-header .avatar {
   width: 144rpx;
   height: 144rpx;
@@ -18,6 +25,27 @@
   font-size: 52rpx;
   font-weight: 600;
   color: #fff;
+}
+
+.profile-header .avatar-img {
+  background-color: transparent;
+  display: block;
+}
+
+.profile-header .avatar-edit-badge {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 40rpx;
+  height: 40rpx;
+  background: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20rpx;
+  border: 2rpx solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.15);
 }
 
 .profile-name {
@@ -91,6 +119,46 @@
   margin-bottom: 24rpx;
   padding-left: 32rpx;
   position: relative;
+}
+
+/* 编辑模式头像区域 */
+.edit-avatar-section {
+  display: flex;
+  justify-content: center;
+  padding: 32rpx 0;
+  background-color: #fff;
+  margin-bottom: 24rpx;
+}
+
+.edit-avatar-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.edit-avatar {
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 50%;
+  border: 4rpx solid #e5e7eb;
+  background-color: #f3f4f6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 56rpx;
+  font-weight: 600;
+  color: #9ca3af;
+}
+
+.edit-avatar-default {
+  background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+  color: #2563eb;
+}
+
+.edit-avatar-tip {
+  font-size: 26rpx;
+  color: #6b7280;
 }
 
 .section-title::before {

@@ -36,7 +36,7 @@
     <van-button
       size="small"
       type="primary"
-      disabled="{{!inputValue || !inputValue.trim()}}"
+      disabled="{{!canSend}}"
       bind:click="onSend"
       custom-class="send-btn"
     >发送</van-button>

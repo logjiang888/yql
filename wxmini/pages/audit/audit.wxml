@@ -1,0 +1,62 @@
+<view class="page-container">
+  <van-tabs active="{{activeTab}}" bind:change="onTabChange" color="#2563EB" line-width="40rpx" sticky>
+    <van-tab title="🏦 银行" />
+    <van-tab title="🏢 企业" />
+  </van-tabs>
+
+  <view class="audit-list">
+    <van-loading wx:if="{{loading && list.length === 0}}" size="24px" vertical>加载中...</van-loading>
+
+    <block wx:elif="{{list.length > 0}}">
+      <view
+        class="audit-card"
+        wx:for="{{list}}"
+        wx:key="id"
+        data-user-id="{{item.id}}"
+        data-role="{{item.user_type}}"
+        bindtap="onCardTap"
+      >
+        <!-- 左侧头像 -->
+        <view class="card-avatar-wrapper">
+          <image wx:if="{{item.head_image}}" class="card-avatar" src="{{item.head_image}}" mode="aspectFill" lazy-load />
+          <view wx:else class="card-avatar card-avatar-default">{{item._avatarText}}</view>
+        </view>
+
+        <!-- 右侧信息 -->
+        <view class="card-info">
+          <view class="info-header">
+            <view class="info-name">{{item.nickname || item.real_name || item.username || '未知'}}</view>
+            <van-tag
+              color="{{item._auditStatusColor}}"
+              text-color="#fff"
+              size="medium"
+            >{{item._auditStatusText}}</van-tag>
+          </view>
+          <view class="info-phone" catchtap="onPhoneTap" data-phone="{{item.phone}}">
+            <van-icon name="phone-o" size="14px" color="#2563EB" />
+            <text class="phone-text">{{item.phone || '-'}}</text>
+          </view>
+        </view>
+
+        <!-- 审核按钮 -->
+        <view class="card-action" catchtap="onAuditBtnTap">
+          <van-button
+            size="small"
+            round
+            type="primary"
+            icon="passed"
+            bind:click="onAuditTap"
+            data-user-id="{{item.id}}"
+            data-role="{{item.user_type}}"
+          >
+            审核
+          </van-button>
+        </view>
+      </view>
+
+      <view wx:if="{{!hasMore && list.length > 0}}" class="load-more-text">没有更多了</view>
+    </block>
+
+    <van-empty wx:else description="暂无待审核用户" />
+  </view>
+</view>

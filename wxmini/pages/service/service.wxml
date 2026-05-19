@@ -1,0 +1,47 @@
+<view class="page-container">
+  <view class="salesperson-list">
+    <van-loading wx:if="{{loading && list.length === 0}}" size="24px" vertical>加载中...</van-loading>
+
+    <block wx:elif="{{list.length > 0}}">
+      <view
+        class="salesperson-card"
+        wx:for="{{list}}"
+        wx:key="id"
+      >
+        <!-- 左侧头像 -->
+        <view class="card-avatar-wrapper">
+          <image wx:if="{{item.head_image}}" class="card-avatar" src="{{item.head_image}}" mode="aspectFill" lazy-load />
+          <view wx:else class="card-avatar card-avatar-default">{{item._avatarText}}</view>
+        </view>
+
+        <!-- 右侧信息 -->
+        <view class="card-info">
+          <view class="info-name">{{item.nickname || item.real_name || item.username || '未知'}}</view>
+          <view class="info-phone" bindtap="onPhoneTap" data-phone="{{item.phone}}">
+            <van-icon name="phone-o" size="14px" color="#2563EB" />
+            <text class="phone-text">{{item.phone || '-'}}</text>
+          </view>
+        </view>
+
+        <!-- 深度服务按钮 -->
+        <view class="card-action">
+          <van-button
+            size="small"
+            round
+            type="primary"
+            icon="chat-o"
+            bind:click="onDeepServiceTap"
+            data-user-id="{{item.id}}"
+            data-name="{{item.nickname || item.real_name || item.username}}"
+          >
+            深度服务
+          </van-button>
+        </view>
+      </view>
+
+      <view wx:if="{{!hasMore && list.length > 0}}" class="load-more-text">没有更多了</view>
+    </block>
+
+    <van-empty wx:else description="暂无业务员" />
+  </view>
+</view>

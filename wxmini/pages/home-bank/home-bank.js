@@ -1,6 +1,7 @@
 const { getUserInfo, getRole, getUserId } = require('../../stores/auth')
 const { createNocoBaseAPI } = require('../../api/nocobase')
 const { PAGE_SIZE } = require('../../constants/index')
+const { checkAuditInterceptor } = require('../../utils/util')
 const { formatDate } = require('../../utils/util')
 
 const companyAPI = createNocoBaseAPI('company_info')
@@ -40,6 +41,7 @@ Page({
   },
 
   onShow() {
+    if (!checkAuditInterceptor()) return
     var userInfo = getUserInfo()
     var role = getRole()
     this.setData({ userInfo: userInfo, role: role })

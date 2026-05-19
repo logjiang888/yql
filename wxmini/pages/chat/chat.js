@@ -1,5 +1,5 @@
 const { getUserId } = require('../../stores/auth')
-const { formatDateTime, storage, showToast } = require('../../utils/util')
+const { formatDateTime, storage, showToast, checkAuditInterceptor } = require('../../utils/util')
 const { createNocoBaseAPI, request } = require('../../api/nocobase')
 
 const chatAPI = createNocoBaseAPI('chat_info')
@@ -9,6 +9,7 @@ Page({
     toUserId: 0,
     toUserName: '',
     inputValue: '',
+    canSend: false,
     messages: [],
     scrollToId: '',
     loading: false
@@ -20,6 +21,10 @@ Page({
     this.setData({ toUserId, toUserName })
     wx.setNavigationBarTitle({ title: toUserName })
     this.loadMessages(toUserId)
+  },
+
+  onShow() {
+    if (!checkAuditInterceptor()) return
   },
 
   loadMessages(toUserId) {
@@ -77,7 +82,8 @@ Page({
   },
 
   onInputChange(e) {
-    this.setData({ inputValue: e.detail.value })
+    var value = e.detail.value !== undefined ? e.detail.value : ''
+    this.setData({ inputValue: value, canSend: value.trim().length > 0 })
   },
 
   onSend() {
@@ -101,7 +107,7 @@ Page({
     }
 
     const updated = messages.concat([newMessage])
-    this.setData({ messages: updated, inputValue: '' })
+    this.setData({ messages: updated, inputValue: '', canSend: false })
     this.saveMessages(updated)
     this.scrollToBottom()
 

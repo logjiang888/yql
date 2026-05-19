@@ -63,6 +63,11 @@ const getUserId = () => {
   return (userInfo && userInfo.id) || (userInfo && userInfo.userId) || 0
 }
 
+const isAuditApproved = () => {
+  const userInfo = getUserInfo()
+  return userInfo && userInfo.audit_status === 'approved'
+}
+
 module.exports = {
   initAuthStore,
   setAuth,
@@ -71,5 +76,6 @@ module.exports = {
   getUserInfo,
   getRole,
   isLogin,
-  getUserId
+  getUserId,
+  isAuditApproved
 }

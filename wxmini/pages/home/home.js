@@ -1,5 +1,6 @@
 const { createNocoBaseAPI, BASE_URL } = require('../../api/nocobase')
 const { getUserInfo } = require('../../stores/auth')
+const { checkAuditInterceptor } = require('../../utils/util')
 
 const userAPI = createNocoBaseAPI('users')
 
@@ -32,6 +33,7 @@ Page({
   },
 
   onShow() {
+    if (!checkAuditInterceptor()) return
     var userInfo = getUserInfo()
     this.setData({ userInfo: userInfo })
   },

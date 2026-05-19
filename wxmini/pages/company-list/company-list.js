@@ -1,6 +1,7 @@
 const { getUserId } = require('../../stores/auth')
 const { createNocoBaseAPI } = require('../../api/nocobase')
 const { PAGE_SIZE } = require('../../constants/index')
+const { checkAuditInterceptor } = require('../../utils/util')
 const { debounce, formatDate, maskCreditCode } = require('../../utils/util')
 
 const companyAPI = createNocoBaseAPI('company_info')
@@ -18,6 +19,10 @@ Page({
 
   onLoad() {
     this.loadList()
+  },
+
+  onShow() {
+    if (!checkAuditInterceptor()) return
   },
 
   onPullDownRefresh() {

@@ -1,6 +1,6 @@
 const { createNocoBaseAPI } = require('../../api/nocobase')
 const { PAGE_SIZE } = require('../../constants/index')
-const { debounce } = require('../../utils/util')
+const { debounce, checkAuditInterceptor } = require('../../utils/util')
 
 const bankAPI = createNocoBaseAPI('dim_bank_info')
 
@@ -16,6 +16,10 @@ Page({
 
   onLoad() {
     this.loadList()
+  },
+
+  onShow() {
+    if (!checkAuditInterceptor()) return
   },
 
   onPullDownRefresh() {

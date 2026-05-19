@@ -1,5 +1,5 @@
 const { createNocoBaseAPI, BASE_URL } = require('../../api/nocobase')
-const { showLoading, hideLoading } = require('../../utils/util')
+const { showLoading, hideLoading, checkAuditInterceptor } = require('../../utils/util')
 
 const userAPI = createNocoBaseAPI('users')
 
@@ -17,6 +17,10 @@ Page({
     if (id) {
       this.loadDetail(id)
     }
+  },
+
+  onShow() {
+    if (!checkAuditInterceptor()) return
   },
 
   loadDetail(id) {

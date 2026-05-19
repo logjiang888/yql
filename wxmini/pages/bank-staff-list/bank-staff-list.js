@@ -1,6 +1,6 @@
 const { createNocoBaseAPI } = require('../../api/nocobase')
 const { PAGE_SIZE } = require('../../constants/index')
-const { debounce, showLoading, hideLoading } = require('../../utils/util')
+const { debounce, showLoading, hideLoading, checkAuditInterceptor } = require('../../utils/util')
 
 const userAPI = createNocoBaseAPI('users')
 
@@ -17,8 +17,11 @@ Page({
   },
 
   onLoad() {
-    
     this.loadList()
+  },
+
+  onShow() {
+    if (!checkAuditInterceptor()) return
   },
 
   onPullDownRefresh() {

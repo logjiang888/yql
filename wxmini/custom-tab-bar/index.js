@@ -1,4 +1,4 @@
-const { getRole, isLogin } = require('../stores/auth')
+const { getRole, isLogin, getUserInfo } = require('../stores/auth')
 const { getPagePath } = require('../utils/util')
 
 const TAB_CONFIG = {
@@ -6,6 +6,7 @@ const TAB_CONFIG = {
     { pagePath: '/pages/home/home', text: '银行', icon: 'home-o', activeIcon: 'home', iconImage: '/assets/tabbar/bank.png', activeIconImage: '/assets/tabbar/bank-active.png' },
     { pagePath: '/pages/branch-query/branch-query', text: '网点', icon: 'location-o', activeIcon: 'location' },
     { pagePath: '/pages/message-list/message-list', text: '消息', icon: 'comment-o', activeIcon: 'comment' },
+    { pagePath: '/pages/service/service', text: '服务', icon: 'service-o', activeIcon: 'service' },
     { pagePath: '/pages/profile/profile', text: '我的', icon: 'user-o', activeIcon: 'user' }
   ],
   bank: [
@@ -14,9 +15,10 @@ const TAB_CONFIG = {
     { pagePath: '/pages/message-list/message-list', text: '消息', icon: 'comment-o', activeIcon: 'comment' },
     { pagePath: '/pages/profile/profile', text: '我的', icon: 'user-o', activeIcon: 'user' }
   ],
-  salesperson: [
+  plat_salesperson: [
     { pagePath: '/pages/home-bank/home-bank', text: '工作台', icon: 'desktop-o', activeIcon: 'desktop', iconImage: '/assets/tabbar/workbench.png', activeIconImage: '/assets/tabbar/workbench-active.png' },
     { pagePath: '/pages/company-list/company-list', text: '企业', icon: 'shop-o', activeIcon: 'shop', iconImage: '/assets/tabbar/enterprise.png', activeIconImage: '/assets/tabbar/enterprise-active.png' },
+    { pagePath: '/pages/audit/audit', text: '审核', iconImage: '/assets/tabbar/audit.png', activeIconImage: '/assets/tabbar/audit-active.png' },
     { pagePath: '/pages/profile/profile', text: '我的', icon: 'user-o', activeIcon: 'user' }
   ]
 }
@@ -80,6 +82,21 @@ Component({
     switchTab(e) {
       const index = e.currentTarget.dataset.index
       const path = e.currentTarget.dataset.path
+
+      // 非"我的"Tab 需要审核通过才能切换
+      const isProfileTab = path === '/pages/profile/profile'
+      if (!isProfileTab) {
+        const userInfo = getUserInfo()
+        if (userInfo && userInfo.audit_status !== 'approved') {
+          wx.showModal({
+            title: '提示',
+            content: '请您到我的->我的资料模块中完善个人资料，等待审核通过激活',
+            showCancel: false
+          })
+          return
+        }
+      }
+
       this.setData({ selected: index })
       wx.switchTab({
         url: path,

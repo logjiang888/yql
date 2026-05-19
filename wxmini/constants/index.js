@@ -1,7 +1,7 @@
 const ROLES = {
   COMPANY: 'company',
   BANK: 'bank',
-  SALESPERSON: 'salesperson',
+  SALESPERSON: 'plat_salesperson',
   ADMIN: 'admin'
 }
 
@@ -22,7 +22,7 @@ const AUDIT_STATUS_TEXT = {
 const ROLE_TEXT = {
   company: { text: '企业客户', color: '#2563EB', bg: '#DBEAFE' },
   bank: { text: '银行人员', color: '#4F46E5', bg: '#E0E7FF' },
-  salesperson: { text: '业务员', color: '#7C3AED', bg: '#F3E8FF' },
+  plat_salesperson: { text: '业务员', color: '#7C3AED', bg: '#F3E8FF' },
   admin: { text: '管理员', color: '#DC2626', bg: '#FEE2E2' }
 }
 

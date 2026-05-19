@@ -82,7 +82,11 @@ Page({
   },
 
   onLogin() {
-    const { loginType, phone, code, password } = this.data
+    const { loginType, phone, code, password, role } = this.data
+    if (!role) {
+      this.setData({ errorMsg: '请先选择用户类型', errorField: '' })
+      return
+    }
     if (!isValidPhone(phone)) {
       this.setData({ errorMsg: LOGIN_ERROR_CODE.INVALID_PHONE.message, errorField: 'phone' })
       return
@@ -114,20 +118,23 @@ Page({
           for (const k in userInfo) { merged[k] = userInfo[k] }
           for (const k in fullUserInfo) { merged[k] = fullUserInfo[k] }
 
-          // 审核状态校验
+          // 审核状态校验：只有被禁用的账号不能登录
           const auditStatus = merged.audit_status || ''
-          if (auditStatus === AUDIT_STATUS.UNREVIEWED || auditStatus === AUDIT_STATUS.UNDER_REVIEW) {
-            this.setData({ errorMsg: LOGIN_ERROR_CODE.ACCOUNT_PENDING.message, errorField: '' })
+          if (auditStatus === 'disabled') {
+            this.setData({ errorMsg: '账号已被禁用，请联系管理员', errorField: '' })
             return
           }
-          if (auditStatus === AUDIT_STATUS.REJECTED) {
-            this.setData({ errorMsg: LOGIN_ERROR_CODE.ACCOUNT_REJECTED.message, errorField: '' })
+
+          // 角色类型校验：登录角色必须与账号 user_type 一致
+          const serverRole = merged.user_type || ''
+          if (serverRole !== role) {
+            var expectRoleText = ROLE_TEXT_MAP[serverRole] || serverRole
+            this.setData({ errorMsg: '账号类型与所选角色不匹配，该账号为' + expectRoleText + '账号', errorField: '' })
             return
           }
 
           setAuth(token, merged)
-          const role = merged.user_type || ''
-          wx.switchTab({ url: getPagePath(role) })
+          wx.switchTab({ url: getPagePath(serverRole) })
         }).catch(() => {
           setAuth(token, userInfo)
           wx.switchTab({ url: getPagePath('') })

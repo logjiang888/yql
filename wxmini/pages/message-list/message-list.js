@@ -1,6 +1,6 @@
 const { getUserId } = require('../../stores/auth')
 const { createNocoBaseAPI } = require('../../api/nocobase')
-const { formatDateTime } = require('../../utils/util')
+const { formatDateTime, checkAuditInterceptor } = require('../../utils/util')
 
 const chatAPI = createNocoBaseAPI('chat_info')
 const userAPI = createNocoBaseAPI('users')
@@ -12,6 +12,7 @@ Page({
   },
 
   onShow() {
+    if (!checkAuditInterceptor()) return
     this.loadMessageList()
   },
 

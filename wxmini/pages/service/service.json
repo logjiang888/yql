@@ -1,0 +1,11 @@
+{
+  "navigationBarTitleText": "服务",
+  "enablePullDownRefresh": true,
+  "backgroundColor": "#F3F4F6",
+  "usingComponents": {
+    "van-icon": "@vant/weapp/icon/index",
+    "van-loading": "@vant/weapp/loading/index",
+    "van-empty": "@vant/weapp/empty/index",
+    "van-button": "@vant/weapp/button/index"
+  }
+}

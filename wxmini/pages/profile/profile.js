@@ -38,7 +38,7 @@ Page({
     menuList: [
       { icon: '👤', title: '我的资料', path: '' },
       { icon: '🔒', title: '修改密码', path: '/pages/change-password/change-password' },
-      { icon: '🔔', title: '消息提醒设置', path: '' },
+      { icon: '📋', title: '审核结果', path: '' },
       { icon: '❓', title: '帮助与反馈', path: '' },
       { icon: 'ℹ', title: '关于我们', path: '' }
     ],
@@ -63,9 +63,17 @@ Page({
     const role = getRole()
     const roleConfig = ROLE_TEXT[role] || ROLE_TEXT.company
     this.setData({ userInfo: userInfo, role: role, roleText: roleConfig.text })
+    this.computeAvatarText()
     if (!this.data.isEditMode) {
       this.loadProfile()
     }
+  },
+
+  computeAvatarText() {
+    var userInfo = this.data.userInfo || {}
+    var form = this.data.form || {}
+    var text = form.nickname || form.name || form.legal_representative || form.company_name || userInfo.nickname || userInfo.username || '用'
+    this.setData({ avatarText: text.charAt(0) })
   },
 
   loadProfile() {
@@ -87,6 +95,9 @@ Page({
       appends: appends
     }, true).then(function(res) {
       var fullUserInfo = (res.data || [])[0] || {}
+      if (fullUserInfo.head_image) {
+        fullUserInfo.head_image = that.resolveImageUrl(fullUserInfo.head_image)
+      }
       console.log('[loadProfile] userAPI.list 返回:', JSON.stringify(fullUserInfo))
       var form = that.buildForm(fullUserInfo, role)
 
@@ -122,6 +133,7 @@ Page({
             loading: false,
             industryLabel: that.setIndustryLabel(form)
           })
+          that.computeAvatarText()
         })
       }
     }).catch(function(err) {
@@ -185,6 +197,9 @@ Page({
       appends: ['annual_revenue_invoiced_image', 'recent_two_year_revenue_image', 'company_debt_image', 'legal_rep_debt_image', 'credit_inquiry_6m_image', 'other_attachment']
     }, true).then(function(res) {
       var companyInfo = (res.data || [])[0] || {}
+      if (fullUserInfo.head_image) {
+        fullUserInfo.head_image = that.resolveImageUrl(fullUserInfo.head_image)
+      }
       var newForm = {}
       for (var k in form) { newForm[k] = form[k] }
       for (var k in companyInfo) { newForm[k] = companyInfo[k] }
@@ -222,6 +237,7 @@ Page({
         loading: false,
         industryLabel: that.setIndustryLabel(newForm)
       })
+      that.computeAvatarText()
     }).catch(function() {
       that.setData({
         userInfo: fullUserInfo,
@@ -230,6 +246,7 @@ Page({
         loading: false,
         industryLabel: that.setIndustryLabel(form)
       })
+      that.computeAvatarText()
     })
   },
 
@@ -268,6 +285,7 @@ Page({
 
   buildForm(userInfo, role) {
     var form = {}
+    form.head_image = userInfo.head_image || ''
     if (role === 'company') {
       form.company_name = userInfo.company_name || ''
       form.credit_code = userInfo.credit_code || ''
@@ -333,6 +351,99 @@ Page({
     return form
   },
 
+  onChooseAvatar() {
+    var that = this
+    wx.chooseImage({
+      count: 1,
+      sizeType: ['compressed'],
+      sourceType: ['album', 'camera'],
+      success: function(res) {
+        var tempFilePath = res.tempFilePaths[0]
+        showLoading('上传中')
+        that.uploadAvatar(tempFilePath).then(function(url) {
+          hideLoading()
+          var userInfo = that.data.userInfo || {}
+          var form = that.data.form || {}
+          userInfo.head_image = url
+          form.head_image = url
+          that.setData({ userInfo: userInfo, form: form })
+          that.computeAvatarText()
+          var myId = getUserId()
+          if (myId) {
+            userAPI.update(myId, { head_image: url }, true).then(function() {
+              showToast('头像更新成功')
+            }).catch(function(err) {
+              console.error('[onChooseAvatar] 更新用户头像失败:', err)
+              showToast('头像保存失败')
+            })
+          }
+        }).catch(function(err) {
+          hideLoading()
+          console.error('[onChooseAvatar] 上传失败:', err)
+          showToast(err.message || '上传失败')
+        })
+      }
+    })
+  },
+
+  resolveImageUrl(url) {
+    if (!url) return url
+    if (url.indexOf('http') === 0) return url
+    if (url.indexOf('/storage/') === 0) {
+      return BASE_URL.replace('/api', '') + url
+    }
+    return url
+  },
+
+  uploadAvatar(filePath) {
+    var token = getToken()
+    if (!token) {
+      return Promise.reject(new Error('请先登录'))
+    }
+    var that = this
+    return new Promise(function(resolve, reject) {
+      wx.uploadFile({
+        url: BASE_URL + '/attachments:create',
+        filePath: filePath,
+        name: 'file',
+        formData: { t: Date.now() },
+        header: {
+          'Authorization': 'Bearer ' + token,
+          'X-Locale': 'zh-CN',
+          'X-Timezone': '+08:00'
+        },
+        success: function(res) {
+          console.log('[uploadAvatar] 响应 statusCode:', res.statusCode)
+          console.log('[uploadAvatar] 响应 data:', res.data)
+          if (res.statusCode !== 200 && res.statusCode !== 201) {
+            reject(new Error('上传失败，状态码：' + res.statusCode))
+            return
+          }
+          try {
+            var result = JSON.parse(res.data)
+            var attachment = (result && result.data) || result
+            var url = attachment.url || attachment.path
+            if (!url) {
+              console.error('[uploadAvatar] 返回数据格式错误:', attachment)
+              reject(new Error('上传失败：返回数据格式错误'))
+              return
+            }
+            var fullUrl = that.resolveImageUrl(url)
+            console.log('[uploadAvatar] 原始 URL:', url, '完整 URL:', fullUrl)
+            resolve(fullUrl)
+          } catch (e) {
+            console.error('[uploadAvatar] 响应解析失败:', e)
+            reject(new Error('上传失败：响应解析失败'))
+          }
+        },
+        fail: function(err) {
+          console.error('[uploadAvatar] 请求失败:', err)
+          reject(err)
+        }
+      })
+    })
+  },
+
   onMenuTap(e) {
     var path = e.currentTarget.dataset.path
     var title = e.currentTarget.dataset.title
@@ -345,6 +456,20 @@ Page({
         var scopeTags = this.syncScopeTags(this.data.form.business_scope)
         this.setData({ scopeTags: scopeTags })
       }
+      return
+    }
+    if (title === '审核结果') {
+      var userInfo = this.data.userInfo || {}
+      var auditResult = userInfo.audit_result || ''
+      if (!auditResult) {
+        showToast('暂无审核结果')
+        return
+      }
+      wx.showModal({
+        title: '审核结果',
+        content: auditResult,
+        showCancel: false
+      })
       return
     }
     if (!path) {
@@ -362,7 +487,7 @@ Page({
 
   onNumberInput(e) {
     var field = e.currentTarget.dataset.field
-    var value = e.detail.value
+    var value = e.detail.value !== undefined ? e.detail.value : e.detail
     this.setData({ ['form.' + field]: value })
   },
 
@@ -553,8 +678,14 @@ Page({
             console.log('[onSave] companyAPI.update 成功')
             hideLoading()
             that.setData({ saving: false, isEditMode: false })
-            showToast('保存成功')
-            that.loadProfile()
+            wx.showModal({
+              title: '提交成功',
+              content: '等待审核通过，管理员联系方式：18650055458',
+              showCancel: false,
+              success: function() {
+                that.loadProfile()
+              }
+            })
           }).catch(function(err) {
             console.error('[onSave] companyAPI.update 失败:', err)
             hideLoading()
@@ -564,8 +695,14 @@ Page({
         } else {
           hideLoading()
           that.setData({ saving: false, isEditMode: false })
-          showToast('保存成功')
-          that.loadProfile()
+          wx.showModal({
+            title: '提交成功',
+            content: '等待审核通过，管理员联系方式：18650055458',
+            showCancel: false,
+            success: function() {
+              that.loadProfile()
+            }
+          })
         }
       }).catch(function(err) {
         console.error('[onSave] userAPI.update 失败:', err)
@@ -680,6 +817,7 @@ Page({
       data.position = form.position
       if (form.work_years) data.work_years = parseInt(form.work_years)
     }
+    data.audit_status = 'unreviewed'
     return data
   },
 
@@ -689,18 +827,18 @@ Page({
     data.credit_code = form.credit_code
     data.legal_representative = form.legal_representative
     data.contact_phone = form.contact_phone
-    if (form.annual_revenue_invoiced) data.annual_revenue_invoiced = Number(form.annual_revenue_invoiced)
-    if (form.recent_two_year_revenue_uninvoiced) data.recent_two_year_revenue_uninvoiced = Number(form.recent_two_year_revenue_uninvoiced)
+    if (form.annual_revenue_invoiced !== '' && form.annual_revenue_invoiced !== undefined) data.annual_revenue_invoiced = Number(form.annual_revenue_invoiced)
+    if (form.recent_two_year_revenue_uninvoiced !== '' && form.recent_two_year_revenue_uninvoiced !== undefined) data.recent_two_year_revenue_uninvoiced = Number(form.recent_two_year_revenue_uninvoiced)
     data.industry = form.industry
     data.office_address = form.office_address
     data.company_debt_status = form.company_debt_status
     data.legal_rep_debt_status = form.legal_rep_debt_status
-    if (form.bank_account_count) data.bank_account_count = Number(form.bank_account_count)
-    if (form.overdue_count) data.overdue_count = Number(form.overdue_count)
-    if (form.debt_count) data.debt_count = Number(form.debt_count)
-    if (form.credit_inquiry_6m) data.credit_inquiry_6m = Number(form.credit_inquiry_6m)
-    if (form.financial_resources_company) data.financial_resources_company = Number(form.financial_resources_company)
-    if (form.financial_resources_legal_rep) data.financial_resources_legal_rep = Number(form.financial_resources_legal_rep)
+    if (form.bank_account_count !== '' && form.bank_account_count !== undefined) data.bank_account_count = Number(form.bank_account_count)
+    if (form.overdue_count !== '' && form.overdue_count !== undefined) data.overdue_count = Number(form.overdue_count)
+    if (form.debt_count !== '' && form.debt_count !== undefined) data.debt_count = Number(form.debt_count)
+    if (form.credit_inquiry_6m !== '' && form.credit_inquiry_6m !== undefined) data.credit_inquiry_6m = Number(form.credit_inquiry_6m)
+    if (form.financial_resources_company !== '' && form.financial_resources_company !== undefined) data.financial_resources_company = Number(form.financial_resources_company)
+    if (form.financial_resources_legal_rep !== '' && form.financial_resources_legal_rep !== undefined) data.financial_resources_legal_rep = Number(form.financial_resources_legal_rep)
     if (form.loan_requirement) data.loan_requirement = form.loan_requirement
     // 附件字段
     var imgFields = ['annual_revenue_invoiced_image', 'recent_two_year_revenue_image', 'company_debt_image', 'legal_rep_debt_image', 'credit_inquiry_6m_image', 'other_attachment']

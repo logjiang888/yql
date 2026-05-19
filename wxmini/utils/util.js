@@ -111,9 +111,24 @@ const getPagePath = (role) => {
   switch (role) {
     case 'company': return '/pages/home/home'
     case 'bank': return '/pages/home-bank/home-bank'
-    case 'salesperson': return '/pages/home-bank/home-bank'
+    case 'plat_salesperson': return '/pages/home-bank/home-bank'
     default: return '/pages/home/home'
   }
+}
+
+const checkAuditInterceptor = function() {
+  // 延迟 require 避免与 stores/auth.js 的循环依赖（auth.js 也 require 了 util.js 的 storage）
+  var getUserInfo = require('../stores/auth').getUserInfo
+  var userInfo = getUserInfo()
+  if (!userInfo) return false
+  if (userInfo.audit_status === 'approved') return true
+
+  wx.showModal({
+    title: '提示',
+    content: '请您到我的->我的资料模块中完善个人资料，等待审核通过激活',
+    showCancel: false
+  })
+  return false
 }
 
 module.exports = {
@@ -131,5 +146,6 @@ module.exports = {
   isValidPhone,
   maskPhone,
   maskCreditCode,
-  getPagePath
+  getPagePath,
+  checkAuditInterceptor
 }

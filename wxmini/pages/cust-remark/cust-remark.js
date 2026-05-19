@@ -1,4 +1,5 @@
 const { createNocoBaseAPI } = require('../../api/nocobase')
+const { checkAuditInterceptor } = require('../../utils/util')
 
 const myCustAPI = createNocoBaseAPI('my_cust_list')
 
@@ -31,6 +32,10 @@ Page({
       custLevel: options.custLevel || '1',
       remark: decodeURIComponent(options.remark || '')
     })
+  },
+
+  onShow() {
+    if (!checkAuditInterceptor()) return
   },
 
   onTypeChange(e) {

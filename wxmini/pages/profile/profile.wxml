@@ -3,7 +3,11 @@
   <!-- 查看模式 -->
   <block wx:if="{{!isEditMode}}">
     <view class="profile-header">
-      <view class="avatar avatar-lg">{{(userInfo && userInfo.nickname && userInfo.nickname[0]) || '用'}}</view>
+      <view class="avatar-wrapper" bindtap="onMenuTap" data-title="我的资料">
+        <image wx:if="{{userInfo && userInfo.head_image}}" class="avatar avatar-img" src="{{userInfo.head_image}}" mode="aspectFill" lazy-load />
+        <view wx:else class="avatar avatar-lg">{{avatarText}}</view>
+        <view class="avatar-edit-badge">✏️</view>
+      </view>
       <view class="profile-name">{{(userInfo && userInfo.nickname) || (userInfo && userInfo.username) || '用户'}}</view>
       <view class="profile-role">
         <status-tag status="{{role}}" type="role"></status-tag>
@@ -36,6 +40,15 @@
       <view class="edit-back" bindtap="onCancel">取消</view>
       <view class="edit-title">编辑资料</view>
       <view class="edit-save" bindtap="onSave">保存</view>
+    </view>
+
+    <!-- 头像上传区域（所有角色通用） -->
+    <view class="edit-avatar-section">
+      <view class="edit-avatar-wrapper" bindtap="onChooseAvatar">
+        <image wx:if="{{form.head_image || (userInfo && userInfo.head_image)}}" class="edit-avatar" src="{{form.head_image || userInfo.head_image}}" mode="aspectFill" lazy-load />
+        <view wx:else class="edit-avatar edit-avatar-default">{{avatarText}}</view>
+        <view class="edit-avatar-tip">点击更换头像</view>
+      </view>
     </view>
 
     <!-- 企业客户表单 -->

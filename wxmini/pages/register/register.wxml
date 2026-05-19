@@ -28,8 +28,8 @@
         <view class="type-desc">贷款提供方</view>
       </view>
       <view
-        class="type-card {{ role === 'salesperson' ? 'type-active' : '' }}"
-        data-role="salesperson"
+        class="type-card {{ role === 'plat_salesperson' ? 'type-active' : '' }}"
+        data-role="plat_salesperson"
         bindtap="onRoleChange"
       >
         <view class="type-icon">🤝</view>

@@ -1,0 +1,85 @@
+.page-container {
+  min-height: 100vh;
+  background-color: #F3F4F6;
+  padding-bottom: 40rpx;
+}
+
+.audit-list {
+  padding: 24rpx;
+}
+
+.audit-card {
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  border-radius: var(--radius-lg);
+  padding: 28rpx;
+  margin-bottom: 24rpx;
+  box-shadow: 0 2rpx 16rpx rgba(0, 0, 0, 0.06);
+}
+
+.card-avatar-wrapper {
+  flex-shrink: 0;
+  margin-right: 24rpx;
+}
+
+.card-avatar {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50%;
+  background-color: #f3f4f6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40rpx;
+  font-weight: 600;
+  color: #9ca3af;
+}
+
+.card-avatar-default {
+  background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+  color: #2563eb;
+}
+
+.card-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
+  min-width: 0;
+}
+
+.info-header {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.info-name {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: var(--van-text-color);
+}
+
+.info-phone {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+}
+
+.phone-text {
+  font-size: 28rpx;
+  color: var(--van-text-color-2);
+}
+
+.card-action {
+  flex-shrink: 0;
+  margin-left: 16rpx;
+}
+
+.load-more-text {
+  text-align: center;
+  padding: 32rpx 0;
+  font-size: 26rpx;
+  color: var(--van-text-color-3);
+}

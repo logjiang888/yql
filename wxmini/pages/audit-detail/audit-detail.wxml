@@ -1,0 +1,291 @@
+<view class="page-container">
+  <van-loading wx:if="{{loading}}" size="24px" vertical class="loading-center">加载中...</van-loading>
+
+  <block wx:elif="{{userInfo}}">
+    <!-- 头部 -->
+    <view class="detail-header">
+      <image wx:if="{{userInfo.head_image}}" class="detail-avatar" src="{{userInfo.head_image}}" mode="aspectFill" />
+      <view wx:else class="detail-avatar detail-avatar-default">{{userInfo._avatarText}}</view>
+      <view class="detail-name">{{userInfo.nickname || userInfo.real_name || userInfo.username || '未知'}}</view>
+      <view class="detail-status">
+        <van-tag color="{{auditStatusColor}}" text-color="#fff" size="medium">{{auditStatusText}}</van-tag>
+      </view>
+      <view class="detail-role">{{roleText}} · {{userInfo.phone || '-'}}</view>
+    </view>
+
+    <!-- 银行人员资料 -->
+    <block wx:if="{{role === 'bank'}}">
+      <view class="card card-shadow mx-md mt-md">
+        <view class="card-section">
+          <view class="section-title">基本信息</view>
+          <van-cell title="姓名" value="{{userInfo.real_name || userInfo.nickname || '-'}}" border="{{true}}" />
+          <van-cell title="手机号" value="{{userInfo.phone || '-'}}" border="{{true}}" />
+          <van-cell title="银行" value="{{userInfo.bank_name || '-'}}" border="{{true}}" />
+          <van-cell title="联行号" value="{{userInfo.bank_code || '-'}}" border="{{true}}" />
+          <van-cell title="岗位" value="{{userInfo.position || '-'}}" border="{{true}}" />
+          <van-cell title="工作年限" value="{{userInfo.work_years || '-'}}" border="{{false}}" />
+        </view>
+
+        <view class="divider" wx:if="{{userInfo.business_scope}}"></view>
+        <view class="card-section" wx:if="{{userInfo.business_scope}}">
+          <view class="section-title">业务范围</view>
+          <view class="flex flex-wrap gap-sm">
+            <van-tag
+              wx:for="{{userInfo.business_scope}}"
+              wx:key="*this"
+              color="#DBEAFE"
+              text-color="#2563EB"
+              size="medium"
+            >{{item}}</van-tag>
+          </view>
+        </view>
+
+        <view class="divider" wx:if="{{userInfo.published_products}}"></view>
+        <view class="card-section" wx:if="{{userInfo.published_products}}">
+          <view class="section-title">发布的产品</view>
+          <view class="product-text">{{userInfo.published_products}}</view>
+        </view>
+
+        <view class="divider" wx:if="{{userInfo.work_proof && userInfo.work_proof.length > 0}}"></view>
+        <view class="card-section" wx:if="{{userInfo.work_proof && userInfo.work_proof.length > 0}}">
+          <view class="section-title">工作证件</view>
+          <view class="flex flex-wrap gap-sm">
+            <van-image
+              wx:for="{{userInfo.work_proof}}"
+              wx:key="id"
+              src="{{item.url}}"
+              width="160rpx"
+              height="160rpx"
+              radius="8"
+              bindtap="onPreviewImage"
+              data-url="{{item.url}}"
+            />
+          </view>
+        </view>
+      </view>
+    </block>
+
+    <!-- 企业资料 -->
+    <block wx:if="{{role === 'company'}}">
+      <view class="card card-shadow mx-md mt-md">
+        <view class="card-section">
+          <view class="section-title">企业基本信息</view>
+          <van-cell title="企业名称" value="{{companyInfo.company_name || '-'}}" border="{{true}}" />
+          <van-cell title="统一信用代码" value="{{companyInfo.credit_code || '-'}}" border="{{true}}" />
+          <van-cell title="法人姓名" value="{{companyInfo.legal_representative || '-'}}" border="{{true}}" />
+          <van-cell title="联系人手机" value="{{companyInfo.contact_phone || '-'}}" border="{{false}}" />
+        </view>
+
+        <view class="divider"></view>
+        <view class="card-section">
+          <view class="section-title">企业运营信息</view>
+          <van-cell title="年营收(开票)" value="{{companyInfo.annual_revenue_invoiced || '-'}}" border="{{true}}" />
+          <van-cell title="近两年营收(无票)" value="{{companyInfo.recent_two_year_revenue_uninvoiced || '-'}}" border="{{true}}" />
+          <van-cell title="行业" value="{{companyInfo.industryLabel || '-'}}" border="{{true}}" />
+          <van-cell title="办公地址" value="{{companyInfo.office_address || '-'}}" border="{{true}}" />
+          <van-cell title="财力(公司)" value="{{companyInfo.financial_resources_company || '-'}}" border="{{true}}" />
+          <van-cell title="财力(法人)" value="{{companyInfo.financial_resources_legal_rep || '-'}}" border="{{false}}" />
+        </view>
+
+        <view class="divider"></view>
+        <view class="card-section">
+          <view class="section-title">负债与信用</view>
+          <van-cell title="企业负债" value="{{companyInfo.company_debt_status || '-'}}" border="{{true}}" />
+          <van-cell title="法人负债" value="{{companyInfo.legal_rep_debt_status || '-'}}" border="{{true}}" />
+          <van-cell title="开户数" value="{{companyInfo.bank_account_count || '-'}}" border="{{true}}" />
+          <van-cell title="逾期数" value="{{companyInfo.overdue_count || '-'}}" border="{{true}}" />
+          <van-cell title="负债数" value="{{companyInfo.debt_count || '-'}}" border="{{true}}" />
+          <van-cell title="近6月征信查询次数" value="{{companyInfo.credit_inquiry_6m || '-'}}" border="{{true}}" />
+          <van-cell title="贷款需求" value="{{companyInfo.loan_requirement || '-'}}" border="{{false}}" />
+        </view>
+
+        <!-- 附件汇总 -->
+        <view class="divider"></view>
+        <view class="card-section">
+          <view class="section-title">附件资料</view>
+
+          <!-- 年营收(开票)附件 -->
+          <view class="attach-group">
+            <view class="attach-label">年营收(开票)附件</view>
+            <block wx:if="{{companyInfo.annual_revenue_invoiced_image && companyInfo.annual_revenue_invoiced_image.length > 0}}">
+              <view class="flex flex-wrap gap-sm">
+                <van-image
+                  wx:for="{{companyInfo.annual_revenue_invoiced_image}}"
+                  wx:key="id"
+                  src="{{item.url}}"
+                  width="160rpx"
+                  height="160rpx"
+                  radius="8"
+                  bindtap="onPreviewImage"
+                  data-url="{{item.url}}"
+                />
+              </view>
+            </block>
+            <view wx:else class="attach-empty">未上传</view>
+            <view wx:if="{{refImages.annual_revenue_invoiced_image}}" class="ref-image-row" bindtap="onPreviewRefImage" data-url="{{refImages.annual_revenue_invoiced_image}}">
+              <van-image src="{{refImages.annual_revenue_invoiced_image}}" width="120rpx" height="120rpx" radius="6" />
+              <text class="ref-image-text">📎 样例图（参考）</text>
+            </view>
+          </view>
+
+          <!-- 近两年营收(无票)附件 -->
+          <view class="attach-group">
+            <view class="attach-label">近两年营收(无票)附件</view>
+            <block wx:if="{{companyInfo.recent_two_year_revenue_image && companyInfo.recent_two_year_revenue_image.length > 0}}">
+              <view class="flex flex-wrap gap-sm">
+                <van-image
+                  wx:for="{{companyInfo.recent_two_year_revenue_image}}"
+                  wx:key="id"
+                  src="{{item.url}}"
+                  width="160rpx"
+                  height="160rpx"
+                  radius="8"
+                  bindtap="onPreviewImage"
+                  data-url="{{item.url}}"
+                />
+              </view>
+            </block>
+            <view wx:else class="attach-empty">未上传</view>
+          </view>
+
+          <!-- 企业负债附件 -->
+          <view class="attach-group">
+            <view class="attach-label">企业负债附件</view>
+            <block wx:if="{{companyInfo.company_debt_image && companyInfo.company_debt_image.length > 0}}">
+              <view class="flex flex-wrap gap-sm">
+                <van-image
+                  wx:for="{{companyInfo.company_debt_image}}"
+                  wx:key="id"
+                  src="{{item.url}}"
+                  width="160rpx"
+                  height="160rpx"
+                  radius="8"
+                  bindtap="onPreviewImage"
+                  data-url="{{item.url}}"
+                />
+              </view>
+            </block>
+            <view wx:else class="attach-empty">未上传</view>
+            <view wx:if="{{refImages.company_debt_image}}" class="ref-image-row" bindtap="onPreviewRefImage" data-url="{{refImages.company_debt_image}}">
+              <van-image src="{{refImages.company_debt_image}}" width="120rpx" height="120rpx" radius="6" />
+              <text class="ref-image-text">📎 样例图（参考）</text>
+            </view>
+          </view>
+
+          <!-- 法人负债附件 -->
+          <view class="attach-group">
+            <view class="attach-label">法人负债附件</view>
+            <block wx:if="{{companyInfo.legal_rep_debt_image && companyInfo.legal_rep_debt_image.length > 0}}">
+              <view class="flex flex-wrap gap-sm">
+                <van-image
+                  wx:for="{{companyInfo.legal_rep_debt_image}}"
+                  wx:key="id"
+                  src="{{item.url}}"
+                  width="160rpx"
+                  height="160rpx"
+                  radius="8"
+                  bindtap="onPreviewImage"
+                  data-url="{{item.url}}"
+                />
+              </view>
+            </block>
+            <view wx:else class="attach-empty">未上传</view>
+            <view wx:if="{{refImages.legal_rep_debt_image}}" class="ref-image-row" bindtap="onPreviewRefImage" data-url="{{refImages.legal_rep_debt_image}}">
+              <van-image src="{{refImages.legal_rep_debt_image}}" width="120rpx" height="120rpx" radius="6" />
+              <text class="ref-image-text">📎 样例图（参考）</text>
+            </view>
+          </view>
+
+          <!-- 近6个月征信查询附件 -->
+          <view class="attach-group">
+            <view class="attach-label">近6个月征信查询附件</view>
+            <block wx:if="{{companyInfo.credit_inquiry_6m_image && companyInfo.credit_inquiry_6m_image.length > 0}}">
+              <view class="flex flex-wrap gap-sm">
+                <van-image
+                  wx:for="{{companyInfo.credit_inquiry_6m_image}}"
+                  wx:key="id"
+                  src="{{item.url}}"
+                  width="160rpx"
+                  height="160rpx"
+                  radius="8"
+                  bindtap="onPreviewImage"
+                  data-url="{{item.url}}"
+                />
+              </view>
+            </block>
+            <view wx:else class="attach-empty">未上传</view>
+            <view wx:if="{{refImages.credit_inquiry_6m_image}}" class="ref-image-row" bindtap="onPreviewRefImage" data-url="{{refImages.credit_inquiry_6m_image}}">
+              <van-image src="{{refImages.credit_inquiry_6m_image}}" width="120rpx" height="120rpx" radius="6" />
+              <text class="ref-image-text">📎 样例图（参考）</text>
+            </view>
+          </view>
+
+          <!-- 其它附件 -->
+          <view class="attach-group">
+            <view class="attach-label">其它附件</view>
+            <block wx:if="{{companyInfo.other_attachment && companyInfo.other_attachment.length > 0}}">
+              <view class="flex flex-wrap gap-sm">
+                <van-image
+                  wx:for="{{companyInfo.other_attachment}}"
+                  wx:key="id"
+                  src="{{item.url}}"
+                  width="160rpx"
+                  height="160rpx"
+                  radius="8"
+                  bindtap="onPreviewImage"
+                  data-url="{{item.url}}"
+                />
+              </view>
+            </block>
+            <view wx:else class="attach-empty">未上传</view>
+          </view>
+        </view>
+      </view>
+    </block>
+
+    <!-- 审核状态 -->
+    <view class="card card-shadow mx-md mt-md">
+      <view class="card-section">
+        <view class="section-title">审核状态</view>
+        <van-field
+          value="{{auditStatusLabel}}"
+          placeholder="请选择审核状态"
+          readonly
+          is-link
+          bind:click-input="onShowStatusPicker"
+        />
+      </view>
+    </view>
+
+    <!-- 审核结果区域 -->
+    <view class="card card-shadow mx-md mt-md mb-xl">
+      <view class="card-section">
+        <view class="section-title">审核结果</view>
+        <van-field
+          value="{{auditResult}}"
+          type="textarea"
+          placeholder="请输入审核结果..."
+          autosize="{{ { maxHeight: 200, minHeight: 100 } }}"
+          bind:input="onAuditResultInput"
+        />
+      </view>
+    </view>
+
+    <!-- 底部保存按钮 -->
+    <view class="fixed-footer">
+      <van-button block round type="primary" loading="{{saving}}" bind:click="onSave">保存审核结果</van-button>
+    </view>
+
+    <!-- 审核状态选择弹窗 -->
+    <van-popup show="{{showStatusPicker}}" position="bottom" round bind:close="onCloseStatusPicker">
+      <van-picker
+        show-toolbar
+        title="选择审核状态"
+        columns="{{auditStatusColumns}}"
+        default-index="{{auditStatusIndex}}"
+        bind:confirm="onStatusConfirm"
+        bind:cancel="onCloseStatusPicker"
+      />
+    </van-popup>
+  </block>
+</view>

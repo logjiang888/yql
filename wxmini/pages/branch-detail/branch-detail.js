@@ -1,5 +1,5 @@
 const { createNocoBaseAPI } = require('../../api/nocobase')
-const { showLoading, hideLoading } = require('../../utils/util')
+const { showLoading, hideLoading, checkAuditInterceptor } = require('../../utils/util')
 
 const bankAPI = createNocoBaseAPI('dim_bank_info')
 
@@ -13,6 +13,10 @@ Page({
     if (id) {
       this.loadDetail(id)
     }
+  },
+
+  onShow() {
+    if (!checkAuditInterceptor()) return
   },
 
   loadDetail(id) {

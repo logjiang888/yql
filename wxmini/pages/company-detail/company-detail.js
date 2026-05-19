@@ -1,5 +1,5 @@
 const { createNocoBaseAPI, BASE_URL } = require('../../api/nocobase')
-const { showLoading, hideLoading, formatDate } = require('../../utils/util')
+const { showLoading, hideLoading, formatDate, checkAuditInterceptor } = require('../../utils/util')
 
 const companyAPI = createNocoBaseAPI('company_info')
 const ASSET_BASE = BASE_URL.replace('/api', '')
@@ -26,6 +26,10 @@ Page({
     if (id) {
       this.loadDetail(id)
     }
+  },
+
+  onShow() {
+    if (!checkAuditInterceptor()) return
   },
 
   loadDetail(id) {

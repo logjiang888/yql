@@ -130,11 +130,11 @@ Page({
     const phone = form.phone
     const password = form.password
 
-    // user_type 映射
+    // user_type 直接透传（前端角色值已与数据库统一）
     const userTypeMap = {
       company: 'company',
       bank: 'bank',
-      salesperson: 'plat_salesperson'
+      plat_salesperson: 'plat_salesperson'
     }
 
     showLoading('提交中')
