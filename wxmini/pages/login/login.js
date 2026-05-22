@@ -8,14 +8,14 @@ const userAPI = createNocoBaseAPI('users')
 const ROLE_TEXT_MAP = {
   company: '企业',
   bank: '银行',
-  plat_salesperson: '平台业务员'
+  plat_salesperson: '平台客服'
 }
 
 Page({
   data: {
     role: '',
     roleText: '',
-    appName: '银企来',
+    appName: '银企直聊',
     loginType: 'password',
     phone: '',
     code: '',
@@ -36,7 +36,7 @@ Page({
       this.setData({ phone: options.phone, loginType: 'password' })
     }
     var app = getApp()
-    var appName = (app && app.globalData && app.globalData.appName) || wx.getStorageSync('appName') || '银企来'
+    var appName = (app && app.globalData && app.globalData.appName) || wx.getStorageSync('appName') || '银企直聊'
     this.setData({ appName: appName })
     wx.setNavigationBarTitle({ title: '登录' })
   },

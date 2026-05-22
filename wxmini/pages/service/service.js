@@ -22,8 +22,8 @@ Page({
     this.setData({ page: 1 })
     this.loadList()
     var tabBar = this.getTabBar()
-    if (tabBar && typeof tabBar.updateSelected === 'function') {
-      tabBar.updateSelected()
+    if (tabBar && typeof tabBar.updateTabListAndSelect === 'function') {
+      tabBar.updateTabListAndSelect()
     }
   },
 

@@ -7,6 +7,7 @@
 .home-bank-nav {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   padding: 20rpx 32rpx;
   padding-top: calc(20rpx + env(safe-area-inset-top));
   background-color: #fff;
@@ -23,7 +24,6 @@
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  margin-top: calc(env(safe-area-inset-top) / 2);
   white-space: nowrap;
   line-height: 1;
 }

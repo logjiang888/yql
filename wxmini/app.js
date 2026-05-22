@@ -8,7 +8,7 @@ App({
     userInfo: null,
     role: null,
     systemInfo: null,
-    appName: '银企来'
+    appName: '银企直聊'
   },
 
   onLaunch() {

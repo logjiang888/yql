@@ -67,8 +67,8 @@ Page({
       this.loadProfile()
     }
     var tabBar = this.getTabBar()
-    if (tabBar && typeof tabBar.updateSelected === 'function') {
-      tabBar.updateSelected()
+    if (tabBar && typeof tabBar.updateTabListAndSelect === 'function') {
+      tabBar.updateTabListAndSelect()
     }
   },
 

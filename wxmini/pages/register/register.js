@@ -57,7 +57,8 @@ Page({
   },
 
   onTapProtocol() {
-    wx.navigateTo({ url: '/pages/protocol/protocol?from=register' })
+    const { role } = this.data
+    wx.navigateTo({ url: '/pages/protocol/protocol?from=register&role=' + role })
   },
 
   onGoLogin() {

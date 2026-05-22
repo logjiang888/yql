@@ -2,7 +2,7 @@ const { createNocoBaseAPI } = require('../../api/nocobase')
 const { PROTOCOL_TYPE } = require('../../constants/index')
 const { showLoading, hideLoading } = require('../../utils/util')
 
-const protocolAPI = createNocoBaseAPI('dim_protocal_info')
+const protocolAPI = createNocoBaseAPI('dim_protocol_info')
 
 Page({
   data: {
@@ -36,7 +36,7 @@ Page({
       if (item) {
         this.setData({
           title: item.protocol_type === 'company' ? '企业用户注册协议' :
-                 item.protocol_type === 'bank' ? '银行人员注册协议' : '业务员注册协议',
+                 item.protocol_type === 'bank' ? '银行人员注册协议' : '平台客服注册协议',
           content: item.protocal_content || ''
         })
       }

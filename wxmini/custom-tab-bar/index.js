@@ -32,18 +32,13 @@ Component({
 
   lifetimes: {
     attached() {
-      this.updateTabList()
+      this.updateTabListAndSelect()
     }
   },
 
   pageLifetimes: {
     show() {
-      this.updateTabList()
-      // 延迟执行，避免 switchTab 动画期间 getCurrentPages() 仍返回旧页面导致 selected 被重置
-      clearTimeout(this._selectTimer)
-      this._selectTimer = setTimeout(() => {
-        this.updateSelected()
-      }, 200)
+      this.updateTabListAndSelect()
     }
   },
 

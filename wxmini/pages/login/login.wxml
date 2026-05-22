@@ -14,7 +14,7 @@
         bindtap="onRoleChange"
       >
         <view class="type-icon">🏢</view>
-        <view class="type-name">企业客户</view>
+        <view class="type-name">企业主</view>
         <view class="type-desc">贷款需求方</view>
       </view>
       <view
@@ -32,8 +32,8 @@
         bindtap="onRoleChange"
       >
         <view class="type-icon">🤝</view>
-        <view class="type-name">业务员</view>
-        <view class="type-desc">居间服务方</view>
+        <view class="type-name">平台客服</view>
+        <view class="type-desc">平台方</view>
       </view>
     </view>
   </view>

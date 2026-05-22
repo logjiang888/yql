@@ -6,13 +6,13 @@ const configAPI = createNocoBaseAPI('dim_data_config')
 Page({
   data: {
     loading: true,
-    appName: '银企来',
+    appName: '银企直聊',
     content: ''
   },
 
   onLoad() {
     var app = getApp()
-    var appName = (app && app.globalData && app.globalData.appName) || wx.getStorageSync('appName') || '银企来'
+    var appName = (app && app.globalData && app.globalData.appName) || wx.getStorageSync('appName') || '银企直聊'
     this.setData({ appName: appName })
     wx.setNavigationBarTitle({ title: appName })
     this.loadAbout()
